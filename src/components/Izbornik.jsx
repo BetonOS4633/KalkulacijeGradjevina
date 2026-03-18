@@ -15,7 +15,7 @@ export default function Izbornik() {
                     <Nav className="me-auto">
                         <Nav.Link 
                         onClick={()=>navigate(RouteNames.HOME)}
-                        >Dobro došli na BetonOS</Nav.Link>
+                        >Počena</Nav.Link>
                         
                         <NavDropdown title="Programi" id="basic-nav-dropdown">
                             <NavDropdown.Item 
