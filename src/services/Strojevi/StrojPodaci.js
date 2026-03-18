@@ -1,4 +1,4 @@
-export const smjerovi=[
+export const strojevi=[
     {
         sifra:1,
         naziv:'Bušilica',

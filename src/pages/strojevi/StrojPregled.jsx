@@ -17,7 +17,7 @@ export default function StrojPregled() {
     <>
     Ovdje će se vidjeti strojevi
    <ul>
-    {strojevi && smjerovi.map((stroj) =>
+    {strojevi && strojevi.map((stroj) =>
          (<li> {stroj.naziv}</li>
          ))}
    </ul>    
