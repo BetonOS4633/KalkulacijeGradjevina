@@ -11,6 +11,8 @@ export default function FormatDatum({datum,prikazZadano='-'}){
     return Intl.DateTimeFormat('hr-HR',{
         day: '2-digit',
         month: '2-digit',
-        year: 'numeric'
-    }).format(d)+ (datum.includes('T')?'':'.')
+        year: 'numeric',
+        hour:'2-digit',
+        minute:'2-digit'
+    }).format(d) + (datum.includes('T')?'':'.')
 } 

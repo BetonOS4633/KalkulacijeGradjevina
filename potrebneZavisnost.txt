@@ -1,4 +1,8 @@
-//npm install react-bootstrap bootstrapnpm install react-bootstra
+npm install react-bootstrap bootstrapnp
 
+npm install react-router-dom
 
-npm instal react-router-dom
+npm install react-number-format
+
+npm install react-icons
+
