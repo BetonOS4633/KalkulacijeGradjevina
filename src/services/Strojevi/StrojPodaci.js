@@ -1,22 +1,47 @@
-export const strojevi=[
+export const strojevi = [
     {
-        sifra:1,
-        naziv:'Bušilica',
-        trajanje:130,
-        cijena:1250.99,
-        datumPokretanja:'2024-02-21T17:00:00',
-        datumKraja:'2024-03-15T12:00:00',
-        aktivan:true
-    },{
-        sifra:2,
-        naziv:'Kutna brusilica',
-        trajanje:150,
-        cijena:1500.00,
-        datumPokretanja:'2024-03-01T17:00:00',
-        datumKraja:'2024-03-15T12:00:00',
-        aktivan:false
-    }
-
-
-    
+        sifra: 1,
+        naziv: 'Bušilica',
+        trajanje: 130,
+        cijena: 1250.99,
+        datumPokretanja: '2024-02-21T17:00:00',
+        datumKraja: '2024-03-15T12:00:00',
+        aktivan: true
+    }, {
+        sifra: 2,
+        naziv: 'Kutna brusilica',
+        trajanje: 150,
+        cijena: 1500.00,
+        datumPokretanja: '2024-03-01T17:00:00',
+        datumKraja: '2024-03-15T12:00:00',
+        aktivan: false
+    }, 
+    { sifra: 3, naziv: 'Ubodna pila', trajanje: 80, cijena: 850.50, datumPokretanja: '2024-01-10T08:00:00', datumKraja: '2024-02-10T16:00:00', aktivan: true },
+    { sifra: 4, naziv: 'Zračni kompresor', trajanje: 300, cijena: 3200.00, datumPokretanja: '2024-01-15T09:00:00', datumKraja: '2024-05-20T12:00:00', aktivan: true },
+    { sifra: 5, naziv: 'Aparat za zavarivanje', trajanje: 200, cijena: 4500.00, datumPokretanja: '2024-02-01T10:00:00', datumKraja: '2024-06-01T10:00:00', aktivan: true },
+    { sifra: 6, naziv: 'Pila za metal', trajanje: 120, cijena: 2100.00, datumPokretanja: '2024-03-05T07:30:00', datumKraja: '2024-04-05T15:30:00', aktivan: false },
+    { sifra: 7, naziv: 'Industrijski usisavač', trajanje: 90, cijena: 1800.75, datumPokretanja: '2024-03-10T08:00:00', datumKraja: '2024-04-10T12:00:00', aktivan: true },
+    { sifra: 8, naziv: 'Glodalica', trajanje: 180, cijena: 5600.00, datumPokretanja: '2024-02-15T11:00:00', datumKraja: '2024-05-15T11:00:00', aktivan: true },
+    { sifra: 9, naziv: 'Plošna brusilica', trajanje: 110, cijena: 1350.00, datumPokretanja: '2024-01-20T13:00:00', datumKraja: '2024-02-25T17:00:00', aktivan: false },
+    { sifra: 10, naziv: 'Stolna bušilica', trajanje: 250, cijena: 2900.00, datumPokretanja: '2024-03-12T09:00:00', datumKraja: '2024-07-12T09:00:00', aktivan: true },
+    { sifra: 11, naziv: 'Visokotlačni perač', trajanje: 70, cijena: 2200.00, datumPokretanja: '2024-03-18T10:00:00', datumKraja: '2024-04-18T14:00:00', aktivan: true },
+    { sifra: 12, naziv: 'Agregat za struju', trajanje: 400, cijena: 7800.50, datumPokretanja: '2024-01-05T06:00:00', datumKraja: '2024-08-05T06:00:00', aktivan: false },
+    { sifra: 13, naziv: 'Hidraulična preša', trajanje: 500, cijena: 12500.00, datumPokretanja: '2024-01-01T08:00:00', datumKraja: '2024-12-31T16:00:00', aktivan: true },
+    { sifra: 14, naziv: 'Ekscentrična brusilica', trajanje: 60, cijena: 950.00, datumPokretanja: '2024-03-20T08:00:00', datumKraja: '2024-04-20T08:00:00', aktivan: true },
+    { sifra: 15, naziv: 'Pneumatski čekić', trajanje: 140, cijena: 3100.20, datumPokretanja: '2024-02-10T09:00:00', datumKraja: '2024-04-10T17:00:00', aktivan: false },
+    { sifra: 16, naziv: 'Tračna pila', trajanje: 220, cijena: 4200.00, datumPokretanja: '2024-02-28T07:00:00', datumKraja: '2024-06-28T15:00:00', aktivan: true },
+    { sifra: 17, naziv: 'Tokarski stroj', trajanje: 600, cijena: 18900.00, datumPokretanja: '2024-01-10T08:00:00', datumKraja: '2024-10-10T16:00:00', aktivan: true },
+    { sifra: 18, naziv: 'Ručna kružna pila', trajanje: 95, cijena: 1100.00, datumPokretanja: '2024-03-05T10:00:00', datumKraja: '2024-04-05T10:00:00', aktivan: true },
+    { sifra: 19, naziv: 'Laserski daljinomjer', trajanje: 30, cijena: 450.00, datumPokretanja: '2024-03-22T12:00:00', datumKraja: '2024-03-29T12:00:00', aktivan: true },
+    { sifra: 20, naziv: 'Miješalica za beton', trajanje: 350, cijena: 3800.00, datumPokretanja: '2024-02-15T08:00:00', datumKraja: '2024-07-15T16:00:00', aktivan: false },
+    { sifra: 21, naziv: 'Rezač pločica', trajanje: 100, cijena: 1400.00, datumPokretanja: '2024-03-01T09:00:00', datumKraja: '2024-04-01T17:00:00', aktivan: true },
+    { sifra: 22, naziv: 'Električna blanja', trajanje: 85, cijena: 1250.00, datumPokretanja: '2024-02-20T08:00:00', datumKraja: '2024-03-20T16:00:00', aktivan: true },
+    { sifra: 23, naziv: 'Detektor metala', trajanje: 40, cijena: 750.00, datumPokretanja: '2024-03-10T10:00:00', datumKraja: '2024-03-25T10:00:00', aktivan: false },
+    { sifra: 24, naziv: 'Klamerica zračna', trajanje: 55, cijena: 680.00, datumPokretanja: '2024-03-15T11:00:00', datumKraja: '2024-04-15T11:00:00', aktivan: true },
+    { sifra: 25, naziv: 'Ventilator industrijski', trajanje: 120, cijena: 1900.00, datumPokretanja: '2024-02-05T08:00:00', datumKraja: '2024-05-05T08:00:00', aktivan: true },
+    { sifra: 26, naziv: 'Dizalica stupna', trajanje: 450, cijena: 9500.00, datumPokretanja: '2024-01-20T07:00:00', datumKraja: '2024-09-20T15:00:00', aktivan: true },
+    { sifra: 27, naziv: 'Škripac strojni', trajanje: 0, cijena: 550.00, datumPokretanja: '2024-03-01T08:00:00', datumKraja: '2024-03-01T16:00:00', aktivan: false },
+    { sifra: 28, naziv: 'Rezač asfalta', trajanje: 280, cijena: 11200.00, datumPokretanja: '2024-02-10T09:00:00', datumKraja: '2024-06-10T17:00:00', aktivan: true },
+    { sifra: 29, naziv: 'Polirka', trajanje: 75, cijena: 1300.00, datumPokretanja: '2024-03-12T10:00:00', datumKraja: '2024-04-12T10:00:00', aktivan: true },
+    { sifra: 30, naziv: 'Vibracijska ploča', trajanje: 190, cijena: 6700.00, datumPokretanja: '2024-02-25T08:00:00', datumKraja: '2024-05-25T16:00:00', aktivan: false }
 ]
