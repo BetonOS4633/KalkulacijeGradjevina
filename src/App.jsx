@@ -6,6 +6,8 @@ import { Route, Routes } from 'react-router-dom'
 import { RouteNames } from './constants'
 import Home from './pages/Home'
 import StrojPregled from './pages/strojevi/StrojPregled'
+import StrojNovi from './pages/strojevi/StrojNovi'
+
 
 
 function App() {
@@ -16,9 +18,8 @@ function App() {
     <Routes>
       <Route path={RouteNames.HOME} element={<Home />} />
       <Route path={RouteNames.STROJEVI} element={<StrojPregled />} />
+      <Route path={RouteNames.STROJEVI_NOVI} element={<StrojNovi />}/>
     </Routes>
-
-
     <hr />
     &copy; BetonOS
     </Container>

@@ -6,6 +6,17 @@ async function get() {
 }
 
 
+async function dodaj(stroj) {
+    if(strojevi.length>0){
+    stroj.sifra=strojevi[strojevi.length-1].sifra+1;
+    }else{
+        stroj.sifra=1
+    }
+
+    strojevi.push(stroj);
+}
+
 export default {
-    get
+    get,
+    dodaj
 }
