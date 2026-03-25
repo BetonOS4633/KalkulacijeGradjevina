@@ -23,6 +23,7 @@ export default function StrojNovi(){
             trajanje: parseInt(podaci.get('trajanje')),
             cijena: parseFloat(podaci.get('cijena')),
             datumPokretanja:new Date(podaci.get('datumPokretanja')).toISOString(),
+            datumKraja:new Date(podaci.get('datumKraja')).toISOString(),
             aktivan: podaci.get('aktivan')==='on'
         })
     }
@@ -53,9 +54,15 @@ export default function StrojNovi(){
             </Form.Group>
 
             <Form.Group controlId="datumPokretanja">
-                <Form.Label>Datum pokretanja smjera</Form.Label>
-                <Form.Control type="date" name="datumPokretanja" />
+                <Form.Label>Datum i vrijeme pokretanja stroja</Form.Label>
+                <Form.Control type="datetime-local" name="datumPokretanja" />
             </Form.Group>
+
+            <Form.Group controlId="datumKraja">
+                <Form.Label>Datum i vrijeme završetka rada stroja</Form.Label>
+                <Form.Control type="datetime-local" name="datumKraja" />
+            </Form.Group>
+
 
             <Form.Group controlId="aktivan">
                 <Form.Check label="Aktivan" name="aktivan"/>

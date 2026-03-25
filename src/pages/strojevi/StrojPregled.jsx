@@ -36,8 +36,8 @@ export default function StrojPregled() {
                     <th>Naziv</th>
                     <th>Trajanje</th>
                     <th>Cijena radnog sata u €</th>
-                    <th>Vrijeme početka</th>
-                    <th>Vrijeme završetka</th>
+                    <th>Datum i vrijeme početka</th>
+                    <th>Datum i vrijeme završetka</th>
                     <th>Aktiv</th>
                     <th>Akcija</th>
 
