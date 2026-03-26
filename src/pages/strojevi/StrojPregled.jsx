@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react"
 import StrojService from "../../services/strojevi/StrojService"
-import { Table } from "react-bootstrap"
+import { Button, Table } from "react-bootstrap"
 import { NumericFormat } from "react-number-format"
 import { GrValidate } from "react-icons/gr"
 import FormatDatum from "../../components/Formatdatum"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { RouteNames } from "../../constants"
 
 export default function StrojPregled() {
 
+    const navigate = useNavigate()
     const[strojevi, setStrojevi]=useState([])
+
     useEffect(()=>{
         ucitajStrojevi()
     },[])
@@ -76,7 +78,12 @@ export default function StrojPregled() {
                                 />
                             
                             </td>
-                        <td></td>
+                        <td>
+                            <Button onClick={()=>{navigate(`/strojevi/${stroj.sifra}`)}
+                                }>
+                                    Promjena
+                            </Button>
+                        </td>
                     </tr>
                 ))}
             </tbody>

@@ -7,7 +7,7 @@ import { RouteNames } from './constants'
 import Home from './pages/Home'
 import StrojPregled from './pages/strojevi/StrojPregled'
 import StrojNovi from './pages/strojevi/StrojNovi'
-
+import StrojPromjena from './pages/strojevi/StrojPromjena'
 
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
       <Route path={RouteNames.HOME} element={<Home />} />
       <Route path={RouteNames.STROJEVI} element={<StrojPregled />} />
       <Route path={RouteNames.STROJEVI_NOVI} element={<StrojNovi />}/>
+      <Route path={RouteNames.STROJEVI_PROMJENA} element={<StrojPromjena />}/>
     </Routes>
     <hr />
     &copy; BetonOS
