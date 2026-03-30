@@ -16,9 +16,9 @@ export default function StrojNovi(){
             
             const s = odgovor.data
             // po potrebi prilagođavam podatke
-            
-           /* s.datumPokretanja = s.datumPokretanja.substring(0,15)
-            s.datumPokretanja = s.datumPokretanja.substring(0,15)*/
+            console.log(s)
+            s.datumPokretanja = s.datumPokretanja.substring(0,19)
+            s.datumKraja = s.datumKraja.substring(0,19)
             setStroj(s)
 
             setAktivan(s.aktivan)
