@@ -21,12 +21,19 @@ export default function StrojPregled() {
         });
     }
 
+     async function brisanje(sifra) {
+        if (!confirm('Sigurno obrisati?')) return;
+        
+        await StrojService.obrisi(sifra);
+        ucitajStrojevi()
+    }
+
     
     return (
         <>
     <Link to={RouteNames.STROJEVI_NOVI} 
         className="btn btn-success w-100 mb-3 mt-3">
-        Dodavanje novog smjera
+        Dodavanje novog stroja
         
     </Link>
     
@@ -47,7 +54,7 @@ export default function StrojPregled() {
             </thead>
             <tbody>
                 {strojevi && strojevi.map((stroj)=>(
-                    <tr>
+                    <tr key={stroj.sifra}>
                         <td>{stroj.naziv}</td>
                         <td>{stroj.trajanje}</td>
                        
@@ -82,6 +89,11 @@ export default function StrojPregled() {
                             <Button onClick={()=>{navigate(`/strojevi/${stroj.sifra}`)}
                                 }>
                                     Promjena
+                            </Button>
+                            &nbsp;&nbsp;
+                            <Button variant="danger" onClick={()=>{brisanje(stroj.sifra)}
+                                }>
+                                    Obriši
                             </Button>
                         </td>
                     </tr>

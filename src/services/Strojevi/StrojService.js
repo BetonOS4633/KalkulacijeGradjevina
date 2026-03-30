@@ -30,15 +30,19 @@ function nadiIndex(sifra){
     return strojevi.findIndex(s => s.sifra === parseInt(sifra))
 }
 
+async function obrisi(sifra) {
+    const index = nadiIndex(sifra);
+    if (index > -1) {
+        strojevi.splice(index, 1);
+    }
+    return;
+}
 
 
-
-
-
-
-export default {
+export default{
     get,
-    dodaj, 
+    dodaj,
     getBySifra,
-    promjeni
+    promjeni,
+    obrisi
 }
