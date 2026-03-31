@@ -1,48 +1,38 @@
-import { strojevi } from "./StrojPodaci";
+import StrojServiceLocalStorage from "./StrojServiceLocalStorage";
+import StrojServiceMemorija from "./StrojServiceMemorija";
+import { DATA_SOURCE } from "../../constants";
 
-// 1/4 Read od CRUD-a - Create, Read, Update, Delete
-async function get() {
-    return{data:[...strojevi]}
-}
+let Servis = null;
 
-async function getBySifra(sifra) {
-   return {data: strojevi.find(s => s.sifra === parseInt(sifra))} 
-}
 
-// 2/4 Create CRUD
-async function dodaj(stroj) {
-    if(strojevi.length>0){
-    stroj.sifra=strojevi[strojevi.length-1].sifra+1;
-    }else{
-        stroj.sifra=1
-    }
-
-    strojevi.push(stroj);
-}
-
-// 3/4 Update od CRUD
-async function promjeni(sifra,stroj) {
-    const index = nadiIndex(sifra)
-    strojevi[index] = {...strojevi[index], ...stroj}
-}
-
-function nadiIndex(sifra){
-    return strojevi.findIndex(s => s.sifra === parseInt(sifra))
-}
-
-async function obrisi(sifra) {
-    const index = nadiIndex(sifra);
-    if (index > -1) {
-        strojevi.splice(index, 1);
-    }
-    return;
+switch (DATA_SOURCE) {
+    case 'memorija':
+        Servis = StrojServiceMemorija;
+        break;
+    case 'localStorage':
+        Servis = StrojServiceLocalStorage;
+        break;
+    default:
+        Servis = null;
 }
 
 
-export default{
-    get,
-    dodaj,
-    getBySifra,
-    promjeni,
-    obrisi
-}
+const PrazanServis = {
+    get: async () => ({ success: false, data: []}),
+    getBySifra: async (sifra) => ({ success: false, data: {} }),
+    dodaj: async (stroj) => { console.error("Stroj nije učitan"); },
+    promjeni: async (sifra, stroj) => { console.error("Stroj nije učitan"); },
+    obrisi: async (sifra) => { console.error("Stroj nije učitan"); }
+};
+
+// 3. Jedan jedini export na kraju
+// Ako Servis postoji, koristi njega, inače koristi PrazanServis
+const AktivniServis = Servis || PrazanServis;
+
+export default {
+    get: () => AktivniServis.get(),
+    getBySifra: (sifra) => AktivniServis.getBySifra(sifra),
+    dodaj: (stroj) => AktivniServis.dodaj(stroj),
+    promjeni: (sifra, stroj) => AktivniServis.promjeni(sifra, stroj),
+    obrisi: (sifra) => AktivniServis.obrisi(sifra)
+};

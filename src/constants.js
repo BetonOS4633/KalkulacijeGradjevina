@@ -7,3 +7,5 @@ export const RouteNames={
     STROJEVI_PROMJENA: '/strojevi/:sifra'
 }
 
+// memorija, localStorage, firebase
+export const DATA_SOURCE = 'localStorage';

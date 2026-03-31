@@ -9,19 +9,21 @@ import StrojPregled from './pages/strojevi/StrojPregled'
 import StrojNovi from './pages/strojevi/StrojNovi'
 import StrojPromjena from './pages/strojevi/StrojPromjena'
 
-
 function App() {
 
+
   return ( 
-    <Container>
-      <Izbornik></Izbornik>
-    <Routes>
-      <Route path={RouteNames.HOME} element={<Home />} />
-      <Route path={RouteNames.STROJEVI} element={<StrojPregled />} />
-      <Route path={RouteNames.STROJEVI_NOVI} element={<StrojNovi />}/>
-      <Route path={RouteNames.STROJEVI_PROMJENA} element={<StrojPromjena />}/>
-    </Routes>
-    <hr />
+    <Container style={ {backgroundColor: window.location.hostname === 'localhost' ? '#ffefea' : 'none'}}>
+      <Izbornik/>
+    <Container className='app'>
+      <Routes>
+        <Route path={RouteNames.HOME} element={<Home />} />
+        <Route path={RouteNames.STROJEVI} element={<StrojPregled />} />
+        <Route path={RouteNames.STROJEVI_NOVI} element={<StrojNovi />}/>
+        <Route path={RouteNames.STROJEVI_PROMJENA} element={<StrojPromjena />}/>
+      </Routes>
+      </Container>
+      <hr />
     &copy; BetonOS
     </Container>
   )
