@@ -1,4 +1,4 @@
-export const IME_APLIKACIJE='BetonOS'
+export const IME_APLIKACIJE='Beton OS'
 
 export const RouteNames={
     HOME:'/',
