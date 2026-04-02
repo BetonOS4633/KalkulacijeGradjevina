@@ -2,7 +2,9 @@ import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { IME_APLIKACIJE, RouteNames } from "../constants";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Izbornik() {
+ 
     const navigate = useNavigate();
 
 
@@ -21,7 +23,12 @@ export default function Izbornik() {
                             <NavDropdown.Item 
                             onClick={()=>navigate(RouteNames.STROJEVI)}
                             >Strojevi</NavDropdown.Item>
-                            
+
+                        < NavDropdown.Item
+                            onClick={()=>navigate(RouteNames.RADNICI)}
+                            >Radnici</NavDropdown.Item>
+                          
+                                                 
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
