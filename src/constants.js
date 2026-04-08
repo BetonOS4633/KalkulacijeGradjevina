@@ -11,6 +11,18 @@ export const RouteNames={
     RADNICI_NOVI:'/radnici/novi',
     RADNICI_PROMJENA: '/radnici/:sifra',
 
+    NALOZI:'/nalozi',
+    NALOZI_NOVI:'/nalozi/novi',
+    NALOZI_PROMJENA: '/nalozi/:sifra',
+
+    POSLOVI:'/poslovi',
+    POSLOVI_NOVI:'/poslovi/novi',
+    POSLOVI_PROMJENA: '/poslovi/:sifra',
+
+
+
+
+
 
 }
 

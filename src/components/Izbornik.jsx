@@ -24,12 +24,29 @@ export default function Izbornik() {
                             onClick={()=>navigate(RouteNames.STROJEVI)}
                             >Strojevi</NavDropdown.Item>
 
-                        < NavDropdown.Item
+                            < NavDropdown.Item
                             onClick={()=>navigate(RouteNames.RADNICI)}
                             >Radnici</NavDropdown.Item>
                           
-                                                 
+                            < NavDropdown.Item
+                            onClick={()=>navigate(RouteNames.NALOZI)}
+                            >Nalozi</NavDropdown.Item>
+                          
+
+                            < NavDropdown.Item
+                            onClick={()=>navigate(RouteNames.POSLOVI)}
+                            >Poslovi</NavDropdown.Item>
+                          
+
+
+
+
+
                         </NavDropdown>
+
+
+
+                        
                     </Nav>
                 </Navbar.Collapse>
             </Container>

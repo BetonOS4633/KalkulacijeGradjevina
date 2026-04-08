@@ -10,7 +10,8 @@ export default function Home() {
     return (
         <>
             <div style={{ textAlign: 'center' }}>
-                <img src={slika} />
+                <img src={slika} 
+                style={{width: '500px', height: 'auto'}} />
 
             </div>
             <p className="lead m-5 text-center">Dobrodošli na {IME_APLIKACIJE}</p>
