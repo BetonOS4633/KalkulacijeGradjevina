@@ -1,4 +1,4 @@
-export const poduzeca = [
+export const gradilista = [
     {
         sifra: 1,
         naziv: 'ljepotica',

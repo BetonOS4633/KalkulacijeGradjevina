@@ -26,31 +26,31 @@ async function getBySifra(sifra) {
 
 // 2/4 Create - dodaj novi
 async function dodaj(gradiliste) {
-    const gradiliste = dohvatiSveIzStorage();
+    const gradilista = dohvatiSveIzStorage();
     
-    if (gradiliste.length === 0) {
+    if (gradilista.length === 0) {
         gradiliste.sifra = 1;
     } else {
         // Pronalaženje najveće šifre da izbjegnemo duplikate
-        const maxSifra = Math.max(...gradiliste.map(g => g.sifra));
+        const maxSifra = Math.max(...gradilista.map(g => g.sifra));
         gradiliste.sifra = maxSifra + 1;
     }
     
-    gradiliste.push(gradiliste);
-    spremiUStorage(gradiliste);
+    gradilista.push(gradiliste);
+    spremiUStorage(gradilista);
     return { data: gradiliste };
 }
 
 // 3/4 Update - promjeni postojeći
 async function promjeni(sifra, gradiliste) {
-    const gradiliste = dohvatiSveIzStorage();
-    const index = gradiliste.findIndex(g => g.sifra === parseInt(sifra));
+    const gradilista = dohvatiSveIzStorage();
+    const index = gradilista.findIndex(g => g.sifra === parseInt(sifra));
     
     if (index !== -1) {
-        gradiliste[index] = { ...gradiliste[index], ...gradiliste };
-        spremiUStorage(gradiliste);
+        gradilista[index] = { ...gradilista[index], ...gradiliste };
+        spremiUStorage(gradilista);
     }
-    return { data: gradiliste[index] };
+    return { data: gradilista[index] };
 }
 
 // 4/4 Delete - obriši
