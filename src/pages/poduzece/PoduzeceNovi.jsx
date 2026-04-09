@@ -3,7 +3,7 @@ import { RouteNames } from "../../constants"
 import { Link, useNavigate } from "react-router-dom"
 import RadnikService from "../../services/radnici/RadnikService"
 
-export default function RadnikNovi(){
+export default function PoduzeceNovi(){
 
     const navigate = useNavigate()
 

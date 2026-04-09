@@ -4,7 +4,7 @@ import RadnikService from "../../services/radnici/RadnikService"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { RouteNames } from "../../constants"
 
-export default function RadnikPromjena(){
+export default function GradilistePromjena(){
 
     const navigate = useNavigate()
     const params = useParams()

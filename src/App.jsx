@@ -36,13 +36,13 @@ function App() {
         <Route path={RouteNames.RADNICI_NOVI} element={<RadnikNovi />} />
         <Route path={RouteNames.RADNICI_PROMJENA} element={<RadnikPromjena />} />
 
-        <Route path={RouteNames.NALOZI} element={<NalogPregled />} />
+        {/* <Route path={RouteNames.NALOZI} element={<NalogPregled />} />
         <Route path={RouteNames.NALOZI_NOVI} element={<NalogNovi />} />
-        <Route path={RouteNames.NALOZI_PROMJENA} element={<NalogPromjena />} />
+        <Route path={RouteNames.NALOZI_PROMJENA} element={<NalogPromjena />} /> */}
 
-        <Route path={RouteNames.POSLOVI} element={<PosaoPregled />} />
+        {/* <Route path={RouteNames.POSLOVI} element={<PosaoPregled />} />
         <Route path={RouteNames.POSLOVI_NOVI} element={<PosaoNovi />} />
-        <Route path={RouteNames.POSLOVI_PROMJENA} element={<PosaoPromjena />} />
+        <Route path={RouteNames.POSLOVI_PROMJENA} element={<PosaoPromjena />} /> */}
 
          
     
