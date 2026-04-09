@@ -1,4 +1,8 @@
 import { poduzeca } from "./services/poduzece/PoduzecePodaci";  
+import { radnici } from "./services/radnici/RadnikPodaci";
+import { strojevi } from "./services/strojevi/StrojPodaci";
+import { gradilista } from "./services/gradiliste/GradilistaPodaci";
+
 
 export const IME_APLIKACIJE='BetonOS'
 
@@ -29,4 +33,4 @@ export const RouteNames={
 }
 
 // memorija, localStorage, firebase
-export const DATA_SOURCE = 'localStorage';
+export const DATA_SOURCE = 'memorija';
