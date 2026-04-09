@@ -29,18 +29,18 @@ export default function Izbornik() {
                             >Radnici</NavDropdown.Item>
                           
                             < NavDropdown.Item
-                            onClick={()=>navigate(RouteNames.NALOZI)}
-                            >Nalozi</NavDropdown.Item>
+                            onClick={()=>navigate(RouteNames.PODUZECA)}
+                            >Poduzece</NavDropdown.Item>
                           
-
                             < NavDropdown.Item
-                            onClick={()=>navigate(RouteNames.POSLOVI)}
-                            >Poslovi</NavDropdown.Item>
-                          
+                            onClick={()=>navigate(RouteNames.GRADILISTE)}
+                            >Gradilište</NavDropdown.Item>
 
 
-
-
+                         {/* < NavDropdown.Item
+                            onClick={()=>navigate(RouteNames.NALOZI)}
+                            >Nalozi</NavDropdown.Item> */}
+                       
 
                         </NavDropdown>
 

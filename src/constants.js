@@ -1,3 +1,5 @@
+import { poduzeca } from "./services/poduzece/PoduzecePodaci";  
+
 export const IME_APLIKACIJE='BetonOS'
 
 export const RouteNames={
@@ -11,13 +13,13 @@ export const RouteNames={
     RADNICI_NOVI:'/radnici/novi',
     RADNICI_PROMJENA: '/radnici/:sifra',
 
-    NALOZI:'/nalozi',
-    NALOZI_NOVI:'/nalozi/novi',
-    NALOZI_PROMJENA: '/nalozi/:sifra',
+    GRADILISTE:'/gradiliste',
+    GRADILISTE_NOVI:'/gradiliste/novi',
+    GRADILISTE_PROMJENA: '/gradiliste/:sifra',
 
-    POSLOVI:'/poslovi',
-    POSLOVI_NOVI:'/poslovi/novi',
-    POSLOVI_PROMJENA: '/poslovi/:sifra',
+    PODUZECA:'/poduzece',
+    PODUZECA_NOVI:'/poduzece/novi',
+    PODUZECA_PROMJENA: '/poduzece/:sifra'
 
 
 
