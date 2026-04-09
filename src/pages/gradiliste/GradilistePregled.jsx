@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import RadnikService from "../../services/radnici/RadnikService"
+import GradilisteService from "../../services/gradiliste/GradilistaService"
 import { Button, Table } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { RouteNames } from "../../constants"
@@ -8,59 +8,60 @@ export default function GradilistePregled(){
 
     const navigate = useNavigate()
 
-    const [radnici, setRadnici] = useState([])
+    const [gradiliste, setGradiliste] = useState([])
 
     useEffect(()=>{
-        ucitajRadnike()
+        ucitajGradiliste()
     },[])
 
-    async function ucitajRadnike() {
-        await RadnikService.get().then((odgovor)=>{
+    async function ucitajGradiliste() {
+        await GradilisteService.get().then((odgovor)=>{
             if(!odgovor.success){
                 alert('Nije implementiran servis')
                 return
             }
-            setRadnici(odgovor.data)
+            setGradiliste(odgovor.data)
         })
     }
 
     async function brisanje(sifra) {
         if (!confirm('Sigurno obrisati?')) return;
-        await RadnikService.obrisi(sifra);
-        await RadnikService.get().then((odgovor)=>{
-            setRadnici(odgovor.data)
+        await GradilisteService.obrisi(sifra);
+        await GradilisteService.get().then((odgovor)=>{
+            setGradiliste(odgovor.data)
         })
     }
 
     return(
         <>
-        <Link to={RouteNames.RADNICI_NOVI}
+        <Link to={RouteNames.GRADILISTE_NOVI}
         className="btn btn-success w-100 my-3">
-            Dodavanje novog radnika
+            Dodavanje novog gradilista
         </Link>
         <Table striped bordered hover>
             <thead>
                 <tr>
-                    <th>Ime</th>
-                    <th>Prezime</th>
-                    <th>Email</th>
+                    <th>Redni broj</th>
+                    <th>Naziv</th>
+                    <th>Adresa</th>
+                    <th>Mjesto</th>
                     <th>OIB</th>
-                    <th>Akcija</th>
+                    
                 </tr>
             </thead>
             <tbody>
-                {radnici && radnici.map((radnik)=>(
-                    <tr key={radnik.sifra}>
-                        <td className="lead">{radnik.ime}</td>
-                        <td className="lead">{ucitajRadnik.prezime}</td>
-                        <td>{radnik.email}</td>
-                        <td>{radnik.oib}</td>
+                {gradiliste && gradiliste.map((gradiliste)=>(
+                    <tr key={gradiliste.sifra}>
+                        <td className="lead">{gradiliste.naziv}</td>
+                        <td className="lead">{gradiliste.adresa}</td>
+                        <td>{gradiliste.mjesto}</td>
+                        <td>{gradiliste.oib}</td>
                         <td>
-                            <Button onClick={()=>{navigate(`/radnik/${radnik.sifra}`)}}>
+                            <Button onClick={()=>{navigate(`/gradiliste/${gradiliste.sifra}`)}}>
                                 Promjeni
                             </Button>
                             &nbsp;&nbsp;
-                            <Button variant="danger" onClick={() => brisanje(radnik.sifra)}>
+                            <Button variant="danger" onClick={() => brisanje(gradiliste.sifra)}>
                                 Obriši
                             </Button>
                         </td>

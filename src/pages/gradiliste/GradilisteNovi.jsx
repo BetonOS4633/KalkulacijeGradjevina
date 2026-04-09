@@ -17,60 +17,60 @@ export default function GradilisteNovi(){
         e.preventDefault() // nemoj odraditi submit
         const podaci = new FormData(e.target)
 
-        // --- KONTROLA 1: Ime (Postojanje) ---
-        if (!podaci.get('ime') || podaci.get('ime').trim().length === 0) {
-            alert("Ime je obavezno i ne smije sadržavati samo razmake!");
-            return;
-        }
+        // // --- KONTROLA 1: Ime (Postojanje) ---
+        // if (!podaci.get('Naziv') || podaci.get('Naziv').trim().length === 0) {
+        //     alert("Naziv je obavezan i ne smije sadržavati samo razmake!");
+        //     return;
+        // }
 
-        // --- KONTROLA 2: Ime (Minimalna duljina) ---
-        if (podaci.get('ime').trim().length < 2) {
-            alert("Ime mora imati najmanje 2 znaka!");
-            return;
-        }
+        // // --- KONTROLA 2: Ime (Minimalna duljina) ---
+        // if (podaci.get('Naziv').trim().length < 2) {
+        //     alert("Naziv mora imati najmanje 2 znaka!");
+        //     return;
+        // }
 
-        // --- KONTROLA 3: Prezime (Postojanje) ---
-        if (!podaci.get('prezime') || podaci.get('prezime').trim().length === 0) {
-            alert("Prezime je obavezno i ne smije sadržavati samo razmake!");
-            return;
-        }
+        // // --- KONTROLA 3: Prezime (Postojanje) ---
+        // if (!podaci.get('adresa') || podaci.get('adresa').trim().length === 0) {
+        //     alert("Adresa je obavezna i ne smije sadržavati samo razmake!");
+        //     return;
+        // }
 
-        // --- KONTROLA 4: Prezime (Minimalna duljina) ---
-        if (podaci.get('prezime').trim().length < 2) {
-            alert("Prezime mora imati najmanje 2 znaka!");
-            return;
-        }
+        // // --- KONTROLA 4: Prezime (Minimalna duljina) ---
+        // if (podaci.get('prezime').trim().length < 2) {
+        //     alert("Prezime mora imati najmanje 2 znaka!");
+        //     return;
+        // }
 
-        // --- KONTROLA 5: Email (Postojanje) ---
-        if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
-            alert("Email je obavezan!");
-            return;
-        }
+        // // --- KONTROLA 5: Email (Postojanje) ---
+        // if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
+        //     alert("Email je obavezan!");
+        //     return;
+        // }
 
-        // --- KONTROLA 6: Email (Format) ---
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(podaci.get('email'))) {
-            alert("Email nije u ispravnom formatu!");
-            return;
-        }
+        // // --- KONTROLA 6: Email (Format) ---
+        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // if (!emailRegex.test(podaci.get('email'))) {
+        //     alert("Email nije u ispravnom formatu!");
+        //     return;
+        // }
 
-        // --- KONTROLA 7: OIB (Postojanje) ---
-        if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
-            alert("OIB je obavezan!");
-            return;
-        }
+        // // --- KONTROLA 7: OIB (Postojanje) ---
+        // if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
+        //     alert("OIB je obavezan!");
+        //     return;
+        // }
 
-        // --- KONTROLA 8: OIB (Duljina) ---
-        if (podaci.get('oib').trim().length !== 11) {
-            alert("OIB mora imati točno 11 znamenki!");
-            return;
-        }
+        // // --- KONTROLA 8: OIB (Duljina) ---
+        // if (podaci.get('oib').trim().length !== 11) {
+        //     alert("OIB mora imati točno 11 znamenki!");
+        //     return;
+        // }
 
-        // --- KONTROLA 9: OIB (Samo brojevi) ---
-        if (!/^\d+$/.test(podaci.get('oib'))) {
-            alert("OIB smije sadržavati samo brojeve!");
-            return;
-        }
+        // // --- KONTROLA 9: OIB (Samo brojevi) ---
+        // if (!/^\d+$/.test(podaci.get('oib'))) {
+        //     alert("OIB smije sadržavati samo brojeve!");
+        //     return;
+        // }
 
         dodaj({
             ime: podaci.get('ime'),
@@ -84,20 +84,21 @@ export default function GradilisteNovi(){
         <>
             <h3>Unos novog polaznika</h3>
             <Form onSubmit={odradiSubmit}>
-                <Form.Group controlId="ime">
-                    <Form.Label>Ime</Form.Label>
-                    <Form.Control type="text" name="ime" required />
+                <Form.Group controlId="naziv">
+                    <Form.Label>Naziv</Form.Label>
+                    <Form.Control type="text" name="naziv" required />
                 </Form.Group>
 
-                <Form.Group controlId="prezime">
-                    <Form.Label>Prezime</Form.Label>
-                    <Form.Control type="text" name="prezime" required />
+                <Form.Group controlId="adresa">
+                    <Form.Label>Adresa</Form.Label>
+                    <Form.Control type="text" name="adresa" required />
                 </Form.Group>
 
-                <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" required />
+                <Form.Group controlId="mjesto">
+                    <Form.Label>Mjesto</Form.Label>
+                    <Form.Control type="text" name="mjesto" required />
                 </Form.Group>
+
 
                 <Form.Group controlId="oib">
                     <Form.Label>OIB</Form.Label>
@@ -106,13 +107,13 @@ export default function GradilisteNovi(){
 
                 <Row className="mt-4">
                     <Col>
-                        <Link to={RouteNames.RADNICI} className="btn btn-danger">
+                        <Link to={RouteNames.GRADILISTE} className="btn btn-danger">
                             Odustani
                         </Link>
                     </Col>
                     <Col>
                         <Button type="submit" variant="success">
-                            Dodaj novog radnika
+                            Dodaj novo gradiliste
                         </Button>
                     </Col>
                 </Row>

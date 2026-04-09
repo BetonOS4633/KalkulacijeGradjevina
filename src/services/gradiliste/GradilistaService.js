@@ -1,5 +1,5 @@
-import RadnikServiceLocalStorage from "./RadnikServiceLocalStorage";
-import RadnikServiceMemorija from "./RadnikServiceMemorija";
+import GradilistaServiceLocalStorage from "./GradilistaServiceLocalStorage";
+import GradilistaServiceMemorija from "./GradilistaServiceMemorija";
 import { DATA_SOURCE } from "../../constants";
 
 let Servis = null;
@@ -7,10 +7,10 @@ let Servis = null;
 // 1. Odabir servisa
 switch (DATA_SOURCE) {
     case 'memorija':
-        Servis = RadnikServiceMemorija;
+        Servis = GradilistaServiceMemorija;
         break;
     case 'localStorage':
-        Servis = RadnikServiceLocalStorage;
+        Servis = GradilistaServiceLocalStorage;
         break;
     default:
         Servis = null;
@@ -32,7 +32,7 @@ const AktivniServis = Servis || PrazanServis;
 export default {
     get: () => AktivniServis.get(),
     getBySifra: (sifra) => AktivniServis.getBySifra(sifra),
-    dodaj: (radnik) => AktivniServis.dodaj(radnik),
-    promjeni: (sifra, radnik) => AktivniServis.promjeni(sifra, radnik),
+    dodaj: (gradiliste) => AktivniServis.dodaj(gradiliste),
+    promjeni: (sifra, gradiliste) => AktivniServis.promjeni(sifra, gradiliste),
     obrisi: (sifra) => AktivniServis.obrisi(sifra)
 };

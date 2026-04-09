@@ -16,6 +16,12 @@ import RadnikNovi from './pages/radnici/RadnikNovi'
 import RadnikPromjena from './pages/radnici/RadnikPromjena'
 
 
+import GradilistePregled from './pages/gradiliste/GradilistePregled'
+import GradilisteNovi from './pages/gradiliste/GradilisteNovi'
+import GradilistePromjena from './pages/gradiliste/GradilistePromjena'
+
+
+
 
 
 function App() {
@@ -35,6 +41,13 @@ function App() {
         <Route path={RouteNames.RADNICI} element={<RadnikPregled />} />
         <Route path={RouteNames.RADNICI_NOVI} element={<RadnikNovi />} />
         <Route path={RouteNames.RADNICI_PROMJENA} element={<RadnikPromjena />} />
+
+        <Route path={RouteNames.GRADILISTE} element={<GradilistePregled />} />
+        <Route path={RouteNames.GRADILISTE_NOVI} element={<GradilisteNovi />} />
+        <Route path={RouteNames.GRADILISTE_PROMJENA} element={<GradilistePromjena />} />
+
+
+
 
         {/* <Route path={RouteNames.NALOZI} element={<NalogPregled />} />
         <Route path={RouteNames.NALOZI_NOVI} element={<NalogNovi />} />
