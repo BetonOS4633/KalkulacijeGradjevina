@@ -1,15 +1,15 @@
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { RouteNames } from "../../constants"
 import { Link, useNavigate } from "react-router-dom"
-import RadnikService from "../../services/radnici/RadnikService"
+import GradilisteService from "../../services/gradiliste/GradilistaService"
 
 export default function GradilisteNovi(){
 
     const navigate = useNavigate()
 
-    async function dodaj(radnik){
-        await RadnikService.dodaj(radnik).then(()=>{
-            navigate(RouteNames.RADNICI)
+    async function dodaj(gradiliste){
+        await GradilisteService.dodaj(gradiliste).then(()=>{
+            navigate(RouteNames.GRADILISTE)
         })
     }
 
@@ -82,7 +82,7 @@ export default function GradilisteNovi(){
 
     return (
         <>
-            <h3>Unos novog polaznika</h3>
+            <h3>Unos novog gradilišta</h3>
             <Form onSubmit={odradiSubmit}>
                 <Form.Group controlId="naziv">
                     <Form.Label>Naziv</Form.Label>

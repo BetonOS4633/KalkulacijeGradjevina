@@ -41,18 +41,19 @@ export default function RadnikPregled(){
         <Table striped bordered hover>
             <thead>
                 <tr>
+                    
                     <th>Ime</th>
                     <th>Prezime</th>
                     <th>Email</th>
                     <th>OIB</th>
-                    <th>Akcija</th>
+                    
                 </tr>
             </thead>
             <tbody>
                 {radnici && radnici.map((radnik)=>(
                     <tr key={radnik.sifra}>
                         <td className="lead">{radnik.ime}</td>
-                        <td className="lead">{ucitajRadnik.prezime}</td>
+                        <td className="lead">{radnik.prezime}</td>
                         <td>{radnik.email}</td>
                         <td>{radnik.oib}</td>
                         <td>

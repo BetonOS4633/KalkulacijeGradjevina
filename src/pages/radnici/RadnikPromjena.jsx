@@ -104,25 +104,25 @@ export default function RadnikPromjena(){
                 <Form.Group controlId="ime">
                     <Form.Label>Ime</Form.Label>
                     <Form.Control type="text" name="ime" required 
-                    defaultValue={polaznik.ime}/>
+                    defaultValue={radnik.ime}/>
                 </Form.Group>
 
                 <Form.Group controlId="prezime">
                     <Form.Label>Prezime</Form.Label>
                     <Form.Control type="text" name="prezime" required 
-                    defaultValue={polaznik.prezime}/>
+                    defaultValue={radnik.prezime}/>
                 </Form.Group>
 
                 <Form.Group controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" name="email" required 
-                    defaultValue={polaznik.email}/>
+                    defaultValue={radnik.email}/>
                 </Form.Group>
 
                 <Form.Group controlId="oib">
                     <Form.Label>OIB</Form.Label>
                     <Form.Control type="text" name="oib" required maxLength={11}
-                    defaultValue={polaznik.oib}/>
+                    defaultValue={radnik.oib}/>
                 </Form.Group>
 
                 <Row className="mt-4">
