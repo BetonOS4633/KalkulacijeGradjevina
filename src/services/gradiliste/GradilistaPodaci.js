@@ -21,21 +21,21 @@ export const gradilista = [
         oib: '34567890123'
     },
     {
-        sifra: 3,
+        sifra: 4,
         naziv: 'zgrada 2',
         adresa: 'Another Address 789',
         mjesto: 'Rijeka',
         oib: '34567890123'
     },
     {
-        sifra: 4,
+        sifra: 5,
         naziv: 'dvodomka',
         adresa: 'Yet Another Address 101',
         mjesto: 'Zagreb',
         oib: '45678901234'
     },
     {
-        sifra: 5,   
+        sifra: 6,   
         naziv: 'Tomislav Tomić',
         adresa: 'Yet Another Address 101',
         mjesto: 'Zagreb',

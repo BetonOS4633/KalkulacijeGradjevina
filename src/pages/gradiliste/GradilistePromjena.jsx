@@ -99,7 +99,7 @@ export default function GradilistePromjena(){
 
     return(
          <>
-            <h3>Promjena gradilista</h3>
+            <h3>Promjena gradilišta</h3>
             <Form onSubmit={odradiSubmit}>
                 <Form.Group controlId="naziv">
                     <Form.Label>Naziv</Form.Label>
