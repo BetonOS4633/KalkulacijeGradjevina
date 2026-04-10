@@ -73,9 +73,9 @@ export default function GradilisteNovi(){
         // }
 
         dodaj({
-            ime: podaci.get('ime'),
-            prezime: podaci.get('prezime'),
-            email: podaci.get('email'),
+            naziv: podaci.get('naziv'),
+            adresa: podaci.get('adresa'),
+            mjesto: podaci.get('mjesto'),
             oib: podaci.get('oib')
         })
     }

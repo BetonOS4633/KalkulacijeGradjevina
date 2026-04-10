@@ -57,7 +57,7 @@ export default function RadnikPregled(){
                         <td>{radnik.email}</td>
                         <td>{radnik.oib}</td>
                         <td>
-                            <Button onClick={()=>{navigate(`/radnik/${radnik.sifra}`)}}>
+                            <Button onClick={()=>{navigate(`/radnici/${radnik.sifra}`)}}>
                                 Promjeni
                             </Button>
                             &nbsp;&nbsp;

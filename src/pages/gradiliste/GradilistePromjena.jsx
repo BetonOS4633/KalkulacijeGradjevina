@@ -90,7 +90,7 @@ export default function GradilistePromjena(){
         // }
 
         promjeni({
-            naziv: podaci.get('ime'),
+            naziv: podaci.get('naziv'),
             adresa: podaci.get('adresa'),
             mjesto: podaci.get('mjesto'),
             oib: podaci.get('oib')
@@ -127,7 +127,7 @@ export default function GradilistePromjena(){
 
                 <Row className="mt-4">
                     <Col>
-                        <Link to={RouteNames.GradilistePromjena} className="btn btn-danger">
+                        <Link to={RouteNames.GRADILISTE} className="btn btn-danger">
                             Odustani
                         </Link>
                     </Col>

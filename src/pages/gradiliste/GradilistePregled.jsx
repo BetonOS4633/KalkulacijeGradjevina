@@ -41,12 +41,11 @@ export default function GradilistePregled(){
         <Table striped bordered hover>
             <thead>
                 <tr>
-                    <th>Redni broj</th>
                     <th>Naziv</th>
                     <th>Adresa</th>
                     <th>Mjesto</th>
                     <th>OIB</th>
-                    
+                    <th>Akcija</th>
                 </tr>
             </thead>
             <tbody>
