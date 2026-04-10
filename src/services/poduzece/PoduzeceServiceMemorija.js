@@ -1,4 +1,4 @@
-import { poduzeca } from "./RadnikPodaci";
+import { poduzeca } from "./PoduzecePodaci";
 
 
 // 1/4 Read od CRUD

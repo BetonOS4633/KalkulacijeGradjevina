@@ -21,6 +21,9 @@ import GradilisteNovi from './pages/gradiliste/GradilisteNovi'
 import GradilistePromjena from './pages/gradiliste/GradilistePromjena'
 
 
+import PoduzecePregled from './pages/poduzece/PoduzecePregled'
+import PoduzeceNovi from './pages/poduzece/PoduzeceNovi'
+import PoduzecePromjena from './pages/poduzece/PoduzecePromjena'
 
 
 
@@ -45,6 +48,10 @@ function App() {
         <Route path={RouteNames.GRADILISTE} element={<GradilistePregled />} />
         <Route path={RouteNames.GRADILISTE_NOVI} element={<GradilisteNovi />} />
         <Route path={RouteNames.GRADILISTE_PROMJENA} element={<GradilistePromjena />} />
+
+       <Route path={RouteNames.PODUZECE} element={<PoduzecePregled />} />
+       <Route path={RouteNames.PODUZECE_NOVI} element={<PoduzeceNovi />} />
+       <Route path={RouteNames.PODUZECE_PROMJENA} element={<PoduzecePromjena />} />
 
 
 

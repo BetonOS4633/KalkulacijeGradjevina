@@ -9,7 +9,7 @@ export const IME_APLIKACIJE='BetonOS'
 export const RouteNames={
     HOME:'/',
     
-    STROJEVI:'/strojevi',// ovoje ruta, a ne link
+    STROJEVI:'/strojevi',// ovo je ruta, a ne link
     STROJEVI_NOVI:'/strojevi/novi',
     STROJEVI_PROMJENA: '/strojevi/:sifra',
 
@@ -21,9 +21,9 @@ export const RouteNames={
     GRADILISTE_NOVI:'/gradiliste/novi',
     GRADILISTE_PROMJENA: '/gradiliste/:sifra',
 
-    PODUZECA:'/poduzece',
-    PODUZECA_NOVI:'/poduzece/novi',
-    PODUZECA_PROMJENA: '/poduzece/:sifra'
+    PODUZECE:'/poduzece',
+    PODUZECE_NOVI:'/poduzece/novi',
+    PODUZECE_PROMJENA: '/poduzece/:sifra'
 
 
 

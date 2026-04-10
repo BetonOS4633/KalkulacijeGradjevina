@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import RadnikService from "../../services/radnici/RadnikService"
+import poduzeceService from "../../services/poduzece/PoduzeceService"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { RouteNames } from "../../constants"
 
@@ -8,24 +8,24 @@ export default function PoduzecePromjena(){
 
     const navigate = useNavigate()
     const params = useParams()
-    const [radnik, setRadnik] = useState({})
+    const [poduzece, setPoduzece] = useState({})
 
     useEffect(()=>{
-        ucitajRadnika()
+        ucitajPoduzece()
     },[])
 
-    async function ucitajRadnika() {
-        await RadnikService.getBySifra(params.sifra).then((odgovor)=>{
+    async function ucitajPoduzece() {
+        await poduzeceService.getBySifra(params.sifra).then((odgovor)=>{
             if(!odgovor.success){
                 alert('Nije implementiran servis')
                 return
             }
-            setRadnik(odgovor.data)
+            setPoduzece(odgovor.data)
         })
     }
 
-    async function promjeni(radnik) {
-        await RadnikService.promjeni(params.sifra,radnik).then(()=>{
+    async function promjeni(poduzece) {
+        await poduzeceService.promjeni(params.sifra,poduzece).then(()=>{
             navigate(RouteNames.RADNICI)
         })
     }
