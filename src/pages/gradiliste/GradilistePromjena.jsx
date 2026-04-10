@@ -104,30 +104,30 @@ export default function GradilistePromjena(){
                 <Form.Group controlId="naziv">
                     <Form.Label>Naziv</Form.Label>
                     <Form.Control type="text" name="naziv" required 
-                    defaultValue={polaznik.ime}/>
+                    defaultValue={gradiliste.naziv}/>
                 </Form.Group>
 
                 <Form.Group controlId="adresa">
                     <Form.Label>Adresa</Form.Label>
                     <Form.Control type="text" name="adresa" required 
-                    defaultValue={polaznik.adresa}/>
+                    defaultValue={gradiliste.adresa}/>
                 </Form.Group>
 
                 <Form.Group controlId="mjesto">
                     <Form.Label>Mjesto</Form.Label>
                     <Form.Control type="text" name="mjesto" required 
-                    defaultValue={polaznik.mjesto}/>
+                    defaultValue={gradiliste.mjesto}/>
                 </Form.Group>
 
                 <Form.Group controlId="oib">
                     <Form.Label>OIB</Form.Label>
                     <Form.Control type="text" name="oib" required maxLength={11}
-                    defaultValue={polaznik.oib}/>
+                    defaultValue={gradiliste.oib}/>
                 </Form.Group>
 
                 <Row className="mt-4">
                     <Col>
-                        <Link to={RouteNames.RADNICI} className="btn btn-danger">
+                        <Link to={RouteNames.GRADILISTEPROMJENA} className="btn btn-danger">
                             Odustani
                         </Link>
                     </Col>
