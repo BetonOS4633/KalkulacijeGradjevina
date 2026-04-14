@@ -17,13 +17,13 @@ export default function PoduzeceNovi(){
         e.preventDefault() // nemoj odraditi submit
         const podaci = new FormData(e.target)
 
-          // --- KONTROLA 1: Ime (Postojanje) ---
-          if (!podaci.get('naziv') || podaci.get('naziv').trim().length === 0) {
-              alert("Naziv je obavezan i ne smije sadržavati samo razmake!");
-              return;
-          }
+          // --- KONTROLA 1: Naziv (Postojanje) ---
+           if (!podaci.get('naziv') || podaci.get('naziv').trim().length === 0) {
+               alert("Naziv je obavezan i ne smije sadržavati samo razmake!");
+               return;
+           }
 
-        // --- KONTROLA 2: Ime (Minimalna duljina) ---
+        // --- KONTROLA 2: Naziv (Minimalna duljina) ---
          if (podaci.get('naziv').trim().length < 2) {
              alert("Naziv mora imati najmanje 2 znaka!");
              return;
@@ -73,8 +73,8 @@ export default function PoduzeceNovi(){
          }
 
         dodaj({
-            naziv: podaci.get('ime'),
-            adresa: podaci.get('prezime'),
+            naziv: podaci.get('naziv'),
+            adresa: podaci.get('adresa'),
             mjesto: podaci.get('mjesto'),
             email: podaci.get('email'),
             telefon: podaci.get('telefon'),
@@ -86,9 +86,9 @@ export default function PoduzeceNovi(){
         <>
             <h3>Unos novog poduzeća</h3>
             <Form onSubmit={odradiSubmit}>
-                <Form.Group controlId="ime">
+                <Form.Group controlId="naziv">
                     <Form.Label>Naziv</Form.Label>
-                    <Form.Control type="text" name="ime" required />
+                    <Form.Control type="text" name="naziv" required />
                 </Form.Group>
 
                 <Form.Group controlId="adresa">
@@ -103,7 +103,7 @@ export default function PoduzeceNovi(){
 
                 <Form.Group controlId="email">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" required />
+                    <Form.Control type="text" name="email" required />
                 </Form.Group>
 
                 <Form.Group controlId="telefon">
