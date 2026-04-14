@@ -26,7 +26,7 @@ export default function PoduzecePromjena(){
 
     async function promjeni(poduzece) {
         await poduzeceService.promjeni(params.sifra,poduzece).then(()=>{
-            navigate(RouteNames.RADNICI)
+            navigate(RouteNames.PODUZECE)
         })
     }
 
@@ -34,29 +34,29 @@ export default function PoduzecePromjena(){
         e.preventDefault()
         const podaci = new FormData(e.target)
 
-        // --- KONTROLA 1: Ime (Postojanje) ---
-        if (!podaci.get('ime') || podaci.get('ime').trim().length === 0) {
-            alert("Ime je obavezno i ne smije sadržavati samo razmake!");
-            return;
-        }
+         // --- KONTROLA 1: Ime (Postojanje) ---
+         if (!podaci.get('naziv') || podaci.get('naziv').trim().length === 0) {
+             alert("Naziv je obavezan i ne smije sadržavati samo razmake!");
+             return;
+         }
 
-        // --- KONTROLA 2: Ime (Minimalna duljina) ---
-        if (podaci.get('ime').trim().length < 2) {
-            alert("Ime mora imati najmanje 2 znaka!");
-            return;
-        }
+         // --- KONTROLA 2: Ime (Minimalna duljina) ---
+         if (podaci.get('naziv').trim().length < 2) {
+             alert("Naziv mora imati najmanje 2 znaka!");
+             return;
+         }
 
-        // --- KONTROLA 3: Prezime (Postojanje) ---
-        if (!podaci.get('prezime') || podaci.get('prezime').trim().length === 0) {
-            alert("Prezime je obavezno i ne smije sadržavati samo razmake!");
-            return;
-        }
+         // --- KONTROLA 3: Adresa (Postojanje) ---
+         if (!podaci.get('adresa') || podaci.get('adresa').trim().length === 0) {
+             alert("Adresa je obavezna i ne smije sadržavati samo razmake!");
+             return;
+         }
 
-        // --- KONTROLA 4: Prezime (Minimalna duljina) ---
-        if (podaci.get('prezime').trim().length < 2) {
-            alert("Prezime mora imati najmanje 2 znaka!");
-            return;
-        }
+         // --- KONTROLA 4: Adresa (Minimalna duljina) ---
+         if (podaci.get('adresa').trim().length < 2) {
+             alert("Adresa mora imati najmanje 2 znaka!");
+             return;
+         }
 
         // --- KONTROLA 5: Email (Postojanje) ---
         if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
@@ -90,50 +90,64 @@ export default function PoduzecePromjena(){
         }
 
         promjeni({
-            ime: podaci.get('ime'),
-            prezime: podaci.get('prezime'),
+            naziv: podaci.get('naziv'),
+            adresa: podaci.get('adresa'),
+            mjesto: podaci.get('mjesto'),
             email: podaci.get('email'),
+            telefon: podaci.get('telefon'),
             oib: podaci.get('oib')
         })
     }
 
     return(
          <>
-            <h3>Promjena polaznika</h3>
+            <h3>Promjena poduzeća</h3>
             <Form onSubmit={odradiSubmit}>
-                <Form.Group controlId="ime">
-                    <Form.Label>Ime</Form.Label>
-                    <Form.Control type="text" name="ime" required 
-                    defaultValue={polaznik.ime}/>
+                <Form.Group controlId="naziv">
+                    <Form.Label>Naziv</Form.Label>
+                    <Form.Control type="text" name="naziv" required 
+                    defaultValue={poduzece.naziv}/>
                 </Form.Group>
 
-                <Form.Group controlId="prezime">
-                    <Form.Label>Prezime</Form.Label>
-                    <Form.Control type="text" name="prezime" required 
-                    defaultValue={polaznik.prezime}/>
+                <Form.Group controlId="adresa">
+                    <Form.Label>Adresa</Form.Label>
+                    <Form.Control type="text" name="adresa" required 
+                    defaultValue={poduzece.adresa}/>
+                </Form.Group>
+
+                <Form.Group controlId="mjesto">
+                    <Form.Label>Mjesto</Form.Label>
+                    <Form.Control type="text" name="mjesto" required 
+                    defaultValue={poduzece.mjesto}/>
                 </Form.Group>
 
                 <Form.Group controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" name="email" required 
-                    defaultValue={polaznik.email}/>
+                    defaultValue={poduzece.email}/>
                 </Form.Group>
 
                 <Form.Group controlId="oib">
                     <Form.Label>OIB</Form.Label>
                     <Form.Control type="text" name="oib" required maxLength={11}
-                    defaultValue={polaznik.oib}/>
+                    defaultValue={poduzece.oib}/>
+                </Form.Group>
+
+                <Form.Group controlId="telefon">
+                    <Form.Label>Telefon</Form.Label>
+                    <Form.Control type="text" name="telefon" required 
+                    defaultValue={poduzece.telefon}/>
                 </Form.Group>
 
                 <Row className="mt-4">
                     <Col>
-                        <Link to={RouteNames.RADNICI} className="btn btn-danger">
+                        <Link to={RouteNames.PODUZECE} className="btn btn-danger">
                             Odustani
                         </Link>
                     </Col>
                     <Col>
                         <Button type="submit" variant="success">
-                            Promjeni radnika
+                            Promjeni poduzeće
                         </Button>
                     </Col>
                 </Row>

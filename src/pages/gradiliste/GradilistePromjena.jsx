@@ -34,60 +34,74 @@ export default function GradilistePromjena(){
         e.preventDefault()
         const podaci = new FormData(e.target)
 
-        // // --- KONTROLA 1: Ime (Postojanje) ---
-        // if (!podaci.get('ime') || podaci.get('ime').trim().length === 0) {
-        //     alert("Ime je obavezno i ne smije sadržavati samo razmake!");
-        //     return;
-        // }
+         // --- KONTROLA 1: Naziv (Postojanje) ---
+         if (!podaci.get('naziv') || podaci.get('naziv').trim().length === 0) {
+             alert("Naziv je obavezan i ne smije sadržavati samo razmake!");
+             return;
+         }
 
-        // // --- KONTROLA 2: Ime (Minimalna duljina) ---
-        // if (podaci.get('ime').trim().length < 2) {
-        //     alert("Ime mora imati najmanje 2 znaka!");
-        //     return;
-        // }
+         // --- KONTROLA 2: Naziv (Minimalna duljina) ---
+         if (podaci.get('naziv').trim().length < 2) {
+             alert("Naziv mora imati najmanje 2 znaka!");
+             return;
+         }
 
-        // // --- KONTROLA 3: Prezime (Postojanje) ---
-        // if (!podaci.get('prezime') || podaci.get('prezime').trim().length === 0) {
-        //     alert("Prezime je obavezno i ne smije sadržavati samo razmake!");
-        //     return;
-        // }
+         // --- KONTROLA 3: Adresa (Postojanje) ---
+         if (!podaci.get('adresa') || podaci.get('adresa').trim().length === 0) {
+             alert("Adresa je obavezna i ne smije sadržavati samo razmake!");
+             return;
+         }
 
-        // // --- KONTROLA 4: Prezime (Minimalna duljina) ---
-        // if (podaci.get('prezime').trim().length < 2) {
-        //     alert("Prezime mora imati najmanje 2 znaka!");
-        //     return;
-        // }
+         // --- KONTROLA 4: Adresa (Minimalna duljina) ---
+         if (podaci.get('adresa').trim().length < 2) {
+             alert("Adresa mora imati najmanje 2 znaka!");
+             return;
+         }
+         // --- KONTROLA 5: Mjesto (Postojanje) ---
+         if (!podaci.get('mjesto') || podaci.get('mjesto').trim().length === 0) {
+             alert("Mjesto je obavezno i ne smije sadržavati samo razmake!");
+             return;
+         }
 
-        // // --- KONTROLA 5: Email (Postojanje) ---
-        // if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
-        //     alert("Email je obavezan!");
-        //     return;
-        // }
+         // --- KONTROLA 6: Mjesto (Minimalna duljina) ---
+         if (podaci.get('mjesto').trim().length < 2) {
+             alert("Mjesto mora imati najmanje 2 znaka!");
+             return;
+         }
 
-        // // --- KONTROLA 6: Email (Format) ---
-        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        // if (!emailRegex.test(podaci.get('email'))) {
-        //     alert("Email nije u ispravnom formatu!");
-        //     return;
-        // }
 
-        // // --- KONTROLA 7: OIB (Postojanje) ---
-        // if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
-        //     alert("OIB je obavezan!");
-        //     return;
-        // }
 
-        // // --- KONTROLA 8: OIB (Duljina) ---
-        // if (podaci.get('oib').trim().length !== 11) {
-        //     alert("OIB mora imati točno 11 znamenki!");
-        //     return;
-        // }
 
-        // // --- KONTROLA 9: OIB (Samo brojevi) ---
-        // if (!/^\d+$/.test(podaci.get('oib'))) {
-        //     alert("OIB smije sadržavati samo brojeve!");
-        //     return;
-        // }
+        //  // --- KONTROLA 5: Email (Postojanje) ---
+        //  if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
+        //      alert("Email je obavezan!");
+        //      return;
+        //  }
+
+        //  // --- KONTROLA 6: Email (Format) ---
+        //  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        //  if (!emailRegex.test(podaci.get('email'))) {
+        //      alert("Email nije u ispravnom formatu!");
+        //      return;
+        //  }
+
+         // --- KONTROLA 7: OIB (Postojanje) ---
+         if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
+             alert("OIB je obavezan!");
+             return;
+         }
+
+         // --- KONTROLA 8: OIB (Duljina) ---
+         if (podaci.get('oib').trim().length !== 11) {
+             alert("OIB mora imati točno 11 znamenki!");
+             return;
+         }
+
+         // --- KONTROLA 9: OIB (Samo brojevi) ---
+         if (!/^\d+$/.test(podaci.get('oib'))) {
+             alert("OIB smije sadržavati samo brojeve!");
+             return;
+         }
 
         promjeni({
             naziv: podaci.get('naziv'),

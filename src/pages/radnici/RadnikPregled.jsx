@@ -46,6 +46,7 @@ export default function RadnikPregled(){
                     <th>Prezime</th>
                     <th>Email</th>
                     <th>OIB</th>
+                    <th>Akcije</th>
                     
                 </tr>
             </thead>
