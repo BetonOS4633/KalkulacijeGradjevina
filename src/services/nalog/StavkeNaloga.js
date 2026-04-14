@@ -1,7 +1,7 @@
 export const stavkeNaloga = [
     {
         
-        nalog:y 1,
+        nalog: 1,
         sifraRadnika: 1,
         sifraStroja: 1,
         sifraGradilista: 1,
