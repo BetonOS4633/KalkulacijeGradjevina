@@ -1,8 +1,3 @@
-import { poduzeca } from "./services/poduzece/PoduzecePodaci";  
-import { radnici } from "./services/radnici/RadnikPodaci";
-import { strojevi } from "./services/strojevi/StrojPodaci";
-import { gradilista } from "./services/gradiliste/GradilistaPodaci";
-import { nalog } from "./services/nalog/NalogPodaci";
 
 export const IME_APLIKACIJE='BetonOS'
 

@@ -3,11 +3,11 @@ import { nalozi } from "./NalogPodaci";
 
 // 1/4 Read od CRUD-a - Create, Read, Update, Delete
 async function get() {
-    return{data:[...nalozi]}
+    return{success: true, data:[...nalozi]}
 }
 
 async function getBySifra(sifra) {
-   return {data: nalozi.find(s => s.sifra === parseInt(sifra))} 
+   return {success: true, data: nalozi.find(s => s.sifra === parseInt(sifra))} 
 }
 
 // 2/4 Create CRUD

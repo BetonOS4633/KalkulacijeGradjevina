@@ -42,9 +42,9 @@ export default function Izbornik() {
                             >Gradilište</NavDropdown.Item>
 
 
-                         {/* < NavDropdown.Item
-                            onClick={()=>navigate(RouteNames.NALOZI)}
-                            >Nalozi</NavDropdown.Item> */}
+                          <NavDropdown.Item
+                            onClick={()=>navigate(RouteNames.NALOG)}
+                            >Nalozi</NavDropdown.Item> 
                        
 
                         </NavDropdown>

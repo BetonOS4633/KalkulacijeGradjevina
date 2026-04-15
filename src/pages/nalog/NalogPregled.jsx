@@ -3,6 +3,8 @@ import NalogService from "../../services/nalog/NalogService"
 import { Button, Table } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { RouteNames } from "../../constants"
+import FormatDatum from "../../components/Formatdatum"
+import { NumericFormat } from "react-number-format"
 
 export default function NalogPregled() {
 
@@ -48,17 +50,18 @@ export default function NalogPregled() {
                         <th>datum pocetka</th>
                         <th>datum kraja</th>
                         <th>Ukupni iznos</th>
-
+                        <th>Akcija</th>
                     </tr>
                 </thead>
                 <tbody>
                     {nalozi && nalozi.map((nalog) => (
                         <tr key={nalog.sifra}>
-                            <td>nalog.sifraPoduzeca</td>
-                            <td>nalog.sifraGradilista</td>
+                            <td>{nalog.sifra}</td>
+                            <td>{nalog.sifraPoduzeca}</td>
+                            <td>{nalog.sifraGradilista}</td>
 
                             <td>
-                                <FormatDatum datum={nalog.datumPokretanja} />
+                                <FormatDatum datum={nalog.datumIzdavanja} />
                             </td>
 
                             <td>

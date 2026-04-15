@@ -1,6 +1,6 @@
-export const nalog = [
+export const nalozi = [
     {
-        redni: 1,
+        sifra: 1,
         sifraPoduzeca: 1,
         sifraGradilista: 1,
         datumIzdavanja: '2023-01-01',
@@ -8,7 +8,7 @@ export const nalog = [
         ukupniIznos: 1000
     },  
     {           
-        redni: 2,
+        sifra: 2,
         sifraPoduzeca: 2,
         sifraGradilista: 2,
         datumIzdavanja: '2023-02-01',
