@@ -2,7 +2,7 @@ import { poduzeca } from "./services/poduzece/PoduzecePodaci";
 import { radnici } from "./services/radnici/RadnikPodaci";
 import { strojevi } from "./services/strojevi/StrojPodaci";
 import { gradilista } from "./services/gradiliste/GradilistaPodaci";
-
+import { nalog } from "./services/nalog/NalogPodaci";
 
 export const IME_APLIKACIJE='BetonOS'
 
@@ -23,8 +23,11 @@ export const RouteNames={
 
     PODUZECE:'/poduzece',
     PODUZECE_NOVI:'/poduzece/novi',
-    PODUZECE_PROMJENA: '/poduzece/:sifra'
+    PODUZECE_PROMJENA: '/poduzece/:sifra',
 
+    NALOG:'/nalog',
+    NALOG_NOVI:'/nalog/novi',
+    NALOG_PROMJENA: '/nalog/:sifra'
     
 
 

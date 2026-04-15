@@ -25,6 +25,10 @@ import PoduzecePregled from './pages/poduzece/PoduzecePregled'
 import PoduzeceNovi from './pages/poduzece/PoduzeceNovi'
 import PoduzecePromjena from './pages/poduzece/PoduzecePromjena'
 
+import NalogPregled from './pages/nalog/NalogPregled'
+import NalogNovi from './pages/nalog/NalogNovi'
+import NalogPromjena from './pages/nalog/NalogPromjena'
+
 
 
 function App() {
@@ -53,16 +57,11 @@ function App() {
        <Route path={RouteNames.PODUZECE_NOVI} element={<PoduzeceNovi />} />
        <Route path={RouteNames.PODUZECE_PROMJENA} element={<PoduzecePromjena />} />
 
+       <Route path={RouteNames.NALOG} element={<NalogPregled />} />
+       <Route path={RouteNames.NALOG_NOVI} element={<NalogNovi />} />
+       <Route path={RouteNames.NALOG_PROMJENA} element={<NalogPromjena />} />
 
 
-
-        {/* <Route path={RouteNames.NALOZI} element={<NalogPregled />} />
-        <Route path={RouteNames.NALOZI_NOVI} element={<NalogNovi />} />
-        <Route path={RouteNames.NALOZI_PROMJENA} element={<NalogPromjena />} /> */}
-
-        {/* <Route path={RouteNames.POSLOVI} element={<PosaoPregled />} />
-        <Route path={RouteNames.POSLOVI_NOVI} element={<PosaoNovi />} />
-        <Route path={RouteNames.POSLOVI_PROMJENA} element={<PosaoPromjena />} /> */}
 
          
     
