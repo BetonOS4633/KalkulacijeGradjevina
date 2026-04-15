@@ -1,37 +1,20 @@
-import { useEffect, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
-import RadnikService from "../../services/radnici/RadnikService"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { RouteNames } from "../../constants"
+import { Link, useNavigate } from "react-router-dom"
+import RadnikService from "../../services/radnici/RadnikService"
 
-export default function RadnikPromjena(){
+export default function NalogNovi(){
 
     const navigate = useNavigate()
-    const params = useParams()
-    const [radnik, setRadnik] = useState({})
 
-    useEffect(()=>{
-        ucitajRadnika()
-    },[])
-
-    async function ucitajRadnika() {
-        await RadnikService.getBySifra(params.sifra).then((odgovor)=>{
-            if(!odgovor.success){
-                alert('Nije implementiran servis')
-                return
-            }
-            setRadnik(odgovor.data)
-        })
-    }
-
-    async function promjeni(radnik) {
-        await RadnikService.promjeni(params.sifra,radnik).then(()=>{
+    async function dodaj(radnik){
+        await RadnikService.dodaj(radnik).then(()=>{
             navigate(RouteNames.RADNICI)
         })
     }
 
-    function odradiSubmit(e){
-        e.preventDefault()
+    function odradiSubmit(e){ // e je event
+        e.preventDefault() // nemoj odraditi submit
         const podaci = new FormData(e.target)
 
         // --- KONTROLA 1: Ime (Postojanje) ---
@@ -89,7 +72,7 @@ export default function RadnikPromjena(){
             return;
         }
 
-        promjeni({
+        dodaj({
             ime: podaci.get('ime'),
             prezime: podaci.get('prezime'),
             email: podaci.get('email'),
@@ -97,32 +80,28 @@ export default function RadnikPromjena(){
         })
     }
 
-    return(
-         <>
-            <h3>Promjena polaznika</h3>
+    return (
+        <>
+            <h3>Unos novog polaznika</h3>
             <Form onSubmit={odradiSubmit}>
                 <Form.Group controlId="ime">
                     <Form.Label>Ime</Form.Label>
-                    <Form.Control type="text" name="ime" required 
-                    defaultValue={radnik.ime}/>
+                    <Form.Control type="text" name="ime" required />
                 </Form.Group>
 
                 <Form.Group controlId="prezime">
                     <Form.Label>Prezime</Form.Label>
-                    <Form.Control type="text" name="prezime" required 
-                    defaultValue={radnik.prezime}/>
+                    <Form.Control type="text" name="prezime" required />
                 </Form.Group>
 
                 <Form.Group controlId="email">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" required 
-                    defaultValue={radnik.email}/>
+                    <Form.Control type="email" name="email" required />
                 </Form.Group>
 
                 <Form.Group controlId="oib">
                     <Form.Label>OIB</Form.Label>
-                    <Form.Control type="text" name="oib" required maxLength={11}
-                    defaultValue={radnik.oib}/>
+                    <Form.Control type="text" name="oib" required maxLength={11} />
                 </Form.Group>
 
                 <Row className="mt-4">
@@ -133,7 +112,7 @@ export default function RadnikPromjena(){
                     </Col>
                     <Col>
                         <Button type="submit" variant="success">
-                            Promjeni radnika
+                            Dodaj novog radnika
                         </Button>
                     </Col>
                 </Row>

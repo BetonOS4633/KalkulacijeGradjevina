@@ -4,7 +4,7 @@ import { Button, Table } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { RouteNames } from "../../constants"
 
-export default function RadnikPregled(){
+export default function NalogPregled(){
 
     const navigate = useNavigate()
 

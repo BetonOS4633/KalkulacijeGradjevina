@@ -18,13 +18,13 @@ export default function GradilisteNovi(){
         const podaci = new FormData(e.target)
 
          // --- KONTROLA 1: Ime (Postojanje) ---
-         if (!podaci.get('Naziv') || podaci.get('Naziv').trim().length === 0) {
+         if (!podaci.get('naziv') || podaci.get('naziv').trim().length === 0) {
              alert("Naziv je obavezan i ne smije sadržavati samo razmake!");
              return;
          }
 
          // --- KONTROLA 2: Ime (Minimalna duljina) ---
-         if (podaci.get('Naziv').trim().length < 2) {
+         if (podaci.get('naziv').trim().length < 2) {
              alert("Naziv mora imati najmanje 2 znaka!");
              return;
          }
