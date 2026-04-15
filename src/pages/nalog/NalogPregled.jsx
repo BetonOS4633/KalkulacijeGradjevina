@@ -1,75 +1,94 @@
 import { useEffect, useState } from "react"
-import RadnikService from "../../services/radnici/RadnikService"
+import NalogService from "../../services/nalog/NalogService"
 import { Button, Table } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { RouteNames } from "../../constants"
 
-export default function NalogPregled(){
+export default function NalogPregled() {
 
     const navigate = useNavigate()
 
-    const [radnici, setRadnici] = useState([])
+    const [nalozi, setNalozi] = useState([])
 
-    useEffect(()=>{
-        ucitajRadnike()
-    },[])
+    useEffect(() => {
+        ucitajNaloge()
+    }, [])
 
-    async function ucitajRadnike() {
-        await RadnikService.get().then((odgovor)=>{
-            if(!odgovor.success){
+    async function ucitajNaloge() {
+        await NalogService.get().then((odgovor) => {
+            if (!odgovor.success) {
                 alert('Nije implementiran servis')
                 return
             }
-            setRadnici(odgovor.data)
+            setNalozi(odgovor.data)
         })
     }
 
     async function brisanje(sifra) {
         if (!confirm('Sigurno obrisati?')) return;
-        await RadnikService.obrisi(sifra);
-        await RadnikService.get().then((odgovor)=>{
-            setRadnici(odgovor.data)
+        await NalogService.obrisi(sifra);
+        await NalogService.get().then((odgovor) => {
+            setNalozi(odgovor.data)
         })
     }
 
-    return(
+    return (
         <>
-        <Link to={RouteNames.RADNICI_NOVI}
-        className="btn btn-success w-100 my-3">
-            Dodavanje novog radnika
-        </Link>
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    
-                    <th>Ime</th>
-                    <th>Prezime</th>
-                    <th>Email</th>
-                    <th>OIB</th>
-                    <th>Akcije</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                {radnici && radnici.map((radnik)=>(
-                    <tr key={radnik.sifra}>
-                        <td className="lead">{radnik.ime}</td>
-                        <td className="lead">{radnik.prezime}</td>
-                        <td>{radnik.email}</td>
-                        <td>{radnik.oib}</td>
-                        <td>
-                            <Button onClick={()=>{navigate(`/radnici/${radnik.sifra}`)}}>
-                                Promjeni
-                            </Button>
-                            &nbsp;&nbsp;
-                            <Button variant="danger" onClick={() => brisanje(radnik.sifra)}>
-                                Obriši
-                            </Button>
-                        </td>
+            <Link to={RouteNames.NALOG_NOVI}
+                className="btn btn-success w-100 my-3">
+                Dodavanje novog naloga
+            </Link>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+
+                        <th>Nalog broj</th>
+                        <th>Poduzece</th>
+                        <th>Gradiliste</th>
+                        <th>datum pocetka</th>
+                        <th>datum kraja</th>
+                        <th>Ukupni iznos</th>
+
                     </tr>
-                ))}
-            </tbody>
-        </Table>
+                </thead>
+                <tbody>
+                    {nalozi && nalozi.map((nalog) => (
+                        <tr key={nalog.sifra}>
+                            <td>nalog.sifraPoduzeca</td>
+                            <td>nalog.sifraGradilista</td>
+
+                            <td>
+                                <FormatDatum datum={nalog.datumPokretanja} />
+                            </td>
+
+                            <td>
+                                <FormatDatum datum={nalog.datumZavrsetka} />
+                            </td>
+
+                            <td><NumericFormat
+                                value={nalog.ukupniIznos}
+                                displayType={'text'}
+                                thousandSeparator='.'
+                                decimalSeparator=','
+                                suffix={'€'}
+                                decimalScale={2}
+                                fixedDecimalScale />
+                            </td>
+
+
+                            <td>
+                                <Button onClick={() => { navigate(`/nalog/${nalog.sifra}`) }}>
+                                    Promjeni
+                                </Button>
+                                &nbsp;&nbsp;
+                                <Button variant="danger" onClick={() => brisanje(nalog.sifra)}>
+                                    Obriši
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
         </>
     )
 }
