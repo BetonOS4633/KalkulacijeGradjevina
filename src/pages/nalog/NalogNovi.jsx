@@ -1,7 +1,7 @@
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { RouteNames } from "../../constants"
 import { Link, useNavigate } from "react-router-dom"
-import RadnikService from "../../services/radnici/RadnikService"
+import NalogService from "../../services/nalog/NalogService"
 import { useEffect, useState } from "react"
 import PoduzeceService from "../../services/poduzece/PoduzeceService"
 import GradilistaService from "../../services/gradiliste/GradilistaService"
@@ -40,9 +40,9 @@ export default function NalogNovi() {
     }
 
 
-    async function dodaj(radnik) {
-        await RadnikService.dodaj(radnik).then(() => {
-            navigate(RouteNames.RADNICI)
+    async function dodaj(nalog) {
+        await NalogService.dodaj(nalog).then(() => {
+            navigate(RouteNames.NALOZI)
         })
     }
 
@@ -50,72 +50,74 @@ export default function NalogNovi() {
         e.preventDefault() // nemoj odraditi submit
         const podaci = new FormData(e.target)
 
-        // --- KONTROLA 1: Ime (Postojanje) ---
-        if (!podaci.get('ime') || podaci.get('ime').trim().length === 0) {
-            alert("Ime je obavezno i ne smije sadržavati samo razmake!");
-            return;
-        }
+        // // --- KONTROLA 1: Ime (Postojanje) ---
+        // if (!podaci.get('ime') || podaci.get('ime').trim().length === 0) {
+        //     alert("Ime je obavezno i ne smije sadržavati samo razmake!");
+        //     return;
+        // }
 
-        // --- KONTROLA 2: Ime (Minimalna duljina) ---
-        if (podaci.get('ime').trim().length < 2) {
-            alert("Ime mora imati najmanje 2 znaka!");
-            return;
-        }
+        // // --- KONTROLA 2: Ime (Minimalna duljina) ---
+        // if (podaci.get('ime').trim().length < 2) {
+        //     alert("Ime mora imati najmanje 2 znaka!");
+        //     return;
+        // }
 
-        // --- KONTROLA 3: Prezime (Postojanje) ---
-        if (!podaci.get('prezime') || podaci.get('prezime').trim().length === 0) {
-            alert("Prezime je obavezno i ne smije sadržavati samo razmake!");
-            return;
-        }
+        // // --- KONTROLA 3: Prezime (Postojanje) ---
+        // if (!podaci.get('prezime') || podaci.get('prezime').trim().length === 0) {
+        //     alert("Prezime je obavezno i ne smije sadržavati samo razmake!");
+        //     return;
+        // }
 
-        // --- KONTROLA 4: Prezime (Minimalna duljina) ---
-        if (podaci.get('prezime').trim().length < 2) {
-            alert("Prezime mora imati najmanje 2 znaka!");
-            return;
-        }
+        // // --- KONTROLA 4: Prezime (Minimalna duljina) ---
+        // if (podaci.get('prezime').trim().length < 2) {
+        //     alert("Prezime mora imati najmanje 2 znaka!");
+        //     return;
+        // }
 
-        // --- KONTROLA 5: Email (Postojanje) ---
-        if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
-            alert("Email je obavezan!");
-            return;
-        }
+        // // --- KONTROLA 5: Email (Postojanje) ---
+        // if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
+        //     alert("Email je obavezan!");
+        //     return;
+        // }
 
-        // --- KONTROLA 6: Email (Format) ---
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(podaci.get('email'))) {
-            alert("Email nije u ispravnom formatu!");
-            return;
-        }
+        // // --- KONTROLA 6: Email (Format) ---
+        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // if (!emailRegex.test(podaci.get('email'))) {
+        //     alert("Email nije u ispravnom formatu!");
+        //     return;
+        // }
 
-        // --- KONTROLA 7: OIB (Postojanje) ---
-        if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
-            alert("OIB je obavezan!");
-            return;
-        }
+        // // --- KONTROLA 7: OIB (Postojanje) ---
+        // if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
+        //     alert("OIB je obavezan!");
+        //     return;
+        // }
 
-        // --- KONTROLA 8: OIB (Duljina) ---
-        if (podaci.get('oib').trim().length !== 11) {
-            alert("OIB mora imati točno 11 znamenki!");
-            return;
-        }
+        // // --- KONTROLA 8: OIB (Duljina) ---
+        // if (podaci.get('oib').trim().length !== 11) {
+        //     alert("OIB mora imati točno 11 znamenki!");
+        //     return;
+        // }
 
-        // --- KONTROLA 9: OIB (Samo brojevi) ---
-        if (!/^\d+$/.test(podaci.get('oib'))) {
-            alert("OIB smije sadržavati samo brojeve!");
-            return;
-        }
+        // // --- KONTROLA 9: OIB (Samo brojevi) ---
+        // if (!/^\d+$/.test(podaci.get('oib'))) {
+        //     alert("OIB smije sadržavati samo brojeve!");
+        //     return;
+        // }
 
-        dodaj({
-            ime: podaci.get('ime'),
-            prezime: podaci.get('prezime'),
-            email: podaci.get('email'),
-            oib: podaci.get('oib')
+        dodaj({sifra:podaci.get('sifra'),
+            sifraPoduzece: podaci.get('sifraPoduzeca'),
+            sifraGradilista: podaci.get('sifraGradilista'),
+            datumIzdavanja: podaci.get('datumIzdavanja'),
+            datumZavrsetka: podaci.get('datumZavrsetka'),
+            ukupniIznos: podaci.get('ukupniIznos'),
+            
         })
     }
-
+            
     return (
         <>
-            <h3>Unos novog polaznika</h3>
+            <h3>Unos novog naloga</h3>
             <Form onSubmit={odradiSubmit}>
                 <Form.Group controlId="poduzece" className="mb-3">
                     <Form.Label className="fw-bold">Poduzeće</Form.Label>
@@ -129,20 +131,35 @@ export default function NalogNovi() {
                     </Form.Select>
                 </Form.Group>
 
-                <Form.Group controlId="prezime">
-                    <Form.Label>Prezime</Form.Label>
-                    <Form.Control type="text" name="prezime" required />
+                    <Form.Group controlId="gradiliste" className="mb-3">
+                    <Form.Label className="fw-bold">Gradilište</Form.Label>
+                    <Form.Select name="gradiliste" required>
+                        <option value="">Odaberite gradilište</option>
+                        {gradilista && gradilista.map((gradiliste) => (
+                            <option key={gradiliste.sifra} value={gradiliste.sifra}>
+                                {gradiliste.naziv}
+                            </option>
+                        ))}
+                    </Form.Select>
                 </Form.Group>
 
-                <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" required />
+
+
+
+                <Form.Group controlId="datumIzdavanja" className="mb-3">
+                    <Form.Label className="fw-bold">Datum izdavanja</Form.Label>
+                    <Form.Control type="date" name="datumIzdavanja" required />
+                </Form.Group>
+                <Form.Group controlId="datumZavrsetka" className="mb-3">
+                    <Form.Label className="fw-bold">Datum završetka</Form.Label>
+                    <Form.Control type="date" name="datumZavrsetka" required />
+                </Form.Group>
+                <Form.Group controlId="ukupniIznos" className="mb-3">
+                    <Form.Label className="fw-bold">Ukupni iznos</Form.Label>
+                    <Form.Control type="number" name="ukupniIznos" required min="0" step="0.01" />
                 </Form.Group>
 
-                <Form.Group controlId="oib">
-                    <Form.Label>OIB</Form.Label>
-                    <Form.Control type="text" name="oib" required maxLength={11} />
-                </Form.Group>
+
 
                 <Row className="mt-4">
                     <Col>
@@ -152,7 +169,7 @@ export default function NalogNovi() {
                     </Col>
                     <Col>
                         <Button type="submit" variant="success">
-                            Dodaj novog radnika
+                            Dodaj novi nalog
                         </Button>
                     </Col>
                 </Row>
