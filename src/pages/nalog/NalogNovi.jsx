@@ -42,7 +42,7 @@ export default function NalogNovi() {
 
     async function dodaj(nalog) {
         await NalogService.dodaj(nalog).then(() => {
-            navigate(RouteNames.NALOZI)
+            navigate(RouteNames.NALOG)
         })
     }
 
