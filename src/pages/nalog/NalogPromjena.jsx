@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import RadnikService from "../../services/radnici/RadnikService"
+import NalogService from "../../services/nalog/NalogService"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { RouteNames } from "../../constants"
 
@@ -8,25 +8,25 @@ export default function NalogPromjena(){
 
     const navigate = useNavigate()
     const params = useParams()
-    const [radnik, setRadnik] = useState({})
+    const [nalozi, setNalog] = useState({})
 
     useEffect(()=>{
-        ucitajRadnika()
+        ucitajNalog()
     },[])
 
-    async function ucitajRadnika() {
-        await RadnikService.getBySifra(params.sifra).then((odgovor)=>{
+    async function ucitajNalog() {
+        await NalogService.getBySifra(params.sifra).then((odgovor)=>{
             if(!odgovor.success){
                 alert('Nije implementiran servis')
                 return
             }
-            setRadnik(odgovor.data)
+            setNalog(odgovor.data)
         })
     }
 
-    async function promjeni(radnik) {
-        await RadnikService.promjeni(params.sifra,radnik).then(()=>{
-            navigate(RouteNames.RADNICI)
+    async function promjeni(nalog) {
+        await NalogService.promjeni(params.sifra,nalog).then(()=>{
+            navigate(RouteNames.NALOG)
         })
     }
 
@@ -34,66 +34,71 @@ export default function NalogPromjena(){
         e.preventDefault()
         const podaci = new FormData(e.target)
 
-        // --- KONTROLA 1: Ime (Postojanje) ---
-        if (!podaci.get('ime') || podaci.get('ime').trim().length === 0) {
-            alert("Ime je obavezno i ne smije sadržavati samo razmake!");
-            return;
-        }
+        // // --- KONTROLA 1: Ime (Postojanje) ---
+        // if (!podaci.get('sifraPoduzeca') || podaci.get('sifraPoduzeca.trim().length === 0) {
+        //     alert("Ime je obavezno i ne smije sadržavati samo razmake!");
+        //     return;
+        // }
 
-        // --- KONTROLA 2: Ime (Minimalna duljina) ---
-        if (podaci.get('ime').trim().length < 2) {
-            alert("Ime mora imati najmanje 2 znaka!");
-            return;
-        }
+        // // --- KONTROLA 2: Ime (Minimalna duljina) ---
+        // if (podaci.get('sifraPoduzeca').trim().length < 2) {
+        //     alert("Sifra poduzeca mora imati najmanje 2 znaka!");
+        //     return;
+        // }
 
-        // --- KONTROLA 3: Prezime (Postojanje) ---
-        if (!podaci.get('prezime') || podaci.get('prezime').trim().length === 0) {
-            alert("Prezime je obavezno i ne smije sadržavati samo razmake!");
-            return;
-        }
+        // // --- KONTROLA 3: Prezime (Postojanje) ---
+        // if (!podaci.get('sifraGradilista') || podaci.get('sifraGradilista').trim().length === 0) {
+        //     alert("Gradiliste je obavezno i ne smije sadržavati samo razmake!");
+        //     return;
+        // }
 
-        // --- KONTROLA 4: Prezime (Minimalna duljina) ---
-        if (podaci.get('prezime').trim().length < 2) {
-            alert("Prezime mora imati najmanje 2 znaka!");
-            return;
-        }
+        // // --- KONTROLA 4: Prezime (Minimalna duljina) ---
+        // if (podaci.get('sifraGradilista').trim().length < 2) {
+        //     alert("Gradiliste mora imati najmanje 2 znaka!");
+        //     return;
+        // }
 
-        // --- KONTROLA 5: Email (Postojanje) ---
-        if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
-            alert("Email je obavezan!");
-            return;
-        }
+        // // --- KONTROLA 5: Email (Postojanje) ---
+        // if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
+        //     alert("Email je obavezan!");
+        //     return;
+        // }
 
-        // --- KONTROLA 6: Email (Format) ---
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(podaci.get('email'))) {
-            alert("Email nije u ispravnom formatu!");
-            return;
-        }
+        // // --- KONTROLA 6: Email (Format) ---
+        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // if (!emailRegex.test(podaci.get('email'))) {
+        //     alert("Email nije u ispravnom formatu!");
+        //     return;
+        // }
 
-        // --- KONTROLA 7: OIB (Postojanje) ---
-        if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
-            alert("OIB je obavezan!");
-            return;
-        }
+        // // // --- KONTROLA 7: OIB (Postojanje) ---
+        // // if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
+        // //     alert("OIB je obavezan!");
+        // //     return;
+        // // }
 
-        // --- KONTROLA 8: OIB (Duljina) ---
-        if (podaci.get('oib').trim().length !== 11) {
-            alert("OIB mora imati točno 11 znamenki!");
-            return;
-        }
+        // // --- KONTROLA 8: OIB (Duljina) ---
+        // if (podaci.get('oib').trim().length !== 11) {
+        //     alert("OIB mora imati točno 11 znamenki!");
+        //     return;
+        // }
 
-        // --- KONTROLA 9: OIB (Samo brojevi) ---
-        if (!/^\d+$/.test(podaci.get('oib'))) {
-            alert("OIB smije sadržavati samo brojeve!");
-            return;
-        }
+        // // --- KONTROLA 9: OIB (Samo brojevi) ---
+        // if (!/^\d+$/.test(podaci.get('oib'))) {
+        //     alert("OIB smije sadržavati samo brojeve!");
+        //     return;
+        // }
 
         promjeni({
-            ime: podaci.get('ime'),
-            prezime: podaci.get('prezime'),
-            email: podaci.get('email'),
-            oib: podaci.get('oib')
+            sifraPoduzece: podaci.get('sifraPoduzeca'),
+            sifraGradilista: podaci.get('sifraGradilista'),
+            datumIzdavanja: podaci.get('datumIzdavanja'),
+            datumZavrsetka: podaci.get('datumZavrsetka'),
+            ukupniIznos: podaci.get('ukupniIznos'),
+            
+            
+            // email: podaci.get('email'),
+            // oib: podaci.get('oib')
         })
     }
 
@@ -101,18 +106,43 @@ export default function NalogPromjena(){
          <>
             <h3>Promjena polaznika</h3>
             <Form onSubmit={odradiSubmit}>
-                <Form.Group controlId="ime">
-                    <Form.Label>Ime</Form.Label>
-                    <Form.Control type="text" name="ime" required 
-                    defaultValue={radnik.ime}/>
+                <Form.Group controlId="sifraPoduzeca">
+                    <Form.Label>Poduzeće</Form.Label>
+                    <Form.Control type="text" name="sifraPoduzeca" required 
+                    defaultValue={nalozi.sifraPoduzeca}/>
                 </Form.Group>
 
-                <Form.Group controlId="prezime">
-                    <Form.Label>Prezime</Form.Label>
-                    <Form.Control type="text" name="prezime" required 
-                    defaultValue={radnik.prezime}/>
+                <Form.Group controlId="sifraGradilista">
+                    <Form.Label>Gradilište</Form.Label>
+                    <Form.Control type="text" name="sifraGradilista" required 
+                    defaultValue={nalozi.sifraGradilista}/>
                 </Form.Group>
 
+
+<Form.Group controlId="datumPokretanja">
+                <Form.Label>Datum i vrijeme početka rada </Form.Label>
+                <Form.Control type="datetime-local" name="datumPokretanja"
+                defaultValue={nalozi.datumIzdavanja} />
+            </Form.Group>
+
+            <Form.Group controlId="datumKraja">
+                <Form.Label>Datum i vrijeme završetka rada</Form.Label>
+                <Form.Control type="datetime-local" name="datumKraja" 
+                defaultValue={nalozi.datumZavrsetka} />
+            </Form.Group>
+
+
+
+
+
+
+
+ <Form.Group controlId="cijena">
+                <Form.Label>Cijena</Form.Label>
+                <Form.Control type="number" name="cijena" step={0.01}
+                defaultValue={nalozi.ukupniIznos}/>
+            </Form.Group>
+{/* 
                 <Form.Group controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" name="email" required 
@@ -123,17 +153,17 @@ export default function NalogPromjena(){
                     <Form.Label>OIB</Form.Label>
                     <Form.Control type="text" name="oib" required maxLength={11}
                     defaultValue={radnik.oib}/>
-                </Form.Group>
+                </Form.Group> */}
 
                 <Row className="mt-4">
                     <Col>
-                        <Link to={RouteNames.RADNICI} className="btn btn-danger">
+                        <Link to={RouteNames.NALOG} className="btn btn-danger">
                             Odustani
                         </Link>
                     </Col>
                     <Col>
                         <Button type="submit" variant="success">
-                            Promjeni radnika
+                            Promjeni nalog
                         </Button>
                     </Col>
                 </Row>

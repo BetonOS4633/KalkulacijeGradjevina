@@ -47,7 +47,7 @@ export const nalozi = [
         datumZavrsetka: '2023-06-30',
         ukupniIznos: 6000
     },     {
-        redni: 7,
+        sifra: 7,
         sifraPoduzeca: 7,
         sifraGradilista: 7,
         datumIzdavanja: '2023-07-01',
@@ -55,7 +55,7 @@ export const nalozi = [
         ukupniIznos: 7000
     },
     {
-        redni: 8,
+        sifra: 8,
         sifraPoduzeca: 8,
         sifraGradilista: 8,
         datumIzdavanja: '2023-08-01',

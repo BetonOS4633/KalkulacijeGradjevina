@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import NalogService from "../../services/nalog/NalogService"
+import PoduzeceService from "../../services/poduzece/PoduzeceService"
 import { Button, Table } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { RouteNames } from "../../constants"
@@ -10,9 +11,11 @@ export default function NalogPregled() {
 
     const navigate = useNavigate()
 
+    const [poduzeca, setPoduzeca] = useState([])
     const [nalozi, setNalozi] = useState([])
 
     useEffect(() => {
+        ucitajPoduzeca()
         ucitajNaloge()
     }, [])
 
@@ -26,12 +29,28 @@ export default function NalogPregled() {
         })
     }
 
+    async function ucitajPoduzeca() {
+        await PoduzeceService.get().then((odgovor) => {
+            if (!odgovor.success) {
+                alert('Nije implementiran servis')
+                return
+            }
+            setPoduzeca(odgovor.data)
+        })
+    }
+
+
     async function brisanje(sifra) {
         if (!confirm('Sigurno obrisati?')) return;
         await NalogService.obrisi(sifra);
         await NalogService.get().then((odgovor) => {
             setNalozi(odgovor.data)
         })
+    }
+
+    function dohvatiPoduzeca(sifraPoduzeca) {
+        const poduzece = poduzeca.find(p => p.sifra === sifraPoduzeca)
+        return poduzece ? poduzece.naziv : 'N/A'
     }
 
     return (
@@ -56,8 +75,8 @@ export default function NalogPregled() {
                 <tbody>
                     {nalozi && nalozi.map((nalog) => (
                         <tr key={nalog.sifra}>
-                            <td>{nalog.sifra}</td>
-                            <td>{nalog.sifraPoduzeca}</td>
+                            <td className ='lead'>{nalog.sifra}</td>
+                            <td>{dohvatiPoduzeca(nalog.sifraPoduzeca)}</td>
                             <td>{nalog.sifraGradilista}</td>
 
                             <td>
@@ -86,6 +105,9 @@ export default function NalogPregled() {
                                 &nbsp;&nbsp;
                                 <Button variant="danger" onClick={() => brisanje(nalog.sifra)}>
                                     Obriši
+                                </Button>
+                                <Button onClick={() => { navigate(`/nalog/${nalog.sifra}`) }}>
+                                    Pregled naloga
                                 </Button>
                             </td>
                         </tr>

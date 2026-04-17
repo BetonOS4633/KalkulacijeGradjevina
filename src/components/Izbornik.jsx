@@ -20,7 +20,7 @@ export default function Izbornik() {
                         >Početna</Nav.Link>
                         
                         <Nav.Link 
-                        onClick={()=>navigate(RouteNames.NALOZI)}
+                        onClick={()=>navigate(RouteNames.NALOG)}
                         >Unos naloga</Nav.Link>
 
 
@@ -42,10 +42,10 @@ export default function Izbornik() {
                             >Gradilište</NavDropdown.Item>
 
 
-                          <NavDropdown.Item
+                          {/* <NavDropdown.Item
                             onClick={()=>navigate(RouteNames.NALOG)}
                             >Nalozi</NavDropdown.Item> 
-                       
+                        */}
 
                         </NavDropdown>
 
