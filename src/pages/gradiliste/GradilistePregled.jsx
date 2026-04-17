@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import GradilisteService from "../../services/gradiliste/GradilistaService"
+import GradilistaService from "../../services/gradiliste/GradilistaService"
 import { Button, Table } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { RouteNames } from "../../constants"
@@ -15,7 +15,7 @@ export default function GradilistePregled(){
     },[])
 
     async function ucitajGradiliste() {
-        await GradilisteService.get().then((odgovor)=>{
+        await GradilistaService.get().then((odgovor)=>{
             if(!odgovor.success){
                 alert('Nije implementiran servis')
                 return

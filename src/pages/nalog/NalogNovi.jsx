@@ -2,18 +2,51 @@ import { Button, Col, Form, Row } from "react-bootstrap"
 import { RouteNames } from "../../constants"
 import { Link, useNavigate } from "react-router-dom"
 import RadnikService from "../../services/radnici/RadnikService"
+import { useEffect, useState } from "react"
+import PoduzeceService from "../../services/poduzece/PoduzeceService"
+import GradilistaService from "../../services/gradiliste/GradilistaService"
 
-export default function NalogNovi(){
+export default function NalogNovi() {
 
     const navigate = useNavigate()
+    const [poduzeca, setPoduzeca] = useState([])
+    const [gradilista, setGradilista] = useState([])
 
-    async function dodaj(radnik){
-        await RadnikService.dodaj(radnik).then(()=>{
+    useEffect(() => {
+        ucitajGradiliste()
+        ucitajPoduzeca()
+    }, [])
+
+
+
+    async function ucitajPoduzeca() {
+        await PoduzeceService.get().then((odgovor) => {
+            if (!odgovor.success) {
+                alert('Nije implementiran servis')
+                return
+            }
+            setPoduzeca(odgovor.data)
+        })
+    }
+
+    async function ucitajGradiliste() {
+        await GradilistaService.get().then((odgovor) => {
+            if (!odgovor.success) {
+                alert('Nije implementiran servis')
+                return
+            }
+            setGradilista(odgovor.data)
+        })
+    }
+
+
+    async function dodaj(radnik) {
+        await RadnikService.dodaj(radnik).then(() => {
             navigate(RouteNames.RADNICI)
         })
     }
 
-    function odradiSubmit(e){ // e je event
+    function odradiSubmit(e) { // e je event
         e.preventDefault() // nemoj odraditi submit
         const podaci = new FormData(e.target)
 
@@ -84,9 +117,16 @@ export default function NalogNovi(){
         <>
             <h3>Unos novog polaznika</h3>
             <Form onSubmit={odradiSubmit}>
-                <Form.Group controlId="ime">
-                    <Form.Label>Ime</Form.Label>
-                    <Form.Control type="text" name="ime" required />
+                <Form.Group controlId="poduzece" className="mb-3">
+                    <Form.Label className="fw-bold">Poduzeće</Form.Label>
+                    <Form.Select name="poduzece" required>
+                        <option value="">Odaberite poduzeće</option>
+                        {poduzeca && poduzeca.map((poduzece) => (
+                            <option key={poduzece.sifra} value={poduzece.sifra}>
+                                {poduzece.naziv}
+                            </option>
+                        ))}
+                    </Form.Select>
                 </Form.Group>
 
                 <Form.Group controlId="prezime">
@@ -106,7 +146,7 @@ export default function NalogNovi(){
 
                 <Row className="mt-4">
                     <Col>
-                        <Link to={RouteNames.RADNICI} className="btn btn-danger">
+                        <Link to={RouteNames.NALOG} className="btn btn-danger">
                             Odustani
                         </Link>
                     </Col>

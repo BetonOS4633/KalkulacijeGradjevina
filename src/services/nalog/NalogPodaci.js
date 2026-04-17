@@ -48,64 +48,64 @@ export const nalozi = [
         ukupniIznos: 6000
     },     {
         sifra: 7,
-        sifraPoduzeca: 7,
-        sifraGradilista: 7,
+        sifraPoduzeca: 5,
+        sifraGradilista: 2,
         datumIzdavanja: '2023-07-01',
         datumZavrsetka: '2023-07-31',
         ukupniIznos: 7000
     },
     {
         sifra: 8,
-        sifraPoduzeca: 8,
-        sifraGradilista: 8,
+        sifraPoduzeca: 2,
+        sifraGradilista: 1,
         datumIzdavanja: '2023-08-01',
         datumZavrsetka: '2023-08-31',
         ukupniIznos: 8000
     },
     {
         sifra: 9,
-        sifraPoduzeca: 9,
-        sifraGradilista: 9,
+        sifraPoduzeca: 3,
+        sifraGradilista: 2,
         datumIzdavanja: '2023-09-01',
         datumZavrsetka: '2023-09-30',
         ukupniIznos: 9000
     },
     {
         sifra: 10,
-        sifraPoduzeca: 10,
-        sifraGradilista: 10,
+        sifraPoduzeca: 2,
+        sifraGradilista: 3,
         datumIzdavanja: '2023-10-01',
         datumZavrsetka: '2023-10-31',
         ukupniIznos: 10000
     },
     {
         sifra: 11,
-        sifraPoduzeca: 11,
-        sifraGradilista: 11,
+        sifraPoduzeca: 1,
+        sifraGradilista: 4,
         datumIzdavanja: '2023-11-01',
         datumZavrsetka: '2023-11-30',
         ukupniIznos: 11000
     },
     {
         sifra: 12,
-        sifraPoduzeca: 12,
-        sifraGradilista: 12,
+        sifraPoduzeca: 3,
+        sifraGradilista: 2,
         datumIzdavanja: '2023-12-01',
         datumZavrsetka: '2023-12-31',
         ukupniIznos: 12000
     },
     {
         sifra: 13,
-        sifraPoduzeca: 1,
-        sifraGradilista: 13,
+        sifraPoduzeca: 4,
+        sifraGradilista: 4,
         datumIzdavanja: '2024-01-01',
         datumZavrsetka: '2024-01-31',
         ukupniIznos: 13000
     },
     {
         sifra: 14,
-        sifraPoduzeca: 2,
-        sifraGradilista: 14,
+        sifraPoduzeca: 4,
+        sifraGradilista: 2,
         datumIzdavanja: '2024-02-01',
         datumZavrsetka: '2024-02-29',
         ukupniIznos: 14000
@@ -113,7 +113,7 @@ export const nalozi = [
     {
         sifra: 15,
         sifraPoduzeca: 3,
-        sifraGradilista: 15,
+        sifraGradilista: 5,
         datumIzdavanja: '2024-03-01',
         datumZavrsetka: '2024-03-31',
         ukupniIznos: 15000
@@ -121,7 +121,7 @@ export const nalozi = [
     {
         sifra: 16,
         sifraPoduzeca: 4,
-        sifraGradilista: 16,
+        sifraGradilista: 6,
         datumIzdavanja: '2024-04-01',
         datumZavrsetka: '2024-04-30',
         ukupniIznos: 16000
@@ -129,7 +129,7 @@ export const nalozi = [
     {
         sifra: 17,
         sifraPoduzeca: 5,
-        sifraGradilista: 17,
+        sifraGradilista: 1,
         datumIzdavanja: '2024-05-01',
         datumZavrsetka: '2024-05-31',
         ukupniIznos: 17000
@@ -137,7 +137,7 @@ export const nalozi = [
     {
         sifra: 18,
         sifraPoduzeca: 6,
-        sifraGradilista: 18,
+        sifraGradilista: 2,
         datumIzdavanja: '2024-06-01',
         datumZavrsetka: '2024-06-30',
         ukupniIznos: 18000
