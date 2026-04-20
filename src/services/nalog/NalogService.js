@@ -21,7 +21,7 @@ const PrazanServis = {
     get: async () => ({ success: false, data: []}),
     getBySifra: async (sifra) => ({ success: false, data: {} }),
     dodaj: async (stroj) => { console.error("Nalog nije učitan"); },
-    promjeni: async (sifra, stroj) => { console.error("Nalog nije učitan"); },
+    promjeni: async (sifra, nalog) => { console.error("Nalog nije učitan"); },
     obrisi: async (sifra) => { console.error("Nalog nije učitan"); }
 };
 

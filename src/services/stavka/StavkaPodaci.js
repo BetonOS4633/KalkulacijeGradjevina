@@ -1,4 +1,4 @@
-export const stavkeNaloga = [
+export const stavke = [
     {
         
         nalog: 1,
@@ -31,8 +31,8 @@ export const stavkeNaloga = [
         nalog: 2,
         sifraRadnika: 4,
         sifraStroja: 4,
-        datumIzdavanja: '2023-04-01T10:30:00',
-        datumZavrsetka: '2023-04-30T09:30:00',
+        vrijemeIzdavanja: '2023-04-01T10:30:00',
+        vrijemeZavrsetka: '2023-04-30T09:30:00',
         sati: 5,
         iznos: 4000
     },

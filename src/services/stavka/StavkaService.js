@@ -1,5 +1,5 @@
-import StrojServiceLocalStorage from "./StrojServiceLocalStorage";
-import StrojServiceMemorija from "./StrojServiceMemorija";
+import StavkaServiceLocalStorage from "./StavkaServiceLocalStorage";
+import StavkaServiceMemorija from "./StavkaServiceMemorija";
 import { DATA_SOURCE } from "../../constants";
 
 let Servis = null;
@@ -7,10 +7,10 @@ let Servis = null;
 
 switch (DATA_SOURCE) {
     case 'memorija':
-        Servis = StrojServiceMemorija;
+        Servis = StavkaServiceMemorija;
         break;
     case 'localStorage':
-        Servis = StrojServiceLocalStorage;
+        Servis = StavkaServiceLocalStorage;
         break;
     default:
         Servis = null;
@@ -20,9 +20,9 @@ switch (DATA_SOURCE) {
 const PrazanServis = {
     get: async () => ({ success: false, data: []}),
     getBySifra: async (sifra) => ({ success: false, data: {} }),
-    dodaj: async (stroj) => { console.error("Stroj nije učitan"); },
-    promjeni: async (sifra, stroj) => { console.error("Stroj nije učitan"); },
-    obrisi: async (sifra) => { console.error("Stroj nije učitan"); }
+    dodaj: async (stroj) => { console.error("Stavka nije učitana"); },
+    promjeni: async (sifra, stavka) => { console.error("Stavka nije učitana"); },
+    obrisi: async (sifra) => { console.error("Stavka nije učitana"); }
 };
 
 // 3. Jedan jedini export na kraju
@@ -32,7 +32,7 @@ const AktivniServis = Servis || PrazanServis;
 export default {
     get: () => AktivniServis.get(),
     getBySifra: (sifra) => AktivniServis.getBySifra(sifra),
-    dodaj: (stroj) => AktivniServis.dodaj(stroj),
-    promjeni: (sifra, stroj) => AktivniServis.promjeni(sifra, stroj),
+    dodaj: (stavka) => AktivniServis.dodaj(stavka),
+    promjeni: (sifra, stavka) => AktivniServis.promjeni(sifra, stroj),
     obrisi: (sifra) => AktivniServis.obrisi(sifra)
 };

@@ -29,6 +29,9 @@ import NalogPregled from './pages/nalog/NalogPregled'
 import NalogNovi from './pages/nalog/NalogNovi'
 import NalogPromjena from './pages/nalog/NalogPromjena'
 
+import StavkaPregled from './pages/stavka/StavkaPregled'
+import StavkaNovi from './pages/stavka/StavkaNovi'
+import StavkaPromjena from './pages/stavka/StavkaPromjena'
 
 
 function App() {
@@ -62,6 +65,9 @@ function App() {
        <Route path={RouteNames.NALOG_PROMJENA} element={<NalogPromjena />} />
 
 
+       <Route path={RouteNames.STAVKA} element={<StavkaPregled />} />
+       <Route path={RouteNames.STAVKA_NOVI} element={<StavkaNovi />} />
+       <Route path={RouteNames.STAVKA_PROMJENA} element={<StavkaPromjena />} />
 
          
     

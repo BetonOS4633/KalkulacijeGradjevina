@@ -16,7 +16,7 @@ async function get() {
 
 async function getBySifra(sifra) {
     const nalozi = dohvatiSveIzStorage();
-    const nalog = strojevi.find(s => s.sifra === parseInt(sifra));
+    const nalog = nalozi.find(s => s.sifra === parseInt(sifra));
     return {success: true,  data: nalog ? nalog : null };
 }
 
@@ -27,10 +27,10 @@ async function dodaj(nalog) {
         nalog.sifra = 1;
     } else {
         const maxSifra = Math.max(...nalozi.map(s => s.sifra));
-        stroj.sifra = maxSifra + 1;
+        nalog.sifra = maxSifra + 1;
     }
     
-    strojevi.push(nalog);
+    nalozi.push(nalog);
     spremiUStorage(nalozi);
     return { data: nalog };
 }
