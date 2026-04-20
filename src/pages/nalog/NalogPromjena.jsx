@@ -3,34 +3,65 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import NalogService from "../../services/nalog/NalogService"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { RouteNames } from "../../constants"
+import GradilistaService from "../../services/gradiliste/GradilistaService"
+import PoduzeceService from "../../services/poduzece/PoduzeceService"
 
-export default function NalogPromjena(){
+export default function NalogPromjena() {
 
     const navigate = useNavigate()
     const params = useParams()
-    const [nalozi, setNalog] = useState({})
+    const [nalog, setNalog] = useState({})
+    const [poduzeca, setPoduzeca] = useState([])
+    const [gradilista, setGradilista] = useState([])
 
-    useEffect(()=>{
+    useEffect(() => {
+        ucitajGradiliste()
+        ucitajPoduzeca()
         ucitajNalog()
-    },[])
+    }, [])
 
-    async function ucitajNalog() {
-        await NalogService.getBySifra(params.sifra).then((odgovor)=>{
-            if(!odgovor.success){
+    async function ucitajPoduzeca() {
+        await PoduzeceService.get().then((odgovor) => {
+            if (!odgovor.success) {
                 alert('Nije implementiran servis')
                 return
             }
-            setNalog(odgovor.data)
+            setPoduzeca(odgovor.data)
+        })
+    }
+
+    async function ucitajGradiliste() {
+        await GradilistaService.get().then((odgovor) => {
+            if (!odgovor.success) {
+                alert('Nije implementiran servis')
+                return
+            }
+            setGradilista(odgovor.data)
+        })
+    }
+
+    async function ucitajNalog() {
+        await NalogService.getBySifra(params.sifra).then((odgovor) => {
+            if (!odgovor.success) {
+                alert('Nije implementiran servis')
+                return
+            }
+            const n = odgovor.data
+            
+           // n.datumIzdavanja = n.datumIzdavanja.substring(0,10)
+           // n.datumZavrsetka = n.datumZavrsetka.substring(0,10)
+           // console.table(n)
+            setNalog(n)
         })
     }
 
     async function promjeni(nalog) {
-        await NalogService.promjeni(params.sifra,nalog).then(()=>{
+        await NalogService.promjeni(params.sifra, nalog).then(() => {
             navigate(RouteNames.NALOG)
         })
     }
 
-    function odradiSubmit(e){
+    function odradiSubmit(e) {
         e.preventDefault()
         const podaci = new FormData(e.target)
 
@@ -95,54 +126,67 @@ export default function NalogPromjena(){
             datumIzdavanja: podaci.get('datumIzdavanja'),
             datumZavrsetka: podaci.get('datumZavrsetka'),
             ukupniIznos: podaci.get('ukupniIznos'),
-            
-            
+
+
             // email: podaci.get('email'),
             // oib: podaci.get('oib')
         })
     }
 
-    return(
-         <>
+    return (
+        <>
             <h3>Promjena polaznika</h3>
             <Form onSubmit={odradiSubmit}>
-                <Form.Group controlId="sifraPoduzeca">
-                    <Form.Label>Poduzeće</Form.Label>
-                    <Form.Control type="text" name="sifraPoduzeca" required 
-                    defaultValue={nalozi.sifraPoduzeca}/>
+                <Form.Group controlId="poduzece" className="mb-3">
+                    <Form.Label className="fw-bold">Poduzeće</Form.Label>
+                    <Form.Select name="poduzece" required value={nalog.sifraPoduzeca || ''} onChange={(e) => setNalog({ ...nalog, sifraPoduzeca: parseInt(e.target.value) })}>
+                        <option value="">Odaberite poduzeće</option>
+                        {poduzeca && poduzeca.map((poduzece) => (
+                            <option key={poduzece.sifra} value={poduzece.sifra}>
+                                {poduzece.naziv}
+                            </option>
+                        ))}
+                    </Form.Select>
                 </Form.Group>
 
-                <Form.Group controlId="sifraGradilista">
-                    <Form.Label>Gradilište</Form.Label>
-                    <Form.Control type="text" name="sifraGradilista" required 
-                    defaultValue={nalozi.sifraGradilista}/>
+                <Form.Group controlId="gradiliste" className="mb-3">
+                    <Form.Label className="fw-bold">Gradilište</Form.Label>
+                    <Form.Select name="gradiliste" required value={nalog.sifraGradilista || ''} onChange={(e) => setNalog({ ...nalog, sifraGradilista: parseInt(e.target.value) })}>
+                        <option value="">Odaberite gradilište</option>
+                        {gradilista && gradilista.map((gradiliste) => (
+                            <option key={gradiliste.sifra} value={gradiliste.sifra}>
+                                {gradiliste.naziv}
+                            </option>
+                        ))}
+                    </Form.Select>
                 </Form.Group>
 
 
-<Form.Group controlId="datumPokretanja">
-                <Form.Label>Datum i vrijeme početka rada </Form.Label>
-                <Form.Control type="datetime-local" name="datumPokretanja"
-                defaultValue={nalozi.datumIzdavanja} />
-            </Form.Group>
 
-            <Form.Group controlId="datumKraja">
-                <Form.Label>Datum i vrijeme završetka rada</Form.Label>
-                <Form.Control type="datetime-local" name="datumKraja" 
-                defaultValue={nalozi.datumZavrsetka} />
-            </Form.Group>
+                <Form.Group controlId="datumIzdavanja">
+                    <Form.Label>Datum i vrijeme početka rada </Form.Label>
+                    <Form.Control type="datetime-local" name="datumIzdavanja"
+                        defaultValue={nalog.datumIzdavanja} />
+                </Form.Group>
 
-
-
+                <Form.Group controlId="datumZavrsetka">
+                    <Form.Label>Datum i vrijeme završetka rada</Form.Label>
+                    <Form.Control type="datetime-local" name="datumZavrsetka"
+                        defaultValue={nalog.datumZavrsetka} />
+                </Form.Group>
 
 
 
 
- <Form.Group controlId="cijena">
-                <Form.Label>Cijena</Form.Label>
-                <Form.Control type="number" name="cijena" step={0.01}
-                defaultValue={nalozi.ukupniIznos}/>
-            </Form.Group>
-{/* 
+
+
+
+                <Form.Group controlId="cijena">
+                    <Form.Label>Cijena</Form.Label>
+                    <Form.Control type="number" name="cijena" step={0.01}
+                        defaultValue={nalog.ukupniIznos} />
+                </Form.Group>
+                {/* 
                 <Form.Group controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" name="email" required 

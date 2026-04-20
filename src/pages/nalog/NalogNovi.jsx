@@ -105,16 +105,17 @@ export default function NalogNovi() {
         //     return;
         // }
 
-        dodaj({sifra:podaci.get('sifra'),
-            sifraPoduzece: podaci.get('sifraPoduzeca'),
-            sifraGradilista: podaci.get('sifraGradilista'),
-            datumIzdavanja: podaci.get('datumIzdavanja'),
-            datumZavrsetka: podaci.get('datumZavrsetka'),
+        dodaj({
+            sifra: podaci.get('sifra'),
+            sifraPoduzeca: parseInt(podaci.get('poduzece')),
+            sifraGradilista: parseInt(podaci.get('gradiliste')),
+            datumIzdavanja: new Date(podaci.get('datumIzdavanja')).toISOString(),
+            datumZavrsetka:new Date(podaci.get('datumZavrsetka')).toISOString(),
             ukupniIznos: podaci.get('ukupniIznos'),
-            
+
         })
     }
-            
+
     return (
         <>
             <h3>Unos novog naloga</h3>
@@ -131,7 +132,7 @@ export default function NalogNovi() {
                     </Form.Select>
                 </Form.Group>
 
-                    <Form.Group controlId="gradiliste" className="mb-3">
+                <Form.Group controlId="gradiliste" className="mb-3">
                     <Form.Label className="fw-bold">Gradilište</Form.Label>
                     <Form.Select name="gradiliste" required>
                         <option value="">Odaberite gradilište</option>
