@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import NalogService from "../../services/nalog/NalogService"
 import PoduzeceService from "../../services/poduzece/PoduzeceService"
 import GradilisteService from "../../services/gradiliste/GradilistaService"
-import StavkeService from "../../services/stavka/StavkeService"
+import StavkaService from "../../services/stavka/StavkaService"
 import StrojService from "../../services/strojevi/StrojService"
 import RadnikServis from "../..service/radnici/RadnikService"
 import { Button, Table } from "react-bootstrap"
@@ -19,8 +19,8 @@ export default function StavkaPregled() {
     const [gradilista, setGradilista] = useState([])
     const [nalozi, setNalozi] = useState([])
     const [stavke, setStavke] = useState([])
-    const [stroje, setNalozi] = useState([])
-    const [radnik, setNalozi] = useState([])
+    const [stroje, setStrojevi] = useState([])
+    const [radnik, setRadnik] = useState([])
 
     useEffect(() => {
         ucitajGradiliste()
@@ -61,6 +61,43 @@ export default function StavkaPregled() {
                 setGradilista(odgovor.data)
             })
         }
+
+
+async function ucitajRadnike() {
+            await RadnikService.get().then((odgovor)=>{
+                if(!odgovor.success){
+                    alert('Nije implementiran servis')
+                    return
+                }
+                setRadnik(odgovor.data)
+            })
+        }
+
+
+async function ucitajStroj() {
+            await StrojService.get().then((odgovor)=>{
+                if(!odgovor.success){
+                    alert('Nije implementiran servis')
+                    return
+                }
+                setStroj(odgovor.data)
+            })
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     async function brisanje(sifra) {
