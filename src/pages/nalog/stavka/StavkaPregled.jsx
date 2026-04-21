@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Button, Table, Alert } from "react-bootstrap"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { RouteNames } from "../../../constants"
-import StavkaService from "../../../services/StavkaService" // Putanja do tvog servisa
+import StavkaService from "../../../services/stavka/StavkaService" // Putanja do tvog servisa
 
 export default function StavkaPregled() {
     const navigate = useNavigate()
@@ -34,7 +34,7 @@ export default function StavkaPregled() {
             <hr />
 
             {ucitavanje ? (
-                <p>Učitavanje stavki...</p>
+                <p>Učitavanje stavki....</p>
             ) : (
                 <Table striped bordered hover responsive>
                     <thead>
@@ -51,16 +51,16 @@ export default function StavkaPregled() {
                     </thead>
                     <tbody>
                         {stavke && stavke.map((s) => (
-                            <tr key={s.sifra}>
-                                <td>{s.sifra}</td>
-                                <td>{s.sifraRadnika}</td>
-                                <td>{s.sifraStroja}</td>
-                                <td>{new Date(s.vrijemePocetka).toLocaleString('hr-HR')}</td>
-                                <td>{new Date(s.vrijemeZavrsetka).toLocaleString('hr-HR')}</td>
-                                <td>{s.sati} h</td>
-                                <td>{Number(s.iznos).toFixed(2)} €</td>
+                            <tr key={stavke.sifra}>
+                                <td>{stavke.sifra}</td>
+                                <td>{stavke.sifraRadnika}</td>
+                                <td>{stavke.sifraStroja}</td>
+                                <td>{new Date(stavke.vrijemePocetka).toLocaleString('hr-HR')}</td>
+                                <td>{new Date(stavke.vrijemeZavrsetka).toLocaleString('hr-HR')}</td>
+                                <td>{stavke.sati} h</td>
+                                <td>{Number(stavke.iznos).toFixed(2)} €</td>
                                 <td>
-                                    <Button variant="primary" size="sm" onClick={() => navigate(`/stavka/promjena/${s.sifra}`)}>
+                                    <Button variant="primary" size="sm" onClick={() => navigate(`/stavka/promjena/${stavke.sifra}`)}>
                                         Uredi
                                     </Button>
                                 </td>
