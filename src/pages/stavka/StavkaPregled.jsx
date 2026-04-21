@@ -2,6 +2,9 @@ import { useEffect, useState } from "react"
 import NalogService from "../../services/nalog/NalogService"
 import PoduzeceService from "../../services/poduzece/PoduzeceService"
 import GradilisteService from "../../services/gradiliste/GradilistaService"
+import StavkeService from "../../services/stavka/StavkeService"
+import StrojService from "../../services/strojevi/StrojService"
+import RadnikServis from "../..service/radnici/RadnikService"
 import { Button, Table } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { RouteNames } from "../../constants"
@@ -15,11 +18,18 @@ export default function StavkaPregled() {
     const [poduzeca, setPoduzeca] = useState([])
     const [gradilista, setGradilista] = useState([])
     const [nalozi, setNalozi] = useState([])
+    const [stavke, setStavke] = useState([])
+    const [stroje, setNalozi] = useState([])
+    const [radnik, setNalozi] = useState([])
 
     useEffect(() => {
         ucitajGradiliste()
         ucitajPoduzeca()
         ucitajNaloge()
+        ucitajRadnike()
+        ucitajStrojeve()
+        ucitajStavke()
+
     }, [])
 
     async function ucitajNaloge() {
@@ -55,7 +65,7 @@ export default function StavkaPregled() {
 
     async function brisanje(sifra) {
         if (!confirm('Sigurno obrisati?')) return;
-        await NalogService.obrisi(sifra);
+        await StavkaService.obrisi(sifra);
         await NalogService.get().then((odgovor) => {
             setNalozi(odgovor.data)
         })
