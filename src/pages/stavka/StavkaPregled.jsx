@@ -19,15 +19,15 @@ export default function StavkaPregled() {
     const [gradilista, setGradilista] = useState([])
     const [nalozi, setNalozi] = useState([])
     const [stavke, setStavke] = useState([])
-    const [stroje, setStrojevi] = useState([])
+    const [strojevi, setStrojevi] = useState([])
     const [radnik, setRadnik] = useState([])
 
     useEffect(() => {
         ucitajGradiliste()
         ucitajPoduzeca()
         ucitajNaloge()
-        ucitajRadnike()
-        ucitajStrojeve()
+        ucitajRadnik()
+        ucitajStrojevi()
         ucitajStavke()
 
     }, [])
@@ -53,49 +53,36 @@ export default function StavkaPregled() {
     }
 
     async function ucitajGradiliste() {
-            await GradilisteService.get().then((odgovor)=>{
-                if(!odgovor.success){
-                    alert('Nije implementiran servis')
-                    return
-                }
-                setGradilista(odgovor.data)
-            })
-        }
+        await GradilisteService.get().then((odgovor) => {
+            if (!odgovor.success) {
+                alert('Nije implementiran servis')
+                return
+            }
+            setGradilista(odgovor.data)
+        })
+    }
 
 
-async function ucitajRadnike() {
-            await RadnikService.get().then((odgovor)=>{
-                if(!odgovor.success){
-                    alert('Nije implementiran servis')
-                    return
-                }
-                setRadnik(odgovor.data)
-            })
-        }
+    async function ucitajRadnik() {
+        await RadnikService.get().then((odgovor) => {
+            if (!odgovor.success) {
+                alert('Nije implementiran servis')
+                return
+            }
+            setRadnik(odgovor.data)
+        })
+    }
 
 
-async function ucitajStroj() {
-            await StrojService.get().then((odgovor)=>{
-                if(!odgovor.success){
-                    alert('Nije implementiran servis')
-                    return
-                }
-                setStroj(odgovor.data)
-            })
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
+    async function ucitajStrojevi() {
+        await StrojService.get().then((odgovor) => {
+            if (!odgovor.success) {
+                alert('Nije implementiran servis')
+                return
+            }
+            setStrojevi(odgovor.data)
+        })
+    }
 
 
 
@@ -115,8 +102,8 @@ async function ucitajStroj() {
 
     function dohvatiNazivGradilista(sifraGradilista) {
         const gradiliste = gradilista.find(p => p.sifra === sifraGradilista)
-      //  console.table(gradilista)
-      //  console.log(gradiliste.naziv)
+        //  console.table(gradilista)
+        //  console.log(gradiliste.naziv)
         return gradiliste ? gradiliste.naziv : 'N/A'
     }
 
@@ -140,9 +127,9 @@ async function ucitajStroj() {
                     </tr>
                 </thead>
                 <tbody>
-                    {nalozi && nalozi.map((nalog) => (
-                        <tr key={nalog.sifra}>
-                            <td className ='lead'>{nalog.sifra}</td>
+                    {stavke && stavke.map((stavke) => (
+                        <tr key={stavke.nalog}>
+                            <td className='lead'>{nalog.sifra}</td>
                             <td>{dohvatiNazivPoduzeca(nalog.sifraPoduzeca)}</td>
                             <td>{dohvatiNazivGradilista(nalog.sifraGradilista)}</td>
 
