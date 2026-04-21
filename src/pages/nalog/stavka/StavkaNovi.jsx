@@ -1,24 +1,23 @@
-import { useEffect, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
-import NalogService from "../../services/nalog/NalogService"
 import { Button, Col, Form, Row } from "react-bootstrap"
-import { RouteNames } from "../../constants"
-import GradilistaService from "../../services/gradiliste/GradilistaService"
-import PoduzeceService from "../../services/poduzece/PoduzeceService"
+import { RouteNames } from "../../../constants"
+import { Link, useNavigate } from "react-router-dom"
+import NalogService from "../../../services/nalog/NalogService"
+import { useEffect, useState } from "react"
+import PoduzeceService from "../../../services/poduzece/PoduzeceService"
+import GradilistaService from "../../../services/gradiliste/GradilistaService"
 
-export default function StavkaPromjena() {
+export default function StavkaNovi() {
 
     const navigate = useNavigate()
-    const params = useParams()
-    const [nalog, setNalog] = useState({})
     const [poduzeca, setPoduzeca] = useState([])
     const [gradilista, setGradilista] = useState([])
 
     useEffect(() => {
         ucitajGradiliste()
         ucitajPoduzeca()
-        ucitajNalog()
     }, [])
+
+
 
     async function ucitajPoduzeca() {
         await PoduzeceService.get().then((odgovor) => {
@@ -40,52 +39,38 @@ export default function StavkaPromjena() {
         })
     }
 
-    async function ucitajNalog() {
-        await NalogService.getBySifra(params.sifra).then((odgovor) => {
-            if (!odgovor.success) {
-                alert('Nije implementiran servis')
-                return
-            }
-            const n = odgovor.data
-            
-           // n.datumIzdavanja = n.datumIzdavanja.substring(0,10)
-           // n.datumZavrsetka = n.datumZavrsetka.substring(0,10)
-           // console.table(n)
-            setNalog(n)
-        })
-    }
 
-    async function promjeni(nalog) {
-        await NalogService.promjeni(params.sifra, nalog).then(() => {
+    async function dodaj(nalog) {
+        await NalogService.dodaj(nalog).then(() => {
             navigate(RouteNames.NALOG)
         })
     }
 
-    function odradiSubmit(e) {
-        e.preventDefault()
+    function odradiSubmit(e) { // e je event
+        e.preventDefault() // nemoj odraditi submit
         const podaci = new FormData(e.target)
 
         // // --- KONTROLA 1: Ime (Postojanje) ---
-        // if (!podaci.get('sifraPoduzeca') || podaci.get('sifraPoduzeca.trim().length === 0) {
+        // if (!podaci.get('ime') || podaci.get('ime').trim().length === 0) {
         //     alert("Ime je obavezno i ne smije sadržavati samo razmake!");
         //     return;
         // }
 
         // // --- KONTROLA 2: Ime (Minimalna duljina) ---
-        // if (podaci.get('sifraPoduzeca').trim().length < 2) {
-        //     alert("Sifra poduzeca mora imati najmanje 2 znaka!");
+        // if (podaci.get('ime').trim().length < 2) {
+        //     alert("Ime mora imati najmanje 2 znaka!");
         //     return;
         // }
 
         // // --- KONTROLA 3: Prezime (Postojanje) ---
-        // if (!podaci.get('sifraGradilista') || podaci.get('sifraGradilista').trim().length === 0) {
-        //     alert("Gradiliste je obavezno i ne smije sadržavati samo razmake!");
+        // if (!podaci.get('prezime') || podaci.get('prezime').trim().length === 0) {
+        //     alert("Prezime je obavezno i ne smije sadržavati samo razmake!");
         //     return;
         // }
 
         // // --- KONTROLA 4: Prezime (Minimalna duljina) ---
-        // if (podaci.get('sifraGradilista').trim().length < 2) {
-        //     alert("Gradiliste mora imati najmanje 2 znaka!");
+        // if (podaci.get('prezime').trim().length < 2) {
+        //     alert("Prezime mora imati najmanje 2 znaka!");
         //     return;
         // }
 
@@ -102,11 +87,11 @@ export default function StavkaPromjena() {
         //     return;
         // }
 
-        // // // --- KONTROLA 7: OIB (Postojanje) ---
-        // // if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
-        // //     alert("OIB je obavezan!");
-        // //     return;
-        // // }
+        // // --- KONTROLA 7: OIB (Postojanje) ---
+        // if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
+        //     alert("OIB je obavezan!");
+        //     return;
+        // }
 
         // // --- KONTROLA 8: OIB (Duljina) ---
         // if (podaci.get('oib').trim().length !== 11) {
@@ -120,26 +105,24 @@ export default function StavkaPromjena() {
         //     return;
         // }
 
-        promjeni({
-            sifraPoduzece: podaci.get('sifraPoduzeca'),
-            sifraGradilista: podaci.get('sifraGradilista'),
-            datumIzdavanja: podaci.get('datumIzdavanja'),
-            datumZavrsetka: podaci.get('datumZavrsetka'),
+        dodaj({
+            sifra: podaci.get('sifra'),
+            sifraPoduzeca: parseInt(podaci.get('poduzece')),
+            sifraGradilista: parseInt(podaci.get('gradiliste')),
+            datumIzdavanja: new Date(podaci.get('datumIzdavanja')).toISOString(),
+            datumZavrsetka:new Date(podaci.get('datumZavrsetka')).toISOString(),
             ukupniIznos: podaci.get('ukupniIznos'),
 
-
-            // email: podaci.get('email'),
-            // oib: podaci.get('oib')
         })
     }
 
     return (
         <>
-            <h3>Promjena polaznika</h3>
+            <h3>Unos novog naloga</h3>
             <Form onSubmit={odradiSubmit}>
                 <Form.Group controlId="poduzece" className="mb-3">
                     <Form.Label className="fw-bold">Poduzeće</Form.Label>
-                    <Form.Select name="poduzece" required value={nalog.sifraPoduzeca || ''} onChange={(e) => setNalog({ ...nalog, sifraPoduzeca: parseInt(e.target.value) })}>
+                    <Form.Select name="poduzece" required>
                         <option value="">Odaberite poduzeće</option>
                         {poduzeca && poduzeca.map((poduzece) => (
                             <option key={poduzece.sifra} value={poduzece.sifra}>
@@ -151,7 +134,7 @@ export default function StavkaPromjena() {
 
                 <Form.Group controlId="gradiliste" className="mb-3">
                     <Form.Label className="fw-bold">Gradilište</Form.Label>
-                    <Form.Select name="gradiliste" required value={nalog.sifraGradilista || ''} onChange={(e) => setNalog({ ...nalog, sifraGradilista: parseInt(e.target.value) })}>
+                    <Form.Select name="gradiliste" required>
                         <option value="">Odaberite gradilište</option>
                         {gradilista && gradilista.map((gradiliste) => (
                             <option key={gradiliste.sifra} value={gradiliste.sifra}>
@@ -163,41 +146,21 @@ export default function StavkaPromjena() {
 
 
 
-                <Form.Group controlId="datumIzdavanja">
-                    <Form.Label>Datum i vrijeme početka rada </Form.Label>
-                    <Form.Control type="datetime-local" name="datumIzdavanja"
-                        defaultValue={nalog.datumIzdavanja} />
+
+                <Form.Group controlId="datumIzdavanja" className="mb-3">
+                    <Form.Label className="fw-bold">Datum izdavanja</Form.Label>
+                    <Form.Control type="date" name="datumIzdavanja" required />
+                </Form.Group>
+                <Form.Group controlId="datumZavrsetka" className="mb-3">
+                    <Form.Label className="fw-bold">Datum završetka</Form.Label>
+                    <Form.Control type="date" name="datumZavrsetka" required />
+                </Form.Group>
+                <Form.Group controlId="ukupniIznos" className="mb-3">
+                    <Form.Label className="fw-bold">Ukupni iznos</Form.Label>
+                    <Form.Control type="number" name="ukupniIznos" required min="0" step="0.01" />
                 </Form.Group>
 
-                <Form.Group controlId="datumZavrsetka">
-                    <Form.Label>Datum i vrijeme završetka rada</Form.Label>
-                    <Form.Control type="datetime-local" name="datumZavrsetka"
-                        defaultValue={nalog.datumZavrsetka} />
-                </Form.Group>
 
-
-
-
-
-
-
-                <Form.Group controlId="cijena">
-                    <Form.Label>Cijena</Form.Label>
-                    <Form.Control type="number" name="cijena" step={0.01}
-                        defaultValue={nalog.ukupniIznos} />
-                </Form.Group>
-                {/* 
-                <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" required 
-                    defaultValue={radnik.email}/>
-                </Form.Group>
-
-                <Form.Group controlId="oib">
-                    <Form.Label>OIB</Form.Label>
-                    <Form.Control type="text" name="oib" required maxLength={11}
-                    defaultValue={radnik.oib}/>
-                </Form.Group> */}
 
                 <Row className="mt-4">
                     <Col>
@@ -207,7 +170,7 @@ export default function StavkaPromjena() {
                     </Col>
                     <Col>
                         <Button type="submit" variant="success">
-                            Promjeni nalog
+                            Dodaj novi nalog
                         </Button>
                     </Col>
                 </Row>

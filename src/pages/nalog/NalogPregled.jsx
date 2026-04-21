@@ -86,8 +86,6 @@ export default function NalogPregled() {
                         <th>Nalog broj</th>
                         <th>Poduzece</th>
                         <th>Gradiliste</th>
-                        <th>datum pocetka</th>
-                        <th>datum kraja</th>
                         <th>Ukupni iznos</th>
                         <th>Akcija</th>
                     </tr>
@@ -98,15 +96,6 @@ export default function NalogPregled() {
                             <td className ='lead'>{nalog.sifra}</td>
                             <td>{dohvatiNazivPoduzeca(nalog.sifraPoduzeca)}</td>
                             <td>{dohvatiNazivGradilista(nalog.sifraGradilista)}</td>
-
-                            <td>
-                                <FormatDatum datum={nalog.datumIzdavanja} />
-                            </td>
-
-                            <td>
-                                <FormatDatum datum={nalog.datumZavrsetka} />
-                            </td>
-
                             <td><NumericFormat
                                 value={nalog.ukupniIznos}
                                 displayType={'text'}
@@ -126,7 +115,7 @@ export default function NalogPregled() {
                                 <Button variant="danger" onClick={() => brisanje(nalog.sifra)}>
                                     Obriši
                                 </Button>
-                                <Button onClick={() => { navigate(`/nalog/${nalog.sifra}`) }}>
+                                <Button onClick={() => { navigate(`/nalog/${nalog.sifra}/stavke`) }}>
                                     Pregled naloga
                                 </Button>
                             </td>

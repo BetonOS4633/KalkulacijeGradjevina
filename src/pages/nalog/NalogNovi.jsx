@@ -109,8 +109,6 @@ export default function NalogNovi() {
             sifra: podaci.get('sifra'),
             sifraPoduzeca: parseInt(podaci.get('poduzece')),
             sifraGradilista: parseInt(podaci.get('gradiliste')),
-            datumIzdavanja: new Date(podaci.get('datumIzdavanja')).toISOString(),
-            datumZavrsetka:new Date(podaci.get('datumZavrsetka')).toISOString(),
             ukupniIznos: podaci.get('ukupniIznos'),
 
         })
@@ -147,14 +145,7 @@ export default function NalogNovi() {
 
 
 
-                <Form.Group controlId="datumIzdavanja" className="mb-3">
-                    <Form.Label className="fw-bold">Datum izdavanja</Form.Label>
-                    <Form.Control type="date" name="datumIzdavanja" required />
-                </Form.Group>
-                <Form.Group controlId="datumZavrsetka" className="mb-3">
-                    <Form.Label className="fw-bold">Datum završetka</Form.Label>
-                    <Form.Control type="date" name="datumZavrsetka" required />
-                </Form.Group>
+              
                 <Form.Group controlId="ukupniIznos" className="mb-3">
                     <Form.Label className="fw-bold">Ukupni iznos</Form.Label>
                     <Form.Control type="number" name="ukupniIznos" required min="0" step="0.01" />

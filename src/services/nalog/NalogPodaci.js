@@ -3,143 +3,107 @@ export const nalozi = [
         sifra: 1,
         sifraPoduzeca: 1,
         sifraGradilista: 1,
-        datumIzdavanja: '2023-01-01T00:00:00',
-        datumZavrsetka: '2023-01-31T00:00:00',
         ukupniIznos: 1000
     },  
     {           
         sifra: 2,
         sifraPoduzeca: 2,
         sifraGradilista: 2,
-        datumIzdavanja: '2023-02-01T00:00:00',
-        datumZavrsetka: '2023-02-28T00:00:00',
         ukupniIznos: 2000
     },
     {
         sifra: 3,           
         sifraPoduzeca: 3,
         sifraGradilista: 3,
-        datumIzdavanja: '2023-03-01T00:00:00',
-        datumZavrsetka: '2023-03-31T00:00:00',
         ukupniIznos: 3000
     },
     {
         sifra: 4,
         sifraPoduzeca: 4,
         sifraGradilista: 4,
-        datumIzdavanja: '2023-04-01T00:00:00',
-        datumZavrsetka: '2023-04-30T00:00:00',
         ukupniIznos: 4000
     },
     {
         sifra: 5,
         sifraPoduzeca: 5,
         sifraGradilista: 5,
-        datumIzdavanja: '2023-05-01T00:00:00',
-        datumZavrsetka: '2023-05-31T00:00:00',
         ukupniIznos: 5000
     },
     {
         sifra: 6,   
         sifraPoduzeca: 6,
         sifraGradilista: 6,
-        datumIzdavanja: '2023-06-01T00:00:00',
-        datumZavrsetka: '2023-06-30T00:00:00',
         ukupniIznos: 6000
     },     {
         sifra: 7,
         sifraPoduzeca: 5,
         sifraGradilista: 2,
-        datumIzdavanja: '2023-07-01T00:00:00',
-        datumZavrsetka: '2023-07-31T00:00:00',
         ukupniIznos: 7000
     },
     {
         sifra: 8,
         sifraPoduzeca: 2,
         sifraGradilista: 1,
-        datumIzdavanja: '2023-08-01T00:00:00',
-        datumZavrsetka: '2023-08-31T00:00:00',
         ukupniIznos: 8000
     },
     {
         sifra: 9,
         sifraPoduzeca: 3,
         sifraGradilista: 2,
-        datumIzdavanja: '2023-09-01T00:00:00',
-        datumZavrsetka: '2023-09-30T00:00:00',
         ukupniIznos: 9000
     },
     {
         sifra: 10,
         sifraPoduzeca: 2,
         sifraGradilista: 3,
-        datumIzdavanja: '2023-10-01T00:00:00',
-        datumZavrsetka: '2023-10-31T00:00:00',
         ukupniIznos: 10000
     },
     {
         sifra: 11,
         sifraPoduzeca: 1,
         sifraGradilista: 4,
-        datumIzdavanja: '2023-11-01T00:00:00',
-        datumZavrsetka: '2023-11-30T00:00:00',
         ukupniIznos: 11000
     },
     {
         sifra: 12,
         sifraPoduzeca: 3,
         sifraGradilista: 2,
-        datumIzdavanja: '2023-12-01T00:00:00',
-        datumZavrsetka: '2023-12-31T00:00:00',
         ukupniIznos: 12000
     },
     {
         sifra: 13,
         sifraPoduzeca: 4,
         sifraGradilista: 4,
-        datumIzdavanja: '2024-01-01T00:00:00',
-        datumZavrsetka: '2024-01-31T00:00:00',
         ukupniIznos: 13000
     },
     {
         sifra: 14,
         sifraPoduzeca: 4,
         sifraGradilista: 2,
-        datumIzdavanja: '2024-02-01T00:00:00',
-        datumZavrsetka: '2024-02-29T00:00:00',
         ukupniIznos: 14000
     },
     {
         sifra: 15,
         sifraPoduzeca: 3,
         sifraGradilista: 5,
-        datumIzdavanja: '2024-03-01T00:00:00',
-        datumZavrsetka: '2024-03-31T00:00:00',
         ukupniIznos: 15000
     },
     {
         sifra: 16,
         sifraPoduzeca: 4,
         sifraGradilista: 6,
-        datumIzdavanja: '2024-04-01T00:00:00',
-        datumZavrsetka: '2024-04-30T00:00:00',
         ukupniIznos: 16000
     },
     {
         sifra: 17,
         sifraPoduzeca: 5,
         sifraGradilista: 1,
-        datumIzdavanja: '2024-05-01T00:00:00',
-        datumZavrsetka: '2024-05-31T00:00:00',
         ukupniIznos: 17000
     },
     {
         sifra: 18,
         sifraPoduzeca: 6,
         sifraGradilista: 2,
-        datumIzdavanja: '2024-06-01T00:00:00',
-        datumZavrsetka: '2024-06-30T00:00:00',
         ukupniIznos: 18000
     }
 

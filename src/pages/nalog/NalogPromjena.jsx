@@ -123,8 +123,6 @@ export default function NalogPromjena() {
         promjeni({
             sifraPoduzece: podaci.get('sifraPoduzeca'),
             sifraGradilista: podaci.get('sifraGradilista'),
-            datumIzdavanja: podaci.get('datumIzdavanja'),
-            datumZavrsetka: podaci.get('datumZavrsetka'),
             ukupniIznos: podaci.get('ukupniIznos'),
 
 
@@ -160,23 +158,6 @@ export default function NalogPromjena() {
                         ))}
                     </Form.Select>
                 </Form.Group>
-
-
-
-                <Form.Group controlId="datumIzdavanja">
-                    <Form.Label>Datum i vrijeme početka rada </Form.Label>
-                    <Form.Control type="datetime-local" name="datumIzdavanja"
-                        defaultValue={nalog.datumIzdavanja} />
-                </Form.Group>
-
-                <Form.Group controlId="datumZavrsetka">
-                    <Form.Label>Datum i vrijeme završetka rada</Form.Label>
-                    <Form.Control type="datetime-local" name="datumZavrsetka"
-                        defaultValue={nalog.datumZavrsetka} />
-                </Form.Group>
-
-
-
 
 
 

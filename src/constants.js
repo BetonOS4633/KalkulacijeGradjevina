@@ -23,10 +23,10 @@ export const RouteNames={
     NALOG:'/nalog',
     NALOG_NOVI:'/nalog/novi',
     NALOG_PROMJENA: '/nalog/:sifra',
-    
-    STAVKA:'/stavka',
-    STAVKA_NOVI:'/stavka/novi',
-    STAVKA_PROMJENA: '/stavka/:sifra'
+    NALOG_STAVKE: '/nalog/:sifra/stavke',
+    NALOG_STAVKE_NOVA: '/nalog/:sifra/stavke/nova',
+    NALOG_STAVKE_PROMJENA: '/nalog/:sifraNalog/stavke/:sifraStavka',
+ 
 
 
 
