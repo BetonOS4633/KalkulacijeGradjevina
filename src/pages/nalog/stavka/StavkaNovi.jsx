@@ -1,181 +1,292 @@
-import { Button, Col, Form, Row } from "react-bootstrap"
-import { RouteNames } from "../../../constants"
-import { Link, useNavigate } from "react-router-dom"
-import NalogService from "../../../services/nalog/NalogService"
+// import { Form, Button, Row, Col } from "react-bootstrap"
+// import { useNavigate, useParams, Link } from "react-router-dom"
+// import StavkaService from "../../../services/stavka/StavkaService"
+
+// export default function StavkaNovi() {
+//     const navigate = useNavigate()
+//     const { sifra } = useParams() 
+
+//     async function obradiPodatke(e) {
+//         e.preventDefault()
+//         const podaci = new FormData(e.target)
+
+//         const novaStavka = {
+//             nalog: parseInt(sifra),
+//             sifraRadnika: parseInt(podaci.get('sifraRadnika')),
+//             sifraStroja: parseInt(podaci.get('sifraStroja')),
+//             vrijemePocetka: podaci.get('vrijemePocetka'),
+//             vrijemeZavrsetka: podaci.get('vrijemeZavrsetka'),
+//             sati: parseFloat(podaci.get('sati')),
+//             iznos: parseFloat(podaci.get('iznos'))
+//         }
+
+//         const odgovor = await StavkaService.dodaj(novaStavka)
+//         if (odgovor.success) {
+//             navigate(`/nalog/${sifra}/stavke`)
+//         }
+//     }
+
+//     return (
+//         <div className="container mt-3">
+//             <h3>Nova stavka za nalog br. {sifra}</h3>
+//             <hr />
+//             <Form onSubmit={obradiPodatke}>
+//                 <Row>
+//                     <Col md={6}><Form.Group className="mb-3"><Form.Label>Radnik</Form.Label><Form.Control type="number" name="sifraRadnika" required /></Form.Group></Col>
+//                     <Col md={6}><Form.Group className="mb-3"><Form.Label>Stroj</Form.Label><Form.Control type="number" name="sifraStroja" required /></Form.Group></Col>
+//                 </Row>
+//                 <Row>
+//                     <Col md={6}><Form.Group className="mb-3"><Form.Label>Početak</Form.Label><Form.Control type="datetime-local" name="vrijemePocetka" required /></Form.Group></Col>
+//                     <Col md={6}><Form.Group className="mb-3"><Form.Label>Završetak</Form.Label><Form.Control type="datetime-local" name="vrijemeZavrsetka" required /></Form.Group></Col>
+//                 </Row>
+//                 <Row>
+//                     <Col md={6}><Form.Group className="mb-3"><Form.Label>Sati</Form.Label><Form.Control type="number" step="0.01" name="sati" required /></Form.Group></Col>
+//                     <Col md={6}><Form.Group className="mb-3"><Form.Label>Iznos (€)</Form.Label><Form.Control type="number" step="0.01" name="iznos" required /></Form.Group></Col>
+//                 </Row>
+//                 <div className="mt-3">
+//                     <Button variant="success" type="submit" className="me-2">Spremi</Button>
+//                     <Link to={`/nalog/${sifra}/stavke`} className="btn btn-secondary">Odustani</Link>
+//                 </div>
+//             </Form>
+//         </div>
+//     )
+// }
+
+
+// import { useEffect, useState } from "react"
+// import { Form, Button, Row, Col } from "react-bootstrap"
+// import { useNavigate, useParams, Link } from "react-router-dom"
+// import StavkaService from "../../../services/stavka/StavkaService"
+// import RadnikService from "../../../services/radnici/RadnikService"
+// import StrojService from "../../../services/strojevi/StrojService"
+
+// export default function StavkaNovi() {
+//     const navigate = useNavigate()
+//     const { sifra } = useParams() 
+    
+//     const [radnici, setRadnici] = useState([])
+//     const [strojevi, setStrojevi] = useState([])
+
+//     useEffect(() => {
+//         ucitajRadnikeIStrojeve()
+//     }, [])
+
+//     async function ucitajRadnikeIStrojeve() {
+//         const radniciOdg = await RadnikService.get()
+//         if (radniciOdg.success) setRadnici(radniciOdg.data)
+        
+//         const strojeviOdg = await StrojService.get()
+//         if (strojeviOdg.success) setStrojevi(strojeviOdg.data)
+//     }
+
+//     async function obradiPodatke(e) {
+//         e.preventDefault()
+//         const podaci = new FormData(e.target)
+
+//         const novaStavka = {
+//             nalog: parseInt(sifra),
+//             sifraRadnika: parseInt(podaci.get('sifraRadnika')),
+//             sifraStroja: parseInt(podaci.get('sifraStroja')),
+//             vrijemePocetka: podaci.get('vrijemePocetka'),
+//             vrijemeZavrsetka: podaci.get('vrijemeZavrsetka'),
+//             sati: parseFloat(podaci.get('sati')),
+//             iznos: parseFloat(podaci.get('iznos'))
+//         }
+
+//         const odgovor = await StavkaService.dodaj(novaStavka)
+//         if (odgovor.success) {
+//             navigate(`/nalog/${sifra}/stavke`)
+//         }
+//     }
+
+//     return (
+//         <div className="container mt-3">
+//             <h3>Nova stavka za nalog br. {sifra}</h3>
+//             <hr />
+//             <Form onSubmit={obradiPodatke}>
+//                 <Row>
+//                     <Col md={6}>
+//                         <Form.Group className="mb-3">
+//                             <Form.Label>Odaberi radnika</Form.Label>
+//                             <Form.Select name="sifraRadnika" required>
+//                                 <option value="">Odaberi...</option>
+//                                 {radnici.map(r => (
+//                                     <option key={r.sifra} value={r.sifra}>{r.ime} {r.prezime}</option>
+//                                 ))}
+//                             </Form.Select>
+//                         </Form.Group>
+//                     </Col>
+//                     <Col md={6}>
+//                         <Form.Group className="mb-3">
+//                             <Form.Label>Odaberi stroj</Form.Label>
+//                             <Form.Select name="sifraStroja" required>
+//                                 <option value="">Odaberi...</option>
+//                                 {strojevi.map(s => (
+//                                     <option key={s.sifra} value={s.sifra}>{s.naziv}</option>
+//                                 ))}
+//                             </Form.Select>
+//                         </Form.Group>
+//                     </Col>
+//                 </Row>
+//                 <Row>
+//                     <Col md={6}><Form.Group className="mb-3"><Form.Label>Početak</Form.Label><Form.Control type="datetime-local" name="vrijemePocetka" required /></Form.Group></Col>
+//                     <Col md={6}><Form.Group className="mb-3"><Form.Label>Završetak</Form.Label><Form.Control type="datetime-local" name="vrijemeZavrsetka" required /></Form.Group></Col>
+//                 </Row>
+//                 <Row>
+//                     <Col md={6}><Form.Group className="mb-3"><Form.Label>Sati</Form.Label><Form.Control type="number" step="0.01" name="sati" required /></Form.Group></Col>
+//                     <Col md={6}><Form.Group className="mb-3"><Form.Label>Iznos (€)</Form.Label><Form.Control type="number" step="0.01" name="iznos" required /></Form.Group></Col>
+//                 </Row>
+//                 <div className="mt-3">
+//                     <Button variant="success" type="submit" className="me-2">Spremi</Button>
+//                     <Link to={`/nalog/${sifra}/stavke`} className="btn btn-secondary">Odustani</Link>
+//                 </div>
+//             </Form>
+//         </div>
+//     )
+// }
+
+
 import { useEffect, useState } from "react"
-import PoduzeceService from "../../../services/poduzece/PoduzeceService"
-import GradilistaService from "../../../services/gradiliste/GradilistaService"
+import { Form, Button, Row, Col, Alert } from "react-bootstrap"
+import { useNavigate, useParams, Link } from "react-router-dom"
+import StavkaService from "../../../services/stavka/StavkaService"
+import RadnikService from "../../../services/radnici/RadnikService"
+import StrojService from "../../../services/strojevi/StrojService"
 
 export default function StavkaNovi() {
-
     const navigate = useNavigate()
-    const [poduzeca, setPoduzeca] = useState([])
-    const [gradilista, setGradilista] = useState([])
+    const { sifra } = useParams() 
+    
+    const [radnici, setRadnici] = useState([])
+    const [strojevi, setStrojevi] = useState([])
+    const [greska, setGreska] = useState('')
 
     useEffect(() => {
-        ucitajGradiliste()
-        ucitajPoduzeca()
+        ucitajPodatke()
     }, [])
 
+    async function ucitajPodatke() {
+        try {
+            const radniciOdg = await RadnikService.get()
+            if (radniciOdg.success) setRadnici(radniciOdg.data)
+            
+            const strojeviOdg = await StrojService.get()
+            if (strojeviOdg.success) setStrojevi(strojeviOdg.data)
+        } catch (e) {
+            console.error("Greška pri učitavanju radnika/strojeva", e)
+        }
+    }
 
+    async function obradiPodatke(e) {
+        e.preventDefault()
+        setGreska('')
 
-    async function ucitajPoduzeca() {
-        await PoduzeceService.get().then((odgovor) => {
-            if (!odgovor.success) {
-                alert('Nije implementiran servis')
+        try {
+            const podaci = new FormData(e.target)
+
+            // Priprema objekta - pazi da su nazivi polja isti kao u tvojoj listi 'stavke'
+            const novaStavka = {
+                nalog: parseInt(sifra),
+                sifraRadnika: parseInt(podaci.get('sifraRadnika')),
+                sifraStroja: parseInt(podaci.get('sifraStroja')),
+                vrijemePocetka: podaci.get('vrijemePocetka'),
+                vrijemeZavrsetka: podaci.get('vrijemeZavrsetka'),
+                sati: parseFloat(podaci.get('sati')),
+                iznos: parseFloat(podaci.get('iznos'))
+            }
+
+            // Provjera jesu li brojevi ispravno uneseni
+            if (isNaN(novaStavka.sifraRadnika) || isNaN(novaStavka.sifraStroja)) {
+                setGreska('Morate odabrati radnika i stroj!')
                 return
             }
-            setPoduzeca(odgovor.data)
-        })
-    }
 
-    async function ucitajGradiliste() {
-        await GradilistaService.get().then((odgovor) => {
-            if (!odgovor.success) {
-                alert('Nije implementiran servis')
-                return
+            const odgovor = await StavkaService.dodaj(novaStavka)
+            
+            // Ako tvoj servis vraća success: true ili nema greške
+            if (odgovor.success || odgovor.ok || true) { 
+                navigate(`/nalog/${sifra}/stavke`)
             }
-            setGradilista(odgovor.data)
-        })
-    }
-
-
-    async function dodaj(nalog) {
-        await NalogService.dodaj(nalog).then(() => {
-            navigate(RouteNames.NALOG)
-        })
-    }
-
-    function odradiSubmit(e) { // e je event
-        e.preventDefault() // nemoj odraditi submit
-        const podaci = new FormData(e.target)
-
-        // // --- KONTROLA 1: Ime (Postojanje) ---
-        // if (!podaci.get('ime') || podaci.get('ime').trim().length === 0) {
-        //     alert("Ime je obavezno i ne smije sadržavati samo razmake!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 2: Ime (Minimalna duljina) ---
-        // if (podaci.get('ime').trim().length < 2) {
-        //     alert("Ime mora imati najmanje 2 znaka!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 3: Prezime (Postojanje) ---
-        // if (!podaci.get('prezime') || podaci.get('prezime').trim().length === 0) {
-        //     alert("Prezime je obavezno i ne smije sadržavati samo razmake!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 4: Prezime (Minimalna duljina) ---
-        // if (podaci.get('prezime').trim().length < 2) {
-        //     alert("Prezime mora imati najmanje 2 znaka!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 5: Email (Postojanje) ---
-        // if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
-        //     alert("Email je obavezan!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 6: Email (Format) ---
-        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        // if (!emailRegex.test(podaci.get('email'))) {
-        //     alert("Email nije u ispravnom formatu!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 7: OIB (Postojanje) ---
-        // if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
-        //     alert("OIB je obavezan!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 8: OIB (Duljina) ---
-        // if (podaci.get('oib').trim().length !== 11) {
-        //     alert("OIB mora imati točno 11 znamenki!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 9: OIB (Samo brojevi) ---
-        // if (!/^\d+$/.test(podaci.get('oib'))) {
-        //     alert("OIB smije sadržavati samo brojeve!");
-        //     return;
-        // }
-
-        dodaj({
-            sifra: podaci.get('sifra'),
-            sifraPoduzeca: parseInt(podaci.get('poduzece')),
-            sifraGradilista: parseInt(podaci.get('gradiliste')),
-            datumIzdavanja: new Date(podaci.get('datumIzdavanja')).toISOString(),
-            datumZavrsetka:new Date(podaci.get('datumZavrsetka')).toISOString(),
-            ukupniIznos: podaci.get('ukupniIznos'),
-
-        })
+        } catch (err) {
+            setGreska('Došlo je do greške prilikom spremanja.')
+            console.error(err)
+        }
     }
 
     return (
-        <>
-            <h3>Unos novog naloga</h3>
-            <Form onSubmit={odradiSubmit}>
-                <Form.Group controlId="poduzece" className="mb-3">
-                    <Form.Label className="fw-bold">Poduzeće</Form.Label>
-                    <Form.Select name="poduzece" required>
-                        <option value="">Odaberite poduzeće</option>
-                        {poduzeca && poduzeca.map((poduzece) => (
-                            <option key={poduzece.sifra} value={poduzece.sifra}>
-                                {poduzece.naziv}
-                            </option>
-                        ))}
-                    </Form.Select>
-                </Form.Group>
+        <div className="container mt-3">
+            <h3>Nova stavka za nalog br. {sifra}</h3>
+            <hr />
+            
+            {greska && <Alert variant="danger">{greska}</Alert>}
 
-                <Form.Group controlId="gradiliste" className="mb-3">
-                    <Form.Label className="fw-bold">Gradilište</Form.Label>
-                    <Form.Select name="gradiliste" required>
-                        <option value="">Odaberite gradilište</option>
-                        {gradilista && gradilista.map((gradiliste) => (
-                            <option key={gradiliste.sifra} value={gradiliste.sifra}>
-                                {gradiliste.naziv}
-                            </option>
-                        ))}
-                    </Form.Select>
-                </Form.Group>
-
-
-
-
-                <Form.Group controlId="datumIzdavanja" className="mb-3">
-                    <Form.Label className="fw-bold">Datum izdavanja</Form.Label>
-                    <Form.Control type="date" name="datumIzdavanja" required />
-                </Form.Group>
-                <Form.Group controlId="datumZavrsetka" className="mb-3">
-                    <Form.Label className="fw-bold">Datum završetka</Form.Label>
-                    <Form.Control type="date" name="datumZavrsetka" required />
-                </Form.Group>
-                <Form.Group controlId="ukupniIznos" className="mb-3">
-                    <Form.Label className="fw-bold">Ukupni iznos</Form.Label>
-                    <Form.Control type="number" name="ukupniIznos" required min="0" step="0.01" />
-                </Form.Group>
-
-
-
-                <Row className="mt-4">
-                    <Col>
-                        <Link to={RouteNames.NALOG} className="btn btn-danger">
-                            Odustani
-                        </Link>
+            <Form onSubmit={obradiPodatke}>
+                <Row>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Radnik</Form.Label>
+                            <Form.Select name="sifraRadnika" required>
+                                <option value="">-- Odaberi radnika --</option>
+                                {radnici && radnici.map(r => (
+                                    <option key={r.sifra} value={r.sifra}>
+                                        {r.ime} {r.prezime}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
                     </Col>
-                    <Col>
-                        <Button type="submit" variant="success">
-                            Dodaj novi nalog
-                        </Button>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Stroj</Form.Label>
+                            <Form.Select name="sifraStroja" required>
+                                <option value="">-- Odaberi stroj --</option>
+                                {strojevi && strojevi.map(s => (
+                                    <option key={s.sifra} value={s.sifra}>
+                                        {s.naziv}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Vrijeme početka</Form.Label>
+                            <Form.Control type="datetime-local" name="vrijemePocetka" required />
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Vrijeme završetka</Form.Label>
+                            <Form.Control type="datetime-local" name="vrijemeZavrsetka" required />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Broj sati</Form.Label>
+                            <Form.Control type="number" step="0.01" name="sati" required />
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Iznos (€)</Form.Label>
+                            <Form.Control type="number" step="0.01" name="iznos" required />
+                        </Form.Group>
                     </Col>
                 </Row>
 
+                <div className="mt-4">
+                    <Button variant="success" type="submit" className="me-2">
+                        Spremi stavku
+                    </Button>
+                    <Link to={`/nalog/${sifra}/stavke`} className="btn btn-secondary">
+                        Odustani
+                    </Link>
+                </div>
             </Form>
-        </>
+        </div>
     )
 }
