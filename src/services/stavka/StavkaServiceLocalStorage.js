@@ -9,9 +9,9 @@ function spremiUStorage(podaci) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(podaci));
 }
 
-async function get() {
+async function get(nalog) {
     const stavke = dohvatiSveIzStorage();
-    return {success: true,  data: [...stavke] };
+    return {success: true,  data: [...stavke.filter(s=>s.nalog===nalog)] };
 }
 
 async function getBySifra(sifra) {

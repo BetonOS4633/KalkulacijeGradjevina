@@ -2,12 +2,12 @@ import { stavke } from "./StavkaPodaci";
 
 
 // 1/4 Read od CRUD-a - Create, Read, Update, Delete
-async function get() {
-    return{data:[...stavke]}
+async function get(nalog) {
+    return{success: true, data:[...stavke.filter((s)=>s.nalog===parseInt(nalog))]}
 }
 
 async function getBySifra(sifra) {
-   return {data: stavke.find(s => s.sifra === parseInt(sifra))} 
+   return {success: true, data: stavke.find(s => s.sifra === parseInt(sifra))} 
 }
 
 // 2/4 Create CRUD

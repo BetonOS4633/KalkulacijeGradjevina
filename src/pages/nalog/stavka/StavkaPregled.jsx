@@ -12,43 +12,42 @@ export default function StavkaPregled() {
     const params = useParams()
     
     const [stavke, setStavke] = useState([])
-    const [podaciONalogu, setPodaciONalogu] = useState(null)
-    const [ucitavanje, setUcitavanje] = useState(true)
-
-    // Izračun zbroja koristeći tvoj ključ 'iznos'
-    const ukupniIznos = stavke.reduce((acc, s) => acc + Number(s.iznos || 0), 0);
+    const [nalog, setNalog] = useState({})
+    const [poduzece, setPoduzece] = useState({})
+    const [gradiliste, setGradiliste] = useState({})
+  
 
     useEffect(() => {
         dohvatiSvePodatke()
     }, [params.sifra])
 
+    const ukupniIznos = stavke.reduce((acc, s) => acc + Number(s.iznos || 0), 0);
+  
+
     async function dohvatiSvePodatke() {
-        setUcitavanje(true)
-        
+
         // Dohvat naloga za zaglavlje
+        const odgovor = await StavkaService.get(params.sifra)
+        if (odgovor.success) {
+            setStavke(odgovor.data)
+        }
+
         const nalogOdgovor = await NalogService.getBySifra(params.sifra)
         if (nalogOdgovor.success) {
-            const nalog = nalogOdgovor.data
-            
-            // Dohvat naziva poduzeća i gradilišta
-            const [poduzeceOdg, gradilisteOdg] = await Promise.all([
-                PoduzeceService.getBySifra(nalog.sifraPoduzeca),
-                GradilisteService.getBySifra(nalog.sifraGradilista)
-            ])
-
-            setPodaciONalogu({
-                poduzece: poduzeceOdg.success ? poduzeceOdg.data.naziv : 'N/A',
-                zgrada: gradilisteOdg.success ? gradilisteOdg.data.naziv : 'N/A'
-            })
+            setNalog(nalogOdgovor.data)
         }
 
-        // Dohvat stavki koristeći tvoju strukturu (filter po 'nalog')
-        const stavkeOdgovor = await StavkaService.getPoNalogu(params.sifra)
-        if (stavkeOdgovor.success) {
-            setStavke(stavkeOdgovor.data)
+        const poduzeceOdgovor = await PoduzeceService.getBySifra(nalogOdgovor.data.sifraPoduzeca)
+        if (poduzeceOdgovor.success){
+            setPoduzece(poduzeceOdgovor.data)
         }
 
-        setUcitavanje(false)
+        const gradilisteOdgovor = await GradilisteService.getBySifra(nalogOdgovor.data.sifraGradilista)
+        if (gradilisteOdgovor.success){
+            setGradiliste(gradilisteOdgovor.data)
+        }
+
+
     }
 
     async function brisanje(sifra) {
@@ -69,14 +68,15 @@ export default function StavkaPregled() {
                         <Col md={4}>
                             <div className="text-muted small text-uppercase">Nalog broj</div>
                             <h4 className="fw-bold">{params.sifra}</h4>
+                            Planirani iznos {nalog.ukupniIznos}
                         </Col>
                         <Col md={4} className="border-start border-end">
                             <div className="text-muted small text-uppercase">Poduzeće</div>
-                            <h4 className="fw-bold">{podaciONalogu?.poduzece || '...'}</h4>
+                            <h4 className="fw-bold">{poduzece.naziv}</h4>
                         </Col>
                         <Col md={4}>
                             <div className="text-muted small text-uppercase">Zgrada / Gradilište</div>
-                            <h4 className="fw-bold">{podaciONalogu?.zgrada || '...'}</h4>
+                            <h4 className="fw-bold">{gradiliste.naziv}</h4>
                         </Col>
                     </Row>
                 </Card.Body>
@@ -127,7 +127,7 @@ export default function StavkaPregled() {
                 </tfoot>
             </Table>
 
-            {stavke.length === 0 && !ucitavanje && (
+            {stavke.length === 0 && (
                 <Alert variant="info">Ovaj nalog nema stavki u bazi.</Alert>
             )}
         </div>

@@ -3,11 +3,11 @@ import { strojevi } from "./StrojPodaci";
 
 // 1/4 Read od CRUD-a - Create, Read, Update, Delete
 async function get() {
-    return{data:[...strojevi]}
+    return{success: true, data:[...strojevi]}
 }
 
 async function getBySifra(sifra) {
-   return {data: strojevi.find(s => s.sifra === parseInt(sifra))} 
+   return {success: true, data: strojevi.find(s => s.sifra === parseInt(sifra))} 
 }
 
 // 2/4 Create CRUD
