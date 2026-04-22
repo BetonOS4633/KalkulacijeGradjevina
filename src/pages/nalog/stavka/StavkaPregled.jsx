@@ -1,78 +1,135 @@
 import { useEffect, useState } from "react"
-import { Button, Table, Alert } from "react-bootstrap"
+import { Button, Table, Alert, Card, Row, Col } from "react-bootstrap"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { RouteNames } from "../../../constants"
-import StavkaService from "../../../services/stavka/StavkaService" // Putanja do tvog servisa
+import StavkaService from "../../../services/stavka/StavkaService"
+import NalogService from "../../../services/nalog/NalogService"
+import PoduzeceService from "../../../services/poduzece/PoduzeceService"
+import GradilisteService from "../../../services/gradiliste/GradilistaService"
 
 export default function StavkaPregled() {
     const navigate = useNavigate()
     const params = useParams()
+    
     const [stavke, setStavke] = useState([])
+    const [podaciONalogu, setPodaciONalogu] = useState(null)
     const [ucitavanje, setUcitavanje] = useState(true)
 
+    // Izračun zbroja koristeći tvoj ključ 'iznos'
+    const ukupniIznos = stavke.reduce((acc, s) => acc + Number(s.iznos || 0), 0);
+
     useEffect(() => {
-        dohvatiStavkeIzBaze()
+        dohvatiSvePodatke()
     }, [params.sifra])
 
-    async function dohvatiStavkeIzBaze() {
+    async function dohvatiSvePodatke() {
         setUcitavanje(true)
-        // Ovdje se događa "ruta" - dohvaćanje podataka s backenda
-        const odgovor = await StavkaService.getPoNalogu(params.sifra)
         
-        if(odgovor.ok) {
-            setStavke(odgovor.podaci) // Pretpostavka da servis vraća objekt s podacima
-        } else {
-            console.log(odgovor.greska)
+        // Dohvat naloga za zaglavlje
+        const nalogOdgovor = await NalogService.getBySifra(params.sifra)
+        if (nalogOdgovor.success) {
+            const nalog = nalogOdgovor.data
+            
+            // Dohvat naziva poduzeća i gradilišta
+            const [poduzeceOdg, gradilisteOdg] = await Promise.all([
+                PoduzeceService.getBySifra(nalog.sifraPoduzeca),
+                GradilisteService.getBySifra(nalog.sifraGradilista)
+            ])
+
+            setPodaciONalogu({
+                poduzece: poduzeceOdg.success ? poduzeceOdg.data.naziv : 'N/A',
+                zgrada: gradilisteOdg.success ? gradilisteOdg.data.naziv : 'N/A'
+            })
         }
+
+        // Dohvat stavki koristeći tvoju strukturu (filter po 'nalog')
+        const stavkeOdgovor = await StavkaService.getPoNalogu(params.sifra)
+        if (stavkeOdgovor.success) {
+            setStavke(stavkeOdgovor.data)
+        }
+
         setUcitavanje(false)
     }
 
-    return (
-        <>
-            <Link to={RouteNames.NALOG} className="btn btn-danger">Vrati</Link>
-            <h2 className="mt-3">Stavke za nalog br. {params.sifra}</h2>
-            <hr />
+    async function brisanje(sifra) {
+        if (!confirm('Sigurno obrisati?')) return
+        const odgovor = await StavkaService.obrisi(sifra)
+        if (odgovor.success) {
+            dohvatiSvePodatke()
+        }
+    }
 
-            {ucitavanje ? (
-                <p>Učitavanje stavki....</p>
-            ) : (
-                <Table striped bordered hover responsive>
-                    <thead>
-                        <tr>
-                            <th>Stavka</th>
-                            <th>Radnik</th>
-                            <th>Stroj</th>
-                            <th>Početak</th>
-                            <th>Završetak</th>
-                            <th>Sati</th>
-                            <th>Iznos</th>
-                            <th>Akcija</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {stavke && stavke.map((s) => (
-                            <tr key={stavke.sifra}>
-                                <td>{stavke.sifra}</td>
-                                <td>{stavke.sifraRadnika}</td>
-                                <td>{stavke.sifraStroja}</td>
-                                <td>{new Date(stavke.vrijemePocetka).toLocaleString('hr-HR')}</td>
-                                <td>{new Date(stavke.vrijemeZavrsetka).toLocaleString('hr-HR')}</td>
-                                <td>{stavke.sati} h</td>
-                                <td>{Number(stavke.iznos).toFixed(2)} €</td>
-                                <td>
-                                    <Button variant="primary" size="sm" onClick={() => navigate(`/stavka/promjena/${stavke.sifra}`)}>
-                                        Uredi
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
-            )}
+    return (
+        <div className="container">
+            <Link to={RouteNames.NALOG} className="btn btn-danger mt-3">Vrati</Link>
             
-            {!ucitavanje && stavke.length === 0 && (
-                <Alert variant="info">Ovaj nalog još nema unesenih stavki.</Alert>
+            <Card className="mt-3 mb-4 shadow-sm">
+                <Card.Body>
+                    <Row className="text-center">
+                        <Col md={4}>
+                            <div className="text-muted small text-uppercase">Nalog broj</div>
+                            <h4 className="fw-bold">{params.sifra}</h4>
+                        </Col>
+                        <Col md={4} className="border-start border-end">
+                            <div className="text-muted small text-uppercase">Poduzeće</div>
+                            <h4 className="fw-bold">{podaciONalogu?.poduzece || '...'}</h4>
+                        </Col>
+                        <Col md={4}>
+                            <div className="text-muted small text-uppercase">Zgrada / Gradilište</div>
+                            <h4 className="fw-bold">{podaciONalogu?.zgrada || '...'}</h4>
+                        </Col>
+                    </Row>
+                </Card.Body>
+            </Card>
+
+            <Table striped bordered hover responsive>
+                <thead className="table-dark">
+                    <tr>
+                        <th>Stavka</th>
+                        <th>Radnik</th>
+                        <th>Stroj</th>
+                        <th>Početak</th>
+                        <th>Završetak</th>
+                        <th>Sati</th>
+                        <th className="text-end">Iznos</th>
+                        <th className="text-center">Akcija</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {stavke && stavke.map((s) => (
+                        <tr key={s.sifra}>
+                            <td>{s.sifra}</td>
+                            <td>{s.sifraRadnika}</td>
+                            <td>{s.sifraStroja}</td>
+                            <td>{new Date(s.vrijemePocetka).toLocaleString('hr-HR')}</td>
+                            <td>{new Date(s.vrijemeZavrsetka).toLocaleString('hr-HR')}</td>
+                            <td>{s.sati} h</td>
+                            <td className="text-end">{Number(s.iznos).toFixed(2)} €</td>
+                            <td className="text-center">
+                                <Button variant="primary" size="sm" className="me-2" onClick={() => navigate(`/stavka/promjena/${s.sifra}`)}>
+                                    Uredi
+                                </Button>
+                                <Button variant="danger" size="sm" onClick={() => brisanje(s.sifra)}>
+                                    Obriši
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+                <tfoot>
+                    <tr className="table-secondary fw-bold">
+                        <td colSpan="6" className="text-end">UKUPAN IZNOS RADOVA:</td>
+                        <td className="text-end text-primary">
+                            {ukupniIznos.toFixed(2)} €
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </Table>
+
+            {stavke.length === 0 && !ucitavanje && (
+                <Alert variant="info">Ovaj nalog nema stavki u bazi.</Alert>
             )}
-        </>
+        </div>
     )
 }
