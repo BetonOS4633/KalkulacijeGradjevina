@@ -35,7 +35,6 @@ export default function StavkaNovi() {
 
         try {
             const podaci = new FormData(e.target)
-
             // Priprema objekta - pazi da su nazivi polja isti kao u tvojoj listi 'stavke'
             const novaStavka = {
                 nalog: parseInt(sifra),
