@@ -13,7 +13,7 @@ async function getBySifra(sifra) {
 // 2/4 Create CRUD
 async function dodaj(stavka) {
     if(stavke.length>0){
-    stroj.sifra=stavke[stavke.length-1].sifra+1;
+    stavke.sifra=stavke[stavke.length-1].sifra+1;
     }else{
         stavka.sifra=1
     }
