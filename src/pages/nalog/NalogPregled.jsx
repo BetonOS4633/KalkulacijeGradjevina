@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react"
 import NalogService from "../../services/nalog/NalogService"
 import PoduzeceService from "../../services/poduzece/PoduzeceService"
@@ -7,6 +8,9 @@ import { Link, useNavigate } from "react-router-dom"
 import { RouteNames } from "../../constants"
 import FormatDatum from "../../components/Formatdatum"
 import { NumericFormat } from "react-number-format"
+
+// 📌 Uvoz ikona iz react-icons
+import { FaEdit, FaTrash, FaEye } from "react-icons/fa"
 
 export default function NalogPregled() {
 
@@ -56,6 +60,7 @@ export default function NalogPregled() {
     async function brisanje(sifra) {
         if (!confirm('Sigurno obrisati?')) return;
         await NalogService.obrisi(sifra);
+       
         await NalogService.get().then((odgovor) => {
             setNalozi(odgovor.data)
         })
@@ -68,8 +73,6 @@ export default function NalogPregled() {
 
     function dohvatiNazivGradilista(sifraGradilista) {
         const gradiliste = gradilista.find(p => p.sifra === sifraGradilista)
-      //  console.table(gradilista)
-      //  console.log(gradiliste.naziv)
         return gradiliste ? gradiliste.naziv : 'N/A'
     }
 
@@ -87,7 +90,7 @@ export default function NalogPregled() {
                         <th>Poduzece</th>
                         <th>Gradiliste</th>
                         <th>Ukupni iznos</th>
-                        <th>Akcija</th>
+                        <th className="text-center">Akcija</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -107,16 +110,37 @@ export default function NalogPregled() {
                             </td>
 
 
-                            <td>
-                                <Button onClick={() => { navigate(`/nalog/${nalog.sifra}`) }}>
-                                    Promjeni
+                            <td className="text-center">
+                                {/* ✏️ Ikona za promjenu */}
+                                <Button 
+                                    variant="outline-primary" 
+                                    size="sm" 
+                                    className="me-2"
+                                    title="Promjeni"
+                                    onClick={() => { navigate(`/nalog/${nalog.sifra}`) }}
+                                >
+                                    <FaEdit />
                                 </Button>
-                                &nbsp;&nbsp;
-                                <Button variant="danger" onClick={() => brisanje(nalog.sifra)}>
-                                    Obriši
+                                
+                                {/* 👁️ Ikona za pregled naloga */}
+                                <Button 
+                                    variant="outline-info" 
+                                    size="sm" 
+                                    className="me-2"
+                                    title="Pregled naloga"
+                                    onClick={() => { navigate(`/nalog/${nalog.sifra}/stavke`) }}
+                                >
+                                    <FaEye />
                                 </Button>
-                                <Button onClick={() => { navigate(`/nalog/${nalog.sifra}/stavke`) }}>
-                                    Pregled naloga
+
+                                {/* 🗑️ Ikona za brisanje */}
+                                <Button 
+                                    variant="danger" 
+                                    size="sm"
+                                    title="Obriši"
+                                    onClick={() => brisanje(nalog.sifra)}
+                                >
+                                    <FaTrash />
                                 </Button>
                             </td>
                         </tr>

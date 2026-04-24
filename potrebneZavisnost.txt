@@ -4,3 +4,7 @@ npm install react-router-dom
 
 npm install react-number-format
 npm install react-icons
+
+npm install react-icons
+
+npm install jspdf jspdf-autotable

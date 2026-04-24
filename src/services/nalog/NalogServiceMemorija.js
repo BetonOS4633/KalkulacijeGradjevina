@@ -28,7 +28,7 @@ async function promjeni(sifra,nalog) {
 }
 
 function nadiIndex(sifra){
-    return nalozi.findIndex(s => s.nalog === parseInt(sifra))
+    return nalozi.findIndex(s => s.sifra === parseInt(sifra))
 }
 
 async function obrisi(sifra) {
