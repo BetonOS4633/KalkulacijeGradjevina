@@ -144,7 +144,7 @@
 // import { z } from "zod"
 
 // // 1. Definiranje Zod sheme (ostaje ista zbog matematičke kontrole OIB-a)
-// const gradilisteSchema = z.object({
+// const GradilisteSchema = z.object({
 //     naziv: z.string().trim().min(2, "Naziv mora imati najmanje 2 znaka"),
 //     adresa: z.string().trim().min(2, "Adresa mora imati najmanje 2 znaka (Ulica i broj)"),
 //     mjesto: z.string().trim().regex(/\d{5}/, "Mjesto mora sadržavati poštanski broj (5 znamenki)"),
@@ -178,7 +178,7 @@
 //         const { name, value } = e.target;
 
 //         // Validacija samo polja koje se mijenja
-//         const poljeSchema = gradilisteSchema.pick({ [name]: true });
+//         const poljeSchema = GradilisteSchema.pick({ [name]: true });
 //         const rezultat = poljeSchema.safeParse({ [name]: value });
 
 //         if (!rezultat.success) {
@@ -206,7 +206,7 @@
 //         const formData = new FormData(e.target);
 //         const podaci = Object.fromEntries(formData.entries());
 
-//         const rezultat = gradilisteSchema.safeParse(podaci);
+//         const rezultat = GradilisteSchema.safeParse(podaci);
 
 //         if (!rezultat.success) {
 //             const noveGreske = {};
@@ -306,31 +306,7 @@ import { RouteNames } from "../../constants"
 import { Link, useNavigate } from "react-router-dom"
 import GradilisteService from "../../services/gradiliste/GradilistaService"
 import { useState } from "react"
-import { z } from "zod"
-
-// 1. Definiranje Zod sheme (Ispravna provjera mjesta i OIB-a)
-const gradilisteSchema = z.object({
-    naziv: z.string().trim().min(2, "Naziv mora imati najmanje 2 znaka"),
-    adresa: z.string().trim().min(2, "Adresa mora sadržavati ulicu i broj"),
-    mjesto: z.string().trim().regex(/\d{5}/, "Mjesto mora sadržavati poštanski broj (5 znamenki)"),
-    oib: z.string().trim()
-        .length(11, "OIB mora imati točno 11 znamenki")
-        .regex(/^\d+$/, "OIB smije sadržavati samo brojeve")
-        .refine((oib) => {
-            if (oib.length !== 11) return false;
-            let a = 10;
-            for (let i = 0; i < 10; i++) {
-                a = a + parseInt(oib.substr(i, 1), 10);
-                a = a % 10;
-                if (a === 0) a = 10;
-                a *= 2;
-                a = a % 11;
-            }
-            let kontrolni = 11 - a;
-            if (kontrolni === 10) kontrolni = 0;
-            return kontrolni === parseInt(oib.substr(10, 1), 10);
-        }, "OIB nije matematički ispravan")
-});
+import { GradilisteSchema } from "../../shemas/GradilisteShema"
 
 export default function GradilisteNovi() {
     const navigate = useNavigate();
@@ -339,7 +315,7 @@ export default function GradilisteNovi() {
     // Kontrola u stvarnom vremenu
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const poljeSchema = gradilisteSchema.pick({ [name]: true });
+        const poljeSchema = GradilisteSchema.pick({ [name]: true });
         const rezultat = poljeSchema.safeParse({ [name]: value });
 
         if (!rezultat.success) {
@@ -361,7 +337,7 @@ export default function GradilisteNovi() {
         const formData = new FormData(e.target);
         const podaci = Object.fromEntries(formData.entries());
 
-        const rezultat = gradilisteSchema.safeParse(podaci);
+        const rezultat = GradilisteSchema.safeParse(podaci);
 
         if (!rezultat.success) {
             const noveGreske = {};
