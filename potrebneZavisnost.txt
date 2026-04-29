@@ -11,3 +11,6 @@ npm install jspdf jspdf-autotable
 
 
 npm install react-bootstrap bootstrap
+
+
+npm install zod
