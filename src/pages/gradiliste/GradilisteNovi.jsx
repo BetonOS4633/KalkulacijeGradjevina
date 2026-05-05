@@ -6,8 +6,13 @@
 // import { useState } from "react"
 // import { z } from "zod"
 
+<<<<<<< HEAD
 // // 1. Definiranje Zod sheme (Ispravna provjera mjesta i OIB-a)
 // const gradilisteSchema = z.object({
+=======
+// // 1. Definiranje Zod sheme (ostaje ista zbog matematičke kontrole OIB-a)
+// const GradilisteSchema = z.object({
+>>>>>>> 3668e0c119442f759476492bda06e0f2657ab726
 //     naziv: z.string().trim().min(2, "Naziv mora imati najmanje 2 znaka"),
 //     adresa: z.string().trim().min(2, "Adresa mora sadržavati ulicu i broj"),
 //     mjesto: z.string().trim().regex(/\d{5}/, "Mjesto mora sadržavati poštanski broj (5 znamenki)"),
@@ -37,7 +42,13 @@
 //     // Kontrola u stvarnom vremenu
 //     const handleChange = (e) => {
 //         const { name, value } = e.target;
+<<<<<<< HEAD
 //         const poljeSchema = gradilisteSchema.pick({ [name]: true });
+=======
+
+//         // Validacija samo polja koje se mijenja
+//         const poljeSchema = GradilisteSchema.pick({ [name]: true });
+>>>>>>> 3668e0c119442f759476492bda06e0f2657ab726
 //         const rezultat = poljeSchema.safeParse({ [name]: value });
 
 //         if (!rezultat.success) {
@@ -59,7 +70,7 @@
 //         const formData = new FormData(e.target);
 //         const podaci = Object.fromEntries(formData.entries());
 
-//         const rezultat = gradilisteSchema.safeParse(podaci);
+//         const rezultat = GradilisteSchema.safeParse(podaci);
 
 //         if (!rezultat.success) {
 //             const noveGreske = {};
@@ -141,6 +152,7 @@ import { RouteNames } from "../../constants"
 import { Link, useNavigate } from "react-router-dom"
 import GradilisteService from "../../services/gradiliste/GradilistaService"
 import { useState } from "react"
+<<<<<<< HEAD
 import { z } from "zod"
 
 // 1. Definiranje Zod sheme s novim pravilom za mjesto
@@ -167,6 +179,9 @@ const gradilisteSchema = z.object({
             return kontrolni === parseInt(oib.substr(10, 1), 10);
         }, "OIB nije matematički ispravan")
 });
+=======
+import { GradilisteSchema } from "../../shemas/GradilisteShema"
+>>>>>>> 3668e0c119442f759476492bda06e0f2657ab726
 
 export default function GradilisteNovi() {
     const navigate = useNavigate();
@@ -174,7 +189,7 @@ export default function GradilisteNovi() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const poljeSchema = gradilisteSchema.pick({ [name]: true });
+        const poljeSchema = GradilisteSchema.pick({ [name]: true });
         const rezultat = poljeSchema.safeParse({ [name]: value });
 
         if (!rezultat.success) {
@@ -200,7 +215,7 @@ export default function GradilisteNovi() {
         const formData = new FormData(e.target);
         const podaci = Object.fromEntries(formData.entries());
 
-        const rezultat = gradilisteSchema.safeParse(podaci);
+        const rezultat = GradilisteSchema.safeParse(podaci);
 
         if (!rezultat.success) {
             const noveGreske = {};
