@@ -1,0 +1,6 @@
+Stroj[{ sifra: 1, naziv: 'Bušilica', trajanje: 130, cijena: 1250.99, datumPokretanja: '2024-02-21T17:00:00', datumKraja: '2024-03-15T12:00:00', aktivan: true}]
+Radnik[{sifra: 1, ime: 'Marko', prezime: 'Marković', email: 'marko.markovic@example.com', oib: '12345678901'}]
+Poduzece[{ sifra: 1, naziv: 'Termos doo', adresa: 'Meštorovićeva 123', mjesto: 'Zagreb', email: 'marko.markovic@example.com', telefon: '0123456789', oib: '12345678903'}]
+Gradiliste[{ sifra: 6, naziv: 'Tomislav Tomić', adresa: 'Yet Another Address 101', mjjesto: 'Zagreb', oib: '56789012345'}]
+Nalog[{sifra: 3, sifraPoduzeca: 3,sifraGradilista: 3,ukupniIznos: 3000}]
+Stavka[{nalog: 1, sifra: 2, sifraRadnika: 2, sifraStroja: 2, vrijemePocetka: '2023-02-01T08:00:00', vrijemeZavrsetka: '2023-02-28T10:30:00', sati: 42.5, iznos: 2000}]

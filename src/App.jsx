@@ -31,6 +31,11 @@ import StavkaPregled from './pages/nalog/stavka/StavkaPregled'
 import StavkaNovi from './pages/nalog/stavka/StavkaNovi'
 import StavkaPromjena from './pages/nalog/stavka/StavkaPromjena'
 
+
+import Generator from './pages/generiranje/generator'
+
+
+
 // 1. Uvezi sliku (provjeri putanju do assets mape)
 import logoBetonOs from './assets/BetonOs.jpg'
 
@@ -61,6 +66,12 @@ function App() {
           <Route path={RouteNames.NALOG_STAVKE} element={<StavkaPregled />} />
           <Route path={RouteNames.NALOG_STAVKE_NOVA} element={<StavkaNovi />} />
           <Route path={RouteNames.NALOG_STAVKE_PROMJENA} element={<StavkaPromjena />} />
+          <Route path={RouteNames.GENERIRANJE} element={<Generator />} />
+          
+
+
+
+
         </Routes>
       </Container>
 

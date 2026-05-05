@@ -26,8 +26,8 @@ export const RouteNames={
     NALOG_STAVKE: '/nalog/:sifra/stavke',
     NALOG_STAVKE_NOVA: '/nalog/:sifra/stavke/nova',
     NALOG_STAVKE_PROMJENA: '/nalog/:sifraNalog/stavke/:sifraStavka',
- 
-
+  
+    GENERIRANJE: '/generiranje'     
 
 
 
