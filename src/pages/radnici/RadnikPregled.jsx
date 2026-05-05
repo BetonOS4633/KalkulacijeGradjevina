@@ -1,13 +1,91 @@
+// import { useEffect, useState } from "react"
+// import RadnikService from "../../services/radnici/RadnikService"
+// import { Button, Table } from "react-bootstrap"
+// import { Link, useNavigate } from "react-router-dom"
+// import { RouteNames } from "../../constants"
+
+// export default function RadnikPregled(){
+
+//     const navigate = useNavigate()
+
+//     const [radnici, setRadnici] = useState([])
+
+//     useEffect(()=>{
+//         ucitajRadnike()
+//     },[])
+
+//     async function ucitajRadnike() {
+//         await RadnikService.get().then((odgovor)=>{
+//             if(!odgovor.success){
+//                 alert('Nije implementiran servis')
+//                 return
+//             }
+//             setRadnici(odgovor.data)
+//         })
+//     }
+
+//     async function brisanje(sifra) {
+//         if (!confirm('Sigurno obrisati?')) return;
+//         await RadnikService.obrisi(sifra);
+//         await RadnikService.get().then((odgovor)=>{
+//             setRadnici(odgovor.data)
+//         })
+//     }
+
+//     return(
+//         <>
+//         <Link to={RouteNames.RADNICI_NOVI}
+//         className="btn btn-success w-100 my-3">
+//             Dodavanje novog radnika
+//         </Link>
+//         <Table striped bordered hover>
+//             <thead>
+//                 <tr>
+                    
+//                     <th>Ime</th>
+//                     <th>Prezime</th>
+//                     <th>Email</th>
+//                     <th>OIB</th>
+//                     <th>Akcije</th>
+                    
+//                 </tr>
+//             </thead>
+//             <tbody>
+//                 {radnici && radnici.map((radnik)=>(
+//                     <tr key={radnik.sifra}>
+//                         <td className="lead">{radnik.ime}</td>
+//                         <td className="lead">{radnik.prezime}</td>
+//                         <td>{radnik.email}</td>
+//                         <td>{radnik.oib}</td>
+//                         <td>
+//                             <Button onClick={()=>{navigate(`/radnici/${radnik.sifra}`)}}>
+//                                 Promjeni
+//                             </Button>
+//                             &nbsp;&nbsp;
+//                             <Button variant="danger" onClick={() => brisanje(radnik.sifra)}>
+//                                 Obriši
+//                             </Button>
+//                         </td>
+//                     </tr>
+//                 ))}
+//             </tbody>
+//         </Table>
+//         </>
+//     )
+// }
+
+
 import { useEffect, useState } from "react"
 import RadnikService from "../../services/radnici/RadnikService"
 import { Button, Table } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { RouteNames } from "../../constants"
+// Uvoz ikona (Font Awesome set)
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa"
 
 export default function RadnikPregled(){
 
     const navigate = useNavigate()
-
     const [radnici, setRadnici] = useState([])
 
     useEffect(()=>{
@@ -15,39 +93,34 @@ export default function RadnikPregled(){
     },[])
 
     async function ucitajRadnike() {
-        await RadnikService.get().then((odgovor)=>{
-            if(!odgovor.success){
-                alert('Nije implementiran servis')
-                return
-            }
-            setRadnici(odgovor.data)
-        })
+        const odgovor = await RadnikService.get();
+        if(!odgovor.success){
+            alert('Nije implementiran servis');
+            return;
+        }
+        setRadnici(odgovor.data);
     }
 
     async function brisanje(sifra) {
         if (!confirm('Sigurno obrisati?')) return;
         await RadnikService.obrisi(sifra);
-        await RadnikService.get().then((odgovor)=>{
-            setRadnici(odgovor.data)
-        })
+        ucitajRadnike(); // Osvježi listu pozivom postojeće funkcije
     }
 
     return(
         <>
         <Link to={RouteNames.RADNICI_NOVI}
         className="btn btn-success w-100 my-3">
-            Dodavanje novog radnika
+            <FaPlus /> Dodavanje novog radnika
         </Link>
-        <Table striped bordered hover>
+        <Table striped bordered hover responsive>
             <thead>
                 <tr>
-                    
                     <th>Ime</th>
                     <th>Prezime</th>
                     <th>Email</th>
                     <th>OIB</th>
-                    <th>Akcije</th>
-                    
+                    <th className="text-center">Akcije</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,13 +130,21 @@ export default function RadnikPregled(){
                         <td className="lead">{radnik.prezime}</td>
                         <td>{radnik.email}</td>
                         <td>{radnik.oib}</td>
-                        <td>
-                            <Button onClick={()=>{navigate(`/radnici/${radnik.sifra}`)}}>
-                                Promjeni
+                        <td className="text-center">
+                            <Button 
+                                variant="primary"
+                                onClick={()=>{navigate(`/radnici/${radnik.sifra}`)}}
+                                title="Promjeni"
+                            >
+                                <FaEdit />
                             </Button>
                             &nbsp;&nbsp;
-                            <Button variant="danger" onClick={() => brisanje(radnik.sifra)}>
-                                Obriši
+                            <Button 
+                                variant="danger" 
+                                onClick={() => brisanje(radnik.sifra)}
+                                title="Obriši"
+                            >
+                                <FaTrash />
                             </Button>
                         </td>
                     </tr>

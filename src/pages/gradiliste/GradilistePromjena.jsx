@@ -1,157 +1,159 @@
+
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import GradilisteService from "../../services/gradiliste/GradilistaService"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { RouteNames } from "../../constants"
+import { z } from "zod"
+
+// 1. Definiranje iste Zod sheme kao u GradilisteNovi
+const gradilisteSchema = z.object({
+    naziv: z.string().trim().min(2, "Naziv mora imati najmanje 2 znaka"),
+    adresa: z.string().trim().min(2, "Adresa mora sadržavati ulicu i broj"),
+    mjesto: z.string().trim().regex(/^\d{4,}\s.{2,}$/, "Mjesto mora biti u formatu: poštanski broj (min. 4 znamenke) razmak naziv mjesta (min. 2 znaka)"),
+    oib: z.string().trim()
+        .length(11, "OIB mora imati točno 11 znamenki")
+        .regex(/^\d+$/, "OIB smije sadržavati samo brojeve")
+        .refine((oib) => {
+            if (oib.length !== 11) return false;
+            let a = 10;
+            for (let i = 0; i < 10; i++) {
+                a = a + parseInt(oib.substr(i, 1), 10);
+                a = a % 10;
+                if (a === 0) a = 10;
+                a *= 2;
+                a = a % 11;
+            }
+            let kontrolni = 11 - a;
+            if (kontrolni === 10) kontrolni = 0;
+            return kontrolni === parseInt(oib.substr(10, 1), 10);
+        }, "OIB nije matematički ispravan")
+});
 
 export default function GradilistePromjena(){
 
     const navigate = useNavigate()
     const params = useParams()
     const [gradiliste, setGradiliste] = useState({})
+    const [greske, setGreske] = useState({}) // Stanje za pogreške
 
     useEffect(()=>{
         ucitajGradiliste()
     },[])
 
     async function ucitajGradiliste() {
-        await GradilisteService.getBySifra(params.sifra).then((odgovor)=>{
-            if(!odgovor.success){
-                alert('Nije implementiran servis')
-                return
-            }
-            setGradiliste(odgovor.data)
-        })
+        const odgovor = await GradilisteService.getBySifra(params.sifra);
+        if(!odgovor.success){
+            alert('Nije moguće dohvatiti podatke o gradilištu');
+            return;
+        }
+        setGradiliste(odgovor.data);
     }
 
-    async function promjeni(gradiliste) {
-        await GradilisteService.promjeni(params.sifra,gradiliste).then(()=>{
+    // Kontrola u stvarnom vremenu
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        const poljeSchema = gradilisteSchema.pick({ [name]: true });
+        const rezultat = poljeSchema.safeParse({ [name]: value });
+
+        if (!rezultat.success) {
+            const formatirano = rezultat.error.format();
+            setGreske(prev => ({ ...prev, [name]: formatirano[name]?._errors[0] }));
+        } else {
+            setGreske(prev => ({ ...prev, [name]: undefined }));
+        }
+    };
+
+    async function promjeni(podaci) {
+        await GradilisteService.promjeni(params.sifra, podaci).then(()=>{
             navigate(RouteNames.GRADILISTE)
         })
     }
 
     function odradiSubmit(e){
         e.preventDefault()
-        const podaci = new FormData(e.target)
+        const formData = new FormData(e.target)
+        const podaci = Object.fromEntries(formData.entries());
 
-         // --- KONTROLA 1: Naziv (Postojanje) ---
-         if (!podaci.get('naziv') || podaci.get('naziv').trim().length === 0) {
-             alert("Naziv je obavezan i ne smije sadržavati samo razmake!");
-             return;
-         }
+        const rezultat = gradilisteSchema.safeParse(podaci);
 
-         // --- KONTROLA 2: Naziv (Minimalna duljina) ---
-         if (podaci.get('naziv').trim().length < 2) {
-             alert("Naziv mora imati najmanje 2 znaka!");
-             return;
-         }
+        if (!rezultat.success) {
+            const noveGreske = {};
+            rezultat.error.errors.forEach(err => {
+                noveGreske[err.path[0]] = err.message;
+            });
+            setGreske(noveGreske);
+            return;
+        }
 
-         // --- KONTROLA 3: Adresa (Postojanje) ---
-         if (!podaci.get('adresa') || podaci.get('adresa').trim().length === 0) {
-             alert("Adresa je obavezna i ne smije sadržavati samo razmake!");
-             return;
-         }
-
-         // --- KONTROLA 4: Adresa (Minimalna duljina) ---
-         if (podaci.get('adresa').trim().length < 2) {
-             alert("Adresa mora imati najmanje 2 znaka!");
-             return;
-         }
-         // --- KONTROLA 5: Mjesto (Postojanje) ---
-         if (!podaci.get('mjesto') || podaci.get('mjesto').trim().length === 0) {
-             alert("Mjesto je obavezno i ne smije sadržavati samo razmake!");
-             return;
-         }
-
-         // --- KONTROLA 6: Mjesto (Minimalna duljina) ---
-         if (podaci.get('mjesto').trim().length < 2) {
-             alert("Mjesto mora imati najmanje 2 znaka!");
-             return;
-         }
-
-
-
-
-        //  // --- KONTROLA 5: Email (Postojanje) ---
-        //  if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
-        //      alert("Email je obavezan!");
-        //      return;
-        //  }
-
-        //  // --- KONTROLA 6: Email (Format) ---
-        //  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        //  if (!emailRegex.test(podaci.get('email'))) {
-        //      alert("Email nije u ispravnom formatu!");
-        //      return;
-        //  }
-
-         // --- KONTROLA 7: OIB (Postojanje) ---
-         if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
-             alert("OIB je obavezan!");
-             return;
-         }
-
-         // --- KONTROLA 8: OIB (Duljina) ---
-         if (podaci.get('oib').trim().length !== 11) {
-             alert("OIB mora imati točno 11 znamenki!");
-             return;
-         }
-
-         // --- KONTROLA 9: OIB (Samo brojevi) ---
-         if (!/^\d+$/.test(podaci.get('oib'))) {
-             alert("OIB smije sadržavati samo brojeve!");
-             return;
-         }
-
-        promjeni({
-            naziv: podaci.get('naziv'),
-            adresa: podaci.get('adresa'),
-            mjesto: podaci.get('mjesto'),
-            oib: podaci.get('oib')
-        })
+        promjeni(rezultat.data)
     }
 
     return(
          <>
             <h3>Promjena gradilišta</h3>
-            <Form onSubmit={odradiSubmit}>
-                <Form.Group controlId="naziv">
+            <Form onSubmit={odradiSubmit} noValidate>
+                <Form.Group controlId="naziv" className="mb-3">
                     <Form.Label>Naziv</Form.Label>
-                    <Form.Control type="text" name="naziv" required 
-                    defaultValue={gradiliste.naziv}/>
+                    <Form.Control 
+                        type="text" 
+                        name="naziv" 
+                        defaultValue={gradiliste.naziv}
+                        isInvalid={!!greske.naziv}
+                        onChange={handleChange}
+                    />
+                    <Form.Control.Feedback type="invalid">{greske.naziv}</Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group controlId="adresa">
+                <Form.Group controlId="adresa" className="mb-3">
                     <Form.Label>Adresa</Form.Label>
-                    <Form.Control type="text" name="adresa" required 
-                    defaultValue={gradiliste.adresa}/>
+                    <Form.Control 
+                        type="text" 
+                        name="adresa" 
+                        defaultValue={gradiliste.adresa}
+                        isInvalid={!!greske.adresa}
+                        onChange={handleChange}
+                    />
+                    <Form.Control.Feedback type="invalid">{greske.adresa}</Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group controlId="mjesto">
-                    <Form.Label>Mjesto</Form.Label>
-                    <Form.Control type="text" name="mjesto" required 
-                    defaultValue={gradiliste.mjesto}/>
+                <Form.Group controlId="mjesto" className="mb-3">
+                    <Form.Label>Mjesto (npr. 31000 Osijek)</Form.Label>
+                    <Form.Control 
+                        type="text" 
+                        name="mjesto" 
+                        defaultValue={gradiliste.mjesto}
+                        isInvalid={!!greske.mjesto}
+                        onChange={handleChange}
+                    />
+                    <Form.Control.Feedback type="invalid">{greske.mjesto}</Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group controlId="oib">
+                <Form.Group controlId="oib" className="mb-3">
                     <Form.Label>OIB</Form.Label>
-                    <Form.Control type="text" name="oib" required maxLength={11}
-                    defaultValue={gradiliste.oib}/>
+                    <Form.Control 
+                        type="text" 
+                        name="oib" 
+                        maxLength={11}
+                        defaultValue={gradiliste.oib}
+                        isInvalid={!!greske.oib}
+                        onChange={handleChange}
+                    />
+                    <Form.Control.Feedback type="invalid">{greske.oib}</Form.Control.Feedback>
                 </Form.Group>
 
                 <Row className="mt-4">
                     <Col>
-                        <Link to={RouteNames.GRADILISTE} className="btn btn-danger">
+                        <Link to={RouteNames.GRADILISTE} className="btn btn-danger w-100">
                             Odustani
                         </Link>
                     </Col>
                     <Col>
-                        <Button type="submit" variant="success">
-                            Promjeni gradiliste 
+                        <Button type="submit" variant="success" className="w-100">
+                            Promijeni gradilište 
                         </Button>
                     </Col>
                 </Row>
-
             </Form>
         </>
     )
