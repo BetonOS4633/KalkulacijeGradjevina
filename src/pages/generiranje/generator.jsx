@@ -1,8 +1,181 @@
-import React, { useState, useMemo, useEffect } from 'react';
+
+
+// import React, { useState, useEffect } from 'react';
+// import { fakerHR as faker } from '@faker-js/faker';
+// import { 
+//   Database, HardHat, Factory, Building2, FileText, 
+//   ListChecks, Plus, Trash2, Edit2, Trash 
+// } from 'lucide-react';
+
+// const Generator = () => {
+//   const [count, setCount] = useState(5);
+//   const [activeTab, setActiveTab] = useState('Stroj');
+//   const [data, setData] = useState({
+//     Stroj: [], Radnik: [], Poduzece: [], Gradiliste: [], Nalog: [], Stavka: []
+//   });
+
+//   const rucniAlati = ["Udarna bušilica", "Ubodna pila", "Stroj za rezanje betona", "Kutna brusilica", "Rotacijski čekić", "Industrijski usisavač"];
+
+//   const getRandomEntity = (type) => {
+//     const table = data[type];
+//     return table.length > 0 ? table[Math.floor(Math.random() * table.length)] : null;
+//   };
+
+//   const recalculateTotals = (currentStavke) => {
+//     setData(prev => ({
+//       ...prev,
+//       Stavka: currentStavke,
+//       Nalog: prev.Nalog.map(nalog => {
+//         const suma = currentStavke
+//           .filter(s => s.nalog === nalog.sifra)
+//           .reduce((acc, curr) => acc + parseFloat(curr.iznos), 0);
+//         return { ...nalog, ukupniIznos: suma.toFixed(2) };
+//       })
+//     }));
+//   };
+
+//   const deleteRow = (id, type) => {
+//     if (type === 'Nalog') {
+//       const noveStavke = data.Stavka.filter(s => s.nalog !== id);
+//       const noviNalozi = data.Nalog.filter(n => n.sifra !== id);
+//       setData(prev => ({ ...prev, Nalog: noviNalozi, Stavka: noveStavke }));
+//     } else if (type === 'Stavka') {
+//       const noveStavke = data.Stavka.filter((s, index) => index !== id);
+//       recalculateTotals(noveStavke);
+//     } else {
+//       setData(prev => ({ ...prev, [type]: prev[type].filter(item => item.sifra !== id) }));
+//     }
+//   };
+
+//   const generateData = (type) => {
+//     let result = [];
+//     const num = parseInt(count) || 1;
+
+//     if (type === 'Stavka') {
+//       const naloziBezStavki = data.Nalog.filter(n => !data.Stavka.some(s => s.nalog === n.sifra));
+//       if (naloziBezStavki.length === 0) return alert("Svi nalozi već imaju stavke!");
+
+//       const noveStavke = [];
+//       naloziBezStavki.forEach(nalog => {
+//         const brojStavki = Math.floor(Math.random() * 10) + 1;
+//         for (let j = 1; j <= brojStavki; j++) {
+//           const randomStroj = getRandomEntity('Stroj');
+//           const radniSati = faker.number.int({ min: 1, max: 10 });
+//           const cijenaSata = randomStroj ? randomStroj.cijena : 0;
+          
+//           // Generiranje nasumičnog datuma i vremena
+//           const pocetak = faker.date.between({ from: '2024-01-01T07:00:00', to: '2024-12-31T15:00:00' });
+//           const kraj = new Date(pocetak.getTime() + radniSati * 60 * 60 * 1000);
+
+//           noveStavke.push({
+//             nalog: nalog.sifra,
+//             stavka: j,
+//             sifraRadnika: getRandomEntity('Radnik')?.sifra || "N/A",
+//             sifraStroja: randomStroj?.sifra || "N/A",
+//             vrijemePocetka: pocetak.toLocaleString('hr-HR'), 
+//             vrijemeZavrsetka: kraj.toLocaleString('hr-HR'),
+//             sati: radniSati,
+//             cijenaSataStroja: cijenaSata,
+//             iznos: (radniSati * cijenaSata).toFixed(2)
+//           });
+//         }
+//       });
+//       recalculateTotals([...data.Stavka, ...noveStavke]);
+//       return;
+//     }
+
+//     for (let i = 0; i < num; i++) {
+//       const id = (data[type].length > 0 ? Math.max(...data[type].map(x => x.sifra)) : 0) + i + 1;
+//       switch (type) {
+//         case 'Stroj':
+//           result.push({ 
+//             sifra: id, 
+//             naziv: faker.helpers.arrayElement(rucniAlati), 
+//             trajanje: faker.number.int({ min: 1000, max: 8000 }) + " h", 
+//             sati: faker.number.int({ min: 10, max: 500 }), 
+//             cijena: faker.number.int({ min: 10, max: 300 }), 
+//             datumKupnje: faker.date.past({ years: 3 }).toLocaleDateString('hr-HR'), 
+//             sljedeciServis: faker.date.future({ years: 1 }).toLocaleDateString('hr-HR'),
+//             aktivan: true 
+//           });
+//           break;
+//         case 'Radnik':
+//           result.push({ sifra: id, ime: faker.person.firstName(), prezime: faker.person.lastName(), oib: faker.string.numeric(11) });
+//           break;
+//         case 'Poduzece':
+//           result.push({ sifra: id, naziv: faker.company.name(), oib: faker.string.numeric(11) });
+//           break;
+//         case 'Gradiliste':
+//           result.push({ sifra: id, naziv: `Gradilište ${faker.location.city()}`, oib: faker.string.numeric(11) });
+//           break;
+//         case 'Nalog':
+//           result.push({ sifra: id, sifraPoduzeca: getRandomEntity('Poduzece')?.sifra || "N/A", sifraGradilista: getRandomEntity('Gradiliste')?.sifra || "N/A", ukupniIznos: "0.00" });
+//           break;
+//       }
+//     }
+//     setData(prev => ({ ...prev, [type]: [...prev[type], ...result] }));
+//   };
+
+//   return (
+//     <div style={{ padding: '20px', backgroundColor: '#f4f7f6', minHeight: '100vh', fontFamily: 'sans-serif' }}>
+//       <div style={{ maxWidth: '1300px', margin: '0 auto', background: 'white', padding: '25px', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+        
+//         {/* NAVIGACIJA */}
+//         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '25px', borderBottom: '2px solid #edf2f7', paddingBottom: '15px' }}>
+//           {Object.keys(data).map(tab => (
+//             <button key={tab} onClick={() => setActiveTab(tab)} style={{ padding: '12px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', backgroundColor: activeTab === tab ? '#2563eb' : '#f8fafc', color: activeTab === tab ? 'white' : '#4a5568', fontWeight: 'bold' }}>
+//               {tab} ({data[tab].length})
+//             </button>
+//           ))}
+//         </div>
+
+//         {/* KONTROLE */}
+//         <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', background: '#f8fafc', padding: '15px', borderRadius: '10px', alignItems: 'center' }}>
+//           {activeTab !== 'Stavka' && <input type="number" value={count} onChange={(e) => setCount(e.target.value)} style={{ width: '60px', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />}
+//           <button onClick={() => generateData(activeTab)} style={{ backgroundColor: '#059669', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+//             <Plus size={18} style={{ verticalAlign: 'middle', marginRight: '5px' }} /> 
+//             {activeTab === 'Stavka' ? 'Popuni prazne naloge' : `Generiraj ${activeTab}`}
+//           </button>
+//           <button onClick={() => setData({...data, [activeTab]: []})} style={{ color: '#e53e3e', background: 'none', border: 'none', cursor: 'pointer', marginLeft: 'auto', fontWeight: 'bold' }}>Obriši cijelu tablicu</button>
+//         </div>
+
+//         {/* TABLICA */}
+//         <div style={{ overflowX: 'auto', border: '1px solid #e2e8f0', borderRadius: '8px' }}>
+//           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+//             <thead>
+//               <tr style={{ background: '#f1f5f9' }}>
+//                 {data[activeTab].length > 0 && Object.keys(data[activeTab][0]).map(key => (
+//                   <th key={key} style={{ padding: '15px', textAlign: 'left', fontSize: '11px', color: '#64748b' }}>{key.toUpperCase()}</th>
+//                 ))}
+//                 <th style={{ padding: '15px', textAlign: 'right', fontSize: '11px', color: '#64748b' }}>AKCIJA</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {data[activeTab].map((row, idx) => (
+//                 <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
+//                   {Object.values(row).map((val, i) => <td key={i} style={{ padding: '15px', fontSize: '13px' }}>{String(val)}</td>)}
+//                   <td style={{ textAlign: 'right', padding: '15px' }}>
+//                     <button onClick={() => deleteRow(activeTab === 'Stavka' ? idx : row.sifra, activeTab)} style={{ color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer' }}><Trash2 size={16} /></button>
+//                   </td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//           {data[activeTab].length === 0 && <div style={{ padding: '50px', textAlign: 'center', color: '#94a3b8' }}>Nema podataka. Prvo generirajte matične tablice pa onda Nalozi i Stavke.</div>}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Generator;
+
+
+import React, { useState, useEffect } from 'react';
 import { fakerHR as faker } from '@faker-js/faker';
 import { 
   Database, HardHat, Factory, Building2, FileText, 
-  ListChecks, Plus, Trash2, Download, Check, X, Edit2 
+  ListChecks, Plus, Trash2, Trash 
 } from 'lucide-react';
 
 const Generator = () => {
@@ -11,149 +184,158 @@ const Generator = () => {
   const [data, setData] = useState({
     Stroj: [], Radnik: [], Poduzece: [], Gradiliste: [], Nalog: [], Stavka: []
   });
-  const [editState, setEditState] = useState({ index: null, values: {} });
 
-  // --- AUTOMATSKI IZRAČUN ZA STAVKE ---
-  useEffect(() => {
-    if (activeTab === 'Stavka' && editState.index !== null) {
-      const sati = parseFloat(editState.values.sati) || 0;
-      const cijenaPoSatu = 50; // Pretpostavljena interna cijena sata
-      const noviIznos = (sati * cijenaPoSatu).toFixed(2);
-      if (editState.values.iznos !== noviIznos) {
-        setEditState(prev => ({ ...prev, values: { ...prev.values, iznos: noviIznos } }));
-      }
+  const rucniAlati = ["Udarna bušilica", "Ubodna pila", "Stroj za rezanje betona", "Kutna brusilica", "Rotacijski čekić", "Industrijski usisavač"];
+
+  const getRandomEntity = (type) => {
+    const table = data[type];
+    return table.length > 0 ? table[Math.floor(Math.random() * table.length)] : null;
+  };
+
+  const recalculateTotals = (currentStavke) => {
+    setData(prev => ({
+      ...prev,
+      Stavka: currentStavke,
+      Nalog: prev.Nalog.map(nalog => {
+        const suma = currentStavke
+          .filter(s => s.nalog === nalog.sifra)
+          .reduce((acc, curr) => acc + parseFloat(curr.iznos), 0);
+        return { ...nalog, ukupniIznos: suma.toFixed(2) };
+      })
+    }));
+  };
+
+  const deleteRow = (id, type) => {
+    if (type === 'Nalog') {
+      const noveStavke = data.Stavka.filter(s => s.nalog !== id);
+      const noviNalozi = data.Nalog.filter(n => n.sifra !== id);
+      setData(prev => ({ ...prev, Nalog: noviNalozi, Stavka: noveStavke }));
+    } else if (type === 'Stavka') {
+      const noveStavke = data.Stavka.filter((s, index) => index !== id);
+      recalculateTotals(noveStavke);
+    } else {
+      setData(prev => ({ ...prev, [type]: prev[type].filter(item => item.sifra !== id) }));
     }
-  }, [editState.values.sati, activeTab]);
+  };
 
-  // --- GENERATORI PODATAKA ---
   const generateData = (type) => {
     let result = [];
     const num = parseInt(count) || 1;
+
+    if (type === 'Stavka') {
+      const naloziBezStavki = data.Nalog.filter(n => !data.Stavka.some(s => s.nalog === n.sifra));
+      if (naloziBezStavki.length === 0) return alert("Svi nalozi već imaju stavke!");
+
+      const noveStavke = [];
+      naloziBezStavki.forEach(nalog => {
+        const brojStavki = Math.floor(Math.random() * 10) + 1;
+        for (let j = 1; j <= brojStavki; j++) {
+          const randomStroj = getRandomEntity('Stroj');
+          const radniSati = faker.number.int({ min: 1, max: 10 });
+          const cijenaSata = randomStroj ? randomStroj.cijena : 0;
+          
+          const pocetak = faker.date.between({ from: '2024-01-01T07:00:00', to: '2024-12-31T15:00:00' });
+          const kraj = new Date(pocetak.getTime() + radniSati * 60 * 60 * 1000);
+
+          noveStavke.push({
+            nalog: nalog.sifra,
+            stavka: j,
+            sifraRadnika: getRandomEntity('Radnik')?.sifra || "N/A",
+            sifraStroja: randomStroj?.sifra || "N/A",
+            vrijemePocetka: pocetak.toLocaleString('hr-HR'), 
+            vrijemeZavrsetka: kraj.toLocaleString('hr-HR'),
+            sati: radniSati,
+            cijenaSataStroja: cijenaSata,
+            iznos: (radniSati * cijenaSata).toFixed(2)
+          });
+        }
+      });
+      recalculateTotals([...data.Stavka, ...noveStavke]);
+      return;
+    }
+
     for (let i = 0; i < num; i++) {
-      const id = data[type].length + i + 1;
+      const id = (data[type].length > 0 ? Math.max(...data[type].map(x => x.sifra)) : 0) + i + 1;
       switch (type) {
         case 'Stroj':
-          result.push({ sifra: id, naziv: faker.vehicle.type(), trajanje: 130, cijena: 1250.99, datumPokretanja: '2024-02-21T17:00:00', datumKraja: '2024-03-15T12:00:00', aktivan: true });
+          // Generiranje ISO stringa koji uključuje datum i vrijeme
+          const ISO_kupnja = faker.date.past({ years: 3 }).toISOString().split('.')[0];
+          const ISO_servis = faker.date.future({ years: 1 }).toISOString().split('.')[0];
+          
+          result.push({ 
+            sifra: id, 
+            naziv: faker.helpers.arrayElement(rucniAlati), 
+            trajanje: faker.number.int({ min: 1000, max: 8000 }) + " h", 
+            sati: faker.number.int({ min: 10, max: 500 }), 
+            cijena: faker.number.int({ min: 10, max: 300 }), 
+            datumKupnje: ISO_kupnja, // Sadrži T vrijeme
+            sljedeciServis: ISO_servis, // Sadrži T vrijeme
+            aktivan: true 
+          });
           break;
         case 'Radnik':
-          result.push({ sifra: id, ime: faker.person.firstName(), prezime: faker.person.lastName(), email: faker.internet.email(), oib: faker.string.numeric(11) });
+          result.push({ sifra: id, ime: faker.person.firstName(), prezime: faker.person.lastName(), oib: faker.string.numeric(11) });
           break;
         case 'Poduzece':
-          result.push({ sifra: id, naziv: faker.company.name() + ' d.o.o.', adresa: faker.location.streetAddress(), mjesto: faker.location.city(), email: faker.internet.email(), telefon: faker.phone.number(), oib: faker.string.numeric(11) });
+          result.push({ sifra: id, naziv: faker.company.name(), oib: faker.string.numeric(11) });
           break;
         case 'Gradiliste':
-          result.push({ sifra: id, naziv: `Projekt ${faker.person.lastName()}`, adresa: faker.location.streetAddress(), mjesto: faker.location.city(), oib: faker.string.numeric(11) });
+          result.push({ sifra: id, naziv: `Gradilište ${faker.location.city()}`, oib: faker.string.numeric(11) });
           break;
         case 'Nalog':
-          result.push({ sifra: id, sifraPoduzeca: id, sifraGradilista: id, ukupniIznos: faker.number.int({min: 1000, max: 5000}) });
-          break;
-        case 'Stavka':
-          result.push({ nalog: 1, sifra: id, sifraRadnika: id, sifraStroja: id, vrijemePocetka: '2023-02-01T08:00:00', vrijemeZavrsetka: '2023-02-28T10:30:00', sati: 42.5, iznos: 2000 });
+          result.push({ sifra: id, sifraPoduzeca: getRandomEntity('Poduzece')?.sifra || "N/A", sifraGradilista: getRandomEntity('Gradiliste')?.sifra || "N/A", ukupniIznos: "0.00" });
           break;
       }
     }
     setData(prev => ({ ...prev, [type]: [...prev[type], ...result] }));
   };
 
-  const tabs = [
-    { id: 'Stroj', label: 'Strojevi', icon: <Database size={18}/> },
-    { id: 'Radnik', label: 'Radnici', icon: <HardHat size={18}/> },
-    { id: 'Poduzece', label: 'Poduzeća', icon: <Factory size={18}/> },
-    { id: 'Gradiliste', label: 'Gradilišta', icon: <Building2 size={18}/> },
-    { id: 'Nalog', label: 'Nalozi', icon: <FileText size={18}/> },
-    { id: 'Stavka', label: 'Stavke', icon: <ListChecks size={18}/> },
-  ];
-
   return (
-    <div style={{ padding: '20px', backgroundColor: '#f4f7f6', minHeight: '100vh' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', background: 'white', padding: '25px', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+    <div style={{ padding: '20px', backgroundColor: '#f4f7f6', minHeight: '100vh', fontFamily: 'sans-serif' }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto', background: 'white', padding: '25px', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
         
-        {/* VRŠNI IZBORNIK GENERATORA */}
+        {/* NAVIGACIJA */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '25px', borderBottom: '2px solid #edf2f7', paddingBottom: '15px' }}>
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer',
-                backgroundColor: activeTab === tab.id ? '#2563eb' : '#f8fafc',
-                color: activeTab === tab.id ? 'white' : '#4a5568',
-                fontWeight: 'bold', transition: '0.3s'
-              }}
-            >
-              {tab.icon} {tab.label} ({data[tab.id].length})
+          {Object.keys(data).map(tab => (
+            <button key={tab} onClick={() => setActiveTab(tab)} style={{ padding: '10px 15px', borderRadius: '8px', border: 'none', cursor: 'pointer', backgroundColor: activeTab === tab ? '#2563eb' : '#f8fafc', color: activeTab === tab ? 'white' : '#4a5568', fontWeight: 'bold', fontSize: '13px' }}>
+              {tab} ({data[tab].length})
             </button>
           ))}
         </div>
 
         {/* KONTROLE */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', background: '#f8fafc', padding: '15px', borderRadius: '10px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            <label style={{ fontWeight: 'bold', color: '#4a5568' }}>Broj novih zapisa:</label>
-            <input 
-              type="number" value={count} onChange={(e) => setCount(e.target.value)} 
-              style={{ width: '80px', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-            />
-            <button onClick={() => generateData(activeTab)} style={{ backgroundColor: '#059669', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
-              <Plus size={18} style={{ verticalAlign: 'middle' }} /> Generiraj {activeTab}
-            </button>
-          </div>
-          <button onClick={() => setData({...data, [activeTab]: []})} style={{ background: 'none', border: 'none', color: '#e53e3e', cursor: 'pointer', fontWeight: 'bold' }}>
-            <Trash2 size={18} /> Obriši tablicu
+        <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', background: '#f8fafc', padding: '15px', borderRadius: '10px', alignItems: 'center' }}>
+          {activeTab !== 'Stavka' && <input type="number" value={count} onChange={(e) => setCount(e.target.value)} style={{ width: '60px', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />}
+          <button onClick={() => generateData(activeTab)} style={{ backgroundColor: '#059669', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+            <Plus size={18} style={{ verticalAlign: 'middle', marginRight: '5px' }} /> 
+            {activeTab === 'Stavka' ? 'Popuni naloge stavkama' : `Generiraj ${activeTab}`}
           </button>
+          <button onClick={() => setData({...data, [activeTab]: []})} style={{ color: '#e53e3e', background: 'none', border: 'none', cursor: 'pointer', marginLeft: 'auto', fontWeight: 'bold' }}>Isprazni {activeTab}</button>
         </div>
 
-        {/* TABLICA PODATAKA */}
+        {/* TABLICA */}
         <div style={{ overflowX: 'auto', border: '1px solid #e2e8f0', borderRadius: '8px' }}>
-          {data[activeTab].length > 0 ? (
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ background: '#f1f5f9' }}>
-                  {Object.keys(data[activeTab][0]).map(key => (
-                    <th key={key} style={{ padding: '15px', textAlign: 'left', fontSize: '12px', color: '#64748b' }}>{key.toUpperCase()}</th>
-                  ))}
-                  <th style={{ textAlign: 'right', padding: '15px' }}>AKCIJE</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data[activeTab].map((row, idx) => (
-                  <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                    {Object.keys(row).map(key => (
-                      <td key={key} style={{ padding: '15px', fontSize: '14px' }}>
-                        {editState.index === idx ? (
-                          <input 
-                            value={editState.values[key]} 
-                            readOnly={key === 'iznos' || key === 'sifra'}
-                            onChange={(e) => setEditState({...editState, values: {...editState.values, [key]: e.target.value}})}
-                            style={{ width: '100%', padding: '5px', borderRadius: '4px', border: '1px solid #2563eb' }}
-                          />
-                        ) : String(row[key])}
-                      </td>
-                    ))}
-                    <td style={{ textAlign: 'right', padding: '15px' }}>
-                      {editState.index === idx ? (
-                        <>
-                          <button onClick={() => {
-                            const newData = [...data[activeTab]];
-                            newData[idx] = editState.values;
-                            setData({...data, [activeTab]: newData});
-                            setEditState({ index: null, values: {} });
-                          }} style={{ color: '#059669', background: 'none', border: 'none', cursor: 'pointer' }}><Check/></button>
-                          <button onClick={() => setEditState({ index: null, values: {} })} style={{ color: '#e53e3e', background: 'none', border: 'none', cursor: 'pointer' }}><X/></button>
-                        </>
-                      ) : (
-                        <button onClick={() => setEditState({ index: idx, values: {...row} })} style={{ color: '#2563eb', background: 'none', border: 'none', cursor: 'pointer' }}><Edit2 size={16}/></button>
-                      )}
-                    </td>
-                  </tr>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ background: '#f1f5f9' }}>
+                {data[activeTab].length > 0 && Object.keys(data[activeTab][0]).map(key => (
+                  <th key={key} style={{ padding: '12px', textAlign: 'left', fontSize: '11px', color: '#64748b', whiteSpace: 'nowrap' }}>{key.toUpperCase()}</th>
                 ))}
-              </tbody>
-            </table>
-          ) : (
-            <div style={{ padding: '50px', textAlign: 'center', color: '#94a3b8' }}>
-              Nema generiranih podataka za ovu kategoriju.
-            </div>
-          )}
+                <th style={{ padding: '12px', textAlign: 'right', fontSize: '11px', color: '#64748b' }}>BRISANJE</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data[activeTab].map((row, idx) => (
+                <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                  {Object.values(row).map((val, i) => <td key={i} style={{ padding: '12px', fontSize: '12px', whiteSpace: 'nowrap' }}>{String(val)}</td>)}
+                  <td style={{ textAlign: 'right', padding: '12px' }}>
+                    <button onClick={() => deleteRow(activeTab === 'Stavka' ? idx : row.sifra, activeTab)} style={{ color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer' }}><Trash2 size={14} /></button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {data[activeTab].length === 0 && <div style={{ padding: '40px', textAlign: 'center', color: '#94a3b8' }}>Tablica je prazna.</div>}
         </div>
       </div>
     </div>
