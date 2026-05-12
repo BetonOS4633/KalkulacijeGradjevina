@@ -56,6 +56,7 @@ const Generator = () => {
       const noveStavke = [];
       naloziBezStavki.forEach(nalog => {
         const brojStavki = Math.floor(Math.random() * 10) + 1;
+        let sifraStavke = 1
         for (let j = 1; j <= brojStavki; j++) {
           const randomStroj = getRandomEntity('Stroj');
           const radniSati = faker.number.int({ min: 1, max: 10 });
@@ -66,7 +67,7 @@ const Generator = () => {
 
           noveStavke.push({
             nalog: nalog.sifra,
-            stavka: j,
+            sifra: sifraStavke++,
             sifraRadnika: getRandomEntity('Radnik')?.sifra || "N/A",
             sifraStroja: randomStroj?.sifra || "N/A",
             vrijemePocetka: pocetak.toLocaleString('hr-HR'), 

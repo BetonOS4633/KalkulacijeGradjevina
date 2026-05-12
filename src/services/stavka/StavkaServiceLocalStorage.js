@@ -11,7 +11,7 @@ function spremiUStorage(podaci) {
 
 async function get(nalog) {
     const stavke = dohvatiSveIzStorage();
-    return {success: true,  data: [...stavke.filter(s=>s.nalog===nalog)] };
+    return {success: true,  data: [...stavke.filter(s=>s.nalog===parseInt(nalog))] };
 }
 
 async function getBySifra(sifra) {
