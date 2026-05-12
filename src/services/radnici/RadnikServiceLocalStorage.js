@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'gradilista';
+const STORAGE_KEY = 'radnici';
 
 // Pomoćna funkcija za dohvaćanje podataka iz local storage-a
 function dohvatiSveIzStorage() {
