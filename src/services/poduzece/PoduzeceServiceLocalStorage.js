@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'poduzece';
+const STORAGE_KEY = 'poduzeca';
 
 // Pomoćna funkcija za dohvaćanje podataka iz local storage-a
 function dohvatiSveIzStorage() {
