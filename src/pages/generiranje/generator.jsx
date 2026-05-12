@@ -97,8 +97,8 @@ const Generator = () => {
             trajanje: faker.number.int({ min: 1000, max: 8000 }) + " h", 
             sati: faker.number.int({ min: 10, max: 500 }), 
             cijena: faker.number.int({ min: 10, max: 300 }), 
-            datumKupnje: ISO_kupnja, // Sadrži T vrijeme
-            sljedeciServis: ISO_servis, // Sadrži T vrijeme
+            datumPokretanja: ISO_kupnja, // Sadrži T vrijeme
+            datumKraja: ISO_servis, // Sadrži T vrijeme
             aktivan: true 
           });
           break;
