@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react"
 import { Button, Table, Card, Row, Col } from "react-bootstrap"
 import { Link, useNavigate, useParams } from "react-router-dom"
@@ -79,20 +80,13 @@ export default function StavkaPregled() {
         return stroj ? stroj.naziv : `Šifra: ${sifraStroja}`
     }
 
-//     async function brisanje(sifra) {
-//         if (!confirm('Sigurno obrisati?')) return
-//         const odgovor = await StavkaService.obrisi(sifra)
-//         dohvatiSvePodatke()
-//     }
-
-
     async function brisanje(sifra) {
         if (!confirm('Sigurno obrisati?')) return
         const odgovor = await StavkaService.obrisi(sifra)
         dohvatiSvePodatke()
     }
 
-    // 🖨️ FUNKCIJA ZA PRINTANJE PDF DOKUMENTA
+// 🖨️ FUNKCIJA ZA PRINTANJE PDF DOKUMENTA
     function generirajPDF() {
         const doc = new jsPDF();
 
@@ -101,9 +95,19 @@ export default function StavkaPregled() {
         doc.text(`RADNI NALOG br. ${params.sifra}`, 14, 15);
         
         doc.setFontSize(10);
+        // PODUZEĆE - Dodan Email
         doc.text(`Poduzece: ${poduzece.naziv || 'N/A'}`, 14, 25);
-        doc.text(`Gradiliste: ${gradiliste.naziv || 'N/A'}`, 14, 30);
-        doc.text(`Planirani iznos: ${(nalog.ukupniIznos || 0).toFixed(2)} €`, 14, 35);
+        doc.text(`OIB: ${poduzece.oib || 'N/A'}`, 14, 30);
+        doc.text(`Adresa: ${poduzece.adresa || 'N/A'}`, 14, 35);
+        doc.text(`Telefon: ${poduzece.telefon || 'N/A'}`, 14, 40);
+        doc.text(`E-mail: ${poduzece.email || 'N/A'}`, 14, 45);
+
+        // GRADILIŠTE - Izbačen kontakt (telefon)
+        doc.text(`Gradiliste: ${gradiliste.naziv || 'N/A'}`, 14, 55);
+        doc.text(`OIB gradilista: ${gradiliste.oib || 'N/A'}`, 14, 60);
+        doc.text(`Adresa gradilista: ${gradiliste.adresa || 'N/A'}`, 14, 65);
+        doc.text(`Mjesto gradilista: ${gradiliste.mjesto || 'N/A'}`, 14, 70);
+        doc.text(`Planirani iznos: ${(nalog.ukupniIznos || 0).toFixed(2)} €`, 14, 75);
 
         // 2. Podaci za tablicu
         const stupci = ["Stavka", "Radnik", "Stroj", "Pocetak", "Zavrsetak", "Sati", "Iznos"];
@@ -124,13 +128,13 @@ export default function StavkaPregled() {
             `${ukupniIznos.toFixed(2)} €`
         ]);
 
-        // 3. Generiranje tablice u PDF-u
+        // 3. Generiranje tablice u PDF-u (startY postavljen na 85)
         autoTable(doc,{
             head: [stupci],
             body: redovi,
-            startY: 45,
+            startY: 85,
             theme: 'striped',
-            headStyles: { fillColor: [50, 50, 50] }, // Tamno siva boja
+            headStyles: { fillColor: [50, 50, 50] }, // Zadržana Vaša tamno siva boja
             styles: { fontSize: 9 }
         });
 
@@ -186,10 +190,21 @@ export default function StavkaPregled() {
                         <Col md={4} className="border-start border-end">
                             <div className="text-muted small text-uppercase">Poduzeće</div>
                             <h4 className="fw-bold">{poduzece.naziv}</h4>
+                            <div className="small text-muted">
+                                OIB: {poduzece.oib || 'N/A'}<br />
+                                Adresa: {poduzece.adresa || 'N/A'}<br />
+                                Tel: {poduzece.telefon || 'N/A'}<br />
+                                E-mail: {poduzece.email || 'N/A'}
+                            </div>
                         </Col>
                         <Col md={4}>
                             <div className="text-muted small text-uppercase">Zgrada / Gradilište</div>
                             <h4 className="fw-bold">{gradiliste.naziv}</h4>
+                            <div className="small text-muted">
+                                OIB: {gradiliste.oib || 'N/A'}<br />
+                                Adresa: {gradiliste.adresa || 'N/A'}<br />
+                                Mjesto: {gradiliste.mjesto || 'N/A'}
+                            </div>
                         </Col>
                     </Row>
                 </Card.Body>
@@ -254,3 +269,4 @@ export default function StavkaPregled() {
         </div>
     )
 }
+

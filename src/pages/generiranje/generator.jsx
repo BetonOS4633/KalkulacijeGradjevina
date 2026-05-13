@@ -252,7 +252,7 @@ const Generator = () => {
       const suma = currentStavke
         .filter(s => s.nalog === nalog.sifra)
         .reduce((acc, curr) => acc + parseFloat(curr.iznos), 0);
-      return { ...nalog, ukupniIznos: suma.toFixed(2) };
+      return { ...nalog, ukupniIznos: parseFloat(suma.toFixed(2)) };
     });
     
     setData(prev => ({ ...prev, Stavka: currentStavke, Nalog: noviNalozi }));
@@ -300,13 +300,14 @@ const Generator = () => {
           const kraj = new Date(pocetak.getTime() + radniSati * 60 * 60 * 1000);
           const cijenaSata = randomStroj ? randomStroj.cijena : 0;
 
+        
           azuriraneStavke.push({
             nalog: nalog.sifra,
             sifra: sljedeciRedniBroj++,
             sifraRadnika: getRandomEntity('Radnik')?.sifra || "N/A",
             sifraStroja: randomStroj?.sifra || "N/A",
-            vrijemePocetka: pocetak.toLocaleString('hr-HR'),
-            vrijemeZavrsetka: kraj.toLocaleString('hr-HR'),
+            vrijemePocetka: pocetak,
+            vrijemeZavrsetka: kraj,
             sati: radniSati,
             iznos: (radniSati * cijenaSata).toFixed(2)
           });
@@ -340,7 +341,7 @@ const Generator = () => {
           result.push({ sifra: id, naziv: `Gradilište ${faker.location.city()}`, adresa: faker.location.streetAddress(), mjesto: faker.location.city(), email: faker.internet.email(), oib: generateValidOib() });
           break;
         case 'Nalog':
-          result.push({ sifra: id, sifraPoduzeca: getRandomEntity('Poduzece')?.sifra || "N/A", sifraGradilista: getRandomEntity('Gradiliste')?.sifra || "N/A", ukupniIznos: "0.00" });
+          result.push({ sifra: id, sifraPoduzeca: getRandomEntity('Poduzece')?.sifra || "N/A", sifraGradilista: getRandomEntity('Gradiliste')?.sifra || "N/A", ukupniIznos: 0 });
           break;
       }
     }
