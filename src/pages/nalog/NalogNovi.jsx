@@ -50,61 +50,7 @@ export default function NalogNovi() {
         e.preventDefault() // nemoj odraditi submit
         const podaci = new FormData(e.target)
 
-        // // --- KONTROLA 1: Ime (Postojanje) ---
-        // if (!podaci.get('ime') || podaci.get('ime').trim().length === 0) {
-        //     alert("Ime je obavezno i ne smije sadržavati samo razmake!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 2: Ime (Minimalna duljina) ---
-        // if (podaci.get('ime').trim().length < 2) {
-        //     alert("Ime mora imati najmanje 2 znaka!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 3: Prezime (Postojanje) ---
-        // if (!podaci.get('prezime') || podaci.get('prezime').trim().length === 0) {
-        //     alert("Prezime je obavezno i ne smije sadržavati samo razmake!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 4: Prezime (Minimalna duljina) ---
-        // if (podaci.get('prezime').trim().length < 2) {
-        //     alert("Prezime mora imati najmanje 2 znaka!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 5: Email (Postojanje) ---
-        // if (!podaci.get('email') || podaci.get('email').trim().length === 0) {
-        //     alert("Email je obavezan!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 6: Email (Format) ---
-        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        // if (!emailRegex.test(podaci.get('email'))) {
-        //     alert("Email nije u ispravnom formatu!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 7: OIB (Postojanje) ---
-        // if (!podaci.get('oib') || podaci.get('oib').trim().length === 0) {
-        //     alert("OIB je obavezan!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 8: OIB (Duljina) ---
-        // if (podaci.get('oib').trim().length !== 11) {
-        //     alert("OIB mora imati točno 11 znamenki!");
-        //     return;
-        // }
-
-        // // --- KONTROLA 9: OIB (Samo brojevi) ---
-        // if (!/^\d+$/.test(podaci.get('oib'))) {
-        //     alert("OIB smije sadržavati samo brojeve!");
-        //     return;
-        // }
-
+     
         dodaj({
             sifra: podaci.get('sifra'),
             sifraPoduzeca: parseInt(podaci.get('poduzece')),
