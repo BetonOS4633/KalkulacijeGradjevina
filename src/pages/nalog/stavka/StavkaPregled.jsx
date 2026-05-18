@@ -1,5 +1,4 @@
 
-
 import { useEffect, useState } from "react"
 import { Button, Table, Card, Row, Col } from "react-bootstrap"
 import { Link, useNavigate, useParams } from "react-router-dom"
@@ -14,7 +13,7 @@ import StrojService from "../../../services/strojevi/StrojService"
 // Uvoz ikona iz react-icons paketa
 import { FaEdit, FaTrash, FaPrint } from "react-icons/fa"
 
-// Uvoz jsPDF paketa za generiranje PDF-a (ISPRAVLJENO)
+// Uvoz jsPDF paketa za generiranje PDF-a
 import { jsPDF } from "jspdf"
 import autoTable from "jspdf-autotable"
 
@@ -33,54 +32,68 @@ export default function StavkaPregled() {
         dohvatiSvePodatke()
     }, [params.sifra])
 
-    const ukupniIznos = stavke.reduce((acc, s) => acc + Number(s.iznos || 0), 0);
+    // Izračun ukupnog iznosa iz svih stavki na ovom nalogu
+    const ukupniIznos = stavke.reduce((acc, s) => {
+        const iznosNumericki = parseFloat(s.iznos)
+        return acc + (isNaN(iznosNumericki) ? 0 : iznosNumericki)
+    }, 0);
 
     async function dohvatiSvePodatke() {
         const odgovor = await StavkaService.get(params.sifra)
         if (odgovor.success) {
-            const podaci = odgovor.data
+            const podaci = odgovor.data || []
             let rb = 1
-            podaci.map((e) => {
+            podaci.forEach((e) => {
                 e.rb = rb++
             })
-            setStavke(odgovor.data)
+            setStavke(podaci)
         }
 
         const nalogOdgovor = await NalogService.getBySifra(params.sifra)
-        if (nalogOdgovor.success) {
+        if (nalogOdgovor.success && nalogOdgovor.data) {
             setNalog(nalogOdgovor.data)
             
-            const poduzeceOdgovor = await PoduzeceService.getBySifra(nalogOdgovor.data.sifraPoduzeca)
-            if (poduzeceOdgovor.success) setPoduzece(poduzeceOdgovor.data)
+            if (nalogOdgovor.data.sifraPoduzeca) {
+                const poduzeceOdgovor = await PoduzeceService.getBySifra(nalogOdgovor.data.sifraPoduzeca)
+                if (poduzeceOdgovor.success && poduzeceOdgovor.data) setPoduzece(poduzeceOdgovor.data)
+            }
 
-            const gradilisteOdgovor = await GradilisteService.getBySifra(nalogOdgovor.data.sifraGradilista)
-            if (gradilisteOdgovor.success) setGradiliste(gradilisteOdgovor.data)
+            if (nalogOdgovor.data.sifraGradilista) {
+                const gradilisteOdgovor = await GradilisteService.getBySifra(nalogOdgovor.data.sifraGradilista)
+                if (gradilisteOdgovor.success && gradilisteOdgovor.data) setGradiliste(gradilisteOdgovor.data)
+            }
+        } else {
+            setNalog({})
         }
 
         const radniciOdgovor = await RadnikService.get()
         if (radniciOdgovor.success) {
-            setRadnici(radniciOdgovor.data)
+            setRadnici(radniciOdgovor.data || [])
         }
 
         const strojeviOdgovor = await StrojService.get()
         if (strojeviOdgovor.success) {
-            setStrojevi(strojeviOdgovor.data)
+            setStrojevi(strojeviOdgovor.data || [])
         }
     }
 
+    // Pretvaramo šifru u broj jer lokalno spremište zna vratiti string
     function dohvatiImeRadnika(sifraRadnika) {
-        const radnik = radnici.find(r => r.sifra === sifraRadnika)
+        if (!sifraRadnika) return "Nije odabran"
+        const radnik = radnici.find(r => r.sifra === parseInt(sifraRadnika))
         return radnik ? `${radnik.ime} ${radnik.prezime}` : `Šifra: ${sifraRadnika}`
     }
 
+    // Pretvaramo šifru u broj zbog stroge provjere === u JavaScriptu
     function dohvatiNazivStroja(sifraStroja) {
-        const stroj = strojevi.find(s => s.sifra === sifraStroja)
+        if (!sifraStroja) return "Nije odabran"
+        const stroj = strojevi.find(s => s.sifra === parseInt(sifraStroja))
         return stroj ? stroj.naziv : `Šifra: ${sifraStroja}`
     }
 
     async function brisanje(sifra) {
         if (!confirm('Sigurno obrisati?')) return
-        const odgovor = await StavkaService.obrisi(sifra)
+        await StavkaService.obrisi(sifra)
         dohvatiSvePodatke()
     }
 
@@ -93,21 +106,21 @@ export default function StavkaPregled() {
         doc.text(`RADNI NALOG br. ${params.sifra}`, 14, 15);
         
         doc.setFontSize(10);
-        // PODUZEĆE - Podaci o firmi
-        doc.text(`Poduzece: ${poduzece.naziv || 'N/A'}`, 14, 25);
-        doc.text(`OIB: ${poduzece.oib || 'N/A'}`, 14, 30);
-        doc.text(`Adresa: ${poduzece.adresa || 'N/A'}`, 14, 35);
-        doc.text(`Telefon: ${poduzece.telefon || 'N/A'}`, 14, 40);
-        doc.text(`E-mail: ${poduzece.email || 'N/A'}`, 14, 45);
+        doc.text(`Poduzece: ${poduzece?.naziv || 'N/A'}`, 14, 25);
+        doc.text(`OIB: ${poduzece?.oib || 'N/A'}`, 14, 30);
+        doc.text(`Adresa: ${poduzece?.adresa || 'N/A'}`, 14, 35);
+        doc.text(`Telefon: ${poduzece?.telefon || 'N/A'}`, 14, 40);
+        doc.text(`E-mail: ${poduzece?.email || 'N/A'}`, 14, 45);
 
-        // GRADILIŠTE - Podaci o gradilištu
-        doc.text(`Gradilište: ${gradiliste.naziv || 'N/A'}`, 14, 55);
-        doc.text(`OIB gradilišta: ${gradiliste.oib || 'N/A'}`, 14, 60);
-        doc.text(`Adresa gradilišta: ${gradiliste.adresa || 'N/A'}`, 14, 65);
-        doc.text(`Mjesto gradilišta: ${gradiliste.mjesto || 'N/A'}`, 14, 70);
-        doc.text(`Planirani iznos: ${(nalog.ukupniIznos || 0).toFixed(2)} €`, 14, 75);
+        doc.text(`Gradilište: ${gradiliste?.naziv || 'N/A'}`, 14, 55);
+        doc.text(`OIB gradilišta: ${gradiliste?.oib || 'N/A'}`, 14, 60);
+        doc.text(`Adresa gradilišta: ${gradiliste?.adresa || 'N/A'}`, 14, 65);
+        doc.text(`Mjesto gradilišta: ${gradiliste?.mjesto || 'N/A'}`, 14, 70);
+        
+        // Osiguravamo ispis planiranog iznosa u PDF-u bez rušenja koda
+        const planiraniIznosNaloga = parseFloat(nalog?.ukupniIznos || 0);
+        doc.text(`Planirani iznos: ${isNaN(planiraniIznosNaloga) ? '0.00' : planiraniIznosNaloga.toFixed(2)} €`, 14, 75);
 
-        // Pomoćna funkcija za sigurno formatiranje datuma
         const formatirajDatum = (vrijeme) => {
             if (!vrijeme) return 'N/A';
             const d = new Date(vrijeme);
@@ -123,17 +136,16 @@ export default function StavkaPregled() {
             formatirajDatum(s.vrijemePocetka),
             formatirajDatum(s.vrijemeZavrsetka),
             `${s.sati || 0} h`,
-            `${Number(s.iznos || 0).toFixed(2)} €`
+            `${parseFloat(s.iznos || 0).toFixed(2)} €`
         ]);
 
-        // Dodavanje reda za ukupno na dno tablice
         redovi.push([
             "", "", "", "", "", 
             "UKUPNO:", 
             `${ukupniIznos.toFixed(2)} €`
         ]);
 
-        // 3. Generiranje tablice u PDF-u (S desnim poravnanjem za Sati i Iznos)
+        // 3. Generiranje tablice u PDF-u
         autoTable(doc, {
             head: [stupci],
             body: redovi,
@@ -142,8 +154,8 @@ export default function StavkaPregled() {
             headStyles: { fillColor: [50, 50, 50] },
             styles: { fontSize: 9 },
             columnStyles: {
-                5: { halign: 'right' }, // Poravnanje stupca Sati desno
-                6: { halign: 'right' }  // Poravnanje stupca Iznos desno
+                5: { halign: 'right' },
+                6: { halign: 'right' }
             }
         });
 
@@ -160,7 +172,6 @@ export default function StavkaPregled() {
         iframe.src = blobUrl; 
         document.body.appendChild(iframe);
 
-        // Izvršavanje ispisa kada se iframe učita
         iframe.onload = () => {
             setTimeout(() => {
                 try {
@@ -170,7 +181,6 @@ export default function StavkaPregled() {
                     console.error("Greška pri ispisu:", error);
                 }
                 
-                // Brisanje elemenata i oslobađanje memorije
                 setTimeout(() => {
                     document.body.removeChild(iframe);
                     URL.revokeObjectURL(blobUrl);
@@ -179,13 +189,15 @@ export default function StavkaPregled() {
         };
     }
 
+    // Izvlačimo planirani iznos u varijablu radi čišćeg koda u JSX-u
+    const planiraniIznosZaslon = parseFloat(nalog?.ukupniIznos || 0);
+
     return (
         <div className="container">
             <div className="d-flex justify-content-between align-items-center mt-3">
                 <Link to={RouteNames.NALOG} className="btn btn-danger">Vrati</Link>
                 
                 <div>
-                    {/* TIPKA ZA PRINTANJE PDF-a */}
                     <Button variant="outline-success" className="me-2" onClick={generirajPDF}>
                         <FaPrint className="me-2" /> Isprintaj PDF
                     </Button>
@@ -202,25 +214,25 @@ export default function StavkaPregled() {
                         <Col md={4}>
                             <div className="text-muted small text-uppercase">Nalog broj</div>
                             <h4 className="fw-bold">{params.sifra}</h4>
-                            Planirani iznos: {nalog.ukupniIznos} €
+                            Planirani iznos: {isNaN(planiraniIznosZaslon) ? '0.00' : planiraniIznosZaslon.toFixed(2)} €
                         </Col>
                         <Col md={4} className="border-start border-end">
                             <div className="text-muted small text-uppercase">Poduzeće</div>
-                            <h4 className="fw-bold">{poduzece.naziv}</h4>
+                            <h4 className="fw-bold">{poduzece?.naziv || 'N/A'}</h4>
                             <div className="small text-muted">
-                                OIB: {poduzece.oib || 'N/A'}<br />
-                                Adresa: {poduzece.adresa || 'N/A'}<br />
-                                Tel: {poduzece.telefon || 'N/A'}<br />
-                                E-mail: {poduzece.email || 'N/A'}
+                                OIB: {poduzece?.oib || 'N/A'}<br />
+                                Adresa: {poduzece?.adresa || 'N/A'}<br />
+                                Tel: {poduzece?.telefon || 'N/A'}<br />
+                                E-mail: {poduzece?.email || 'N/A'}
                             </div>
                         </Col>
                         <Col md={4}>
                             <div className="text-muted small text-uppercase">Zgrada / Gradilište</div>
-                            <h4 className="fw-bold">{gradiliste.naziv}</h4>
+                            <h4 className="fw-bold">{gradiliste?.naziv || 'N/A'}</h4>
                             <div className="small text-muted">
-                                OIB: {gradiliste.oib || 'N/A'}<br />
-                                Adresa: {gradiliste.adresa || 'N/A'}<br />
-                                Mjesto: {gradiliste.mjesto || 'N/A'}
+                                OIB: {gradiliste?.oib || 'N/A'}<br />
+                                Adresa: {gradiliste?.adresa || 'N/A'}<br />
+                                Mjesto: {gradiliste?.mjesto || 'N/A'}
                             </div>
                         </Col>
                     </Row>
@@ -248,8 +260,8 @@ export default function StavkaPregled() {
                             <td>{dohvatiNazivStroja(s.sifraStroja)}</td>
                             <td>{s.vrijemePocetka ? new Date(s.vrijemePocetka).toLocaleString('hr-HR') : 'N/A'}</td>
                             <td>{s.vrijemeZavrsetka ? new Date(s.vrijemeZavrsetka).toLocaleString('hr-HR') : 'N/A'}</td>
-                            <td>{s.sati} h</td>
-                            <td className="text-end">{Number(s.iznos).toFixed(2)} €</td>
+                            <td>{s.sati || 0} h</td>
+                            <td className="text-end">{parseFloat(s.iznos || 0).toFixed(2)} €</td>
                             <td className="text-center">
                                 <Button 
                                     variant="outline-primary" 

@@ -1,3 +1,6 @@
+
+
+
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import NalogService from "../../services/nalog/NalogService"
@@ -10,7 +13,11 @@ export default function NalogPromjena() {
 
     const navigate = useNavigate()
     const params = useParams()
-    const [nalog, setNalog] = useState({})
+    const [nalog, setNalog] = useState({
+        sifraPoduzeca: '',
+        sifraGradilista: '',
+        ukupniIznos: 0
+    })
     const [poduzeca, setPoduzeca] = useState([])
     const [gradilista, setGradilista] = useState([])
 
@@ -47,16 +54,12 @@ export default function NalogPromjena() {
                 return
             }
             const n = odgovor.data
-            
-           // n.datumIzdavanja = n.datumIzdavanja.substring(0,10)
-           // n.datumZavrsetka = n.datumZavrsetka.substring(0,10)
-           // console.table(n)
             setNalog(n)
         })
     }
 
-    async function promjeni(nalog) {
-        await NalogService.promjeni(params.sifra, nalog).then(() => {
+    async function promjeni(nalogZaSlanje) {
+        await NalogService.promjeni(params.sifra, nalogZaSlanje).then(() => {
             navigate(RouteNames.NALOG)
         })
     }
@@ -65,24 +68,27 @@ export default function NalogPromjena() {
         e.preventDefault()
         const podaci = new FormData(e.target)
 
+        // ISPRAVLJENO: sifraPoduzeca i sifraGradilista moraju točno odgovarati ključevima koje backend i state očekuju
         promjeni({
-            sifraPoduzece: podaci.get('sifraPoduzeca'),
-            sifraGradilista: podaci.get('sifraGradilista'),
-            ukupniIznos: podaci.get('ukupniIznos'),
-
-
-            // email: podaci.get('email'),
-            // oib: podaci.get('oib')
+            ...nalog, // Čuvamo sve ostale podatke iz naloga (poput šifre)
+            sifraPoduzeca: parseInt(podaci.get('poduzece')),
+            sifraGradilista: parseInt(podaci.get('gradiliste')),
+            ukupniIznos: parseFloat(podaci.get('cijena'))
         })
     }
 
     return (
         <>
-            <h3>Promjena polaznika</h3>
+            <h3>Promjena naloga</h3>
             <Form onSubmit={odradiSubmit}>
                 <Form.Group controlId="poduzece" className="mb-3">
                     <Form.Label className="fw-bold">Poduzeće</Form.Label>
-                    <Form.Select name="poduzece" required value={nalog.sifraPoduzeca || ''} onChange={(e) => setNalog({ ...nalog, sifraPoduzeca: parseInt(e.target.value) })}>
+                    <Form.Select 
+                        name="poduzece" 
+                        required 
+                        value={nalog.sifraPoduzeca || ''} 
+                        onChange={(e) => setNalog({ ...nalog, sifraPoduzeca: parseInt(e.target.value) || '' })}
+                    >
                         <option value="">Odaberite poduzeće</option>
                         {poduzeca && poduzeca.map((poduzece) => (
                             <option key={poduzece.sifra} value={poduzece.sifra}>
@@ -94,7 +100,12 @@ export default function NalogPromjena() {
 
                 <Form.Group controlId="gradiliste" className="mb-3">
                     <Form.Label className="fw-bold">Gradilište</Form.Label>
-                    <Form.Select name="gradiliste" required value={nalog.sifraGradilista || ''} onChange={(e) => setNalog({ ...nalog, sifraGradilista: parseInt(e.target.value) })}>
+                    <Form.Select 
+                        name="gradiliste" 
+                        required 
+                        value={nalog.sifraGradilista || ''} 
+                        onChange={(e) => setNalog({ ...nalog, sifraGradilista: parseInt(e.target.value) || '' })}
+                    >
                         <option value="">Odaberite gradilište</option>
                         {gradilista && gradilista.map((gradiliste) => (
                             <option key={gradiliste.sifra} value={gradiliste.sifra}>
@@ -104,26 +115,16 @@ export default function NalogPromjena() {
                     </Form.Select>
                 </Form.Group>
 
-
-
-
-                <Form.Group controlId="cijena">
-                    <Form.Label>Cijena</Form.Label>
-                    <Form.Control type="number" name="cijena" step={0.01}
-                        defaultValue={nalog.ukupniIznos} />
+                <Form.Group controlId="cijena" className="mb-3">
+                    <Form.Label className="fw-bold">Cijena</Form.Label>
+                    <Form.Control 
+                        type="number" 
+                        name="cijena" 
+                        step={0.01}
+                        value={nalog.ukupniIznos || ''} 
+                        onChange={(e) => setNalog({ ...nalog, ukupniIznos: e.target.value })}
+                    />
                 </Form.Group>
-                {/* 
-                <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" required 
-                    defaultValue={radnik.email}/>
-                </Form.Group>
-
-                <Form.Group controlId="oib">
-                    <Form.Label>OIB</Form.Label>
-                    <Form.Control type="text" name="oib" required maxLength={11}
-                    defaultValue={radnik.oib}/>
-                </Form.Group> */}
 
                 <Row className="mt-4">
                     <Col>
@@ -137,7 +138,6 @@ export default function NalogPromjena() {
                         </Button>
                     </Col>
                 </Row>
-
             </Form>
         </>
     )

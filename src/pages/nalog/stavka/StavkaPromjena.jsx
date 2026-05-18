@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react"
 import { Form, Button, Row, Col, Alert } from "react-bootstrap"
 import { useNavigate, useParams, Link } from "react-router-dom"
@@ -42,6 +43,48 @@ export default function StavkaPromjena() {
         return `${godina}-${mjesec}-${dan}T${sati}:${minute}`
     }
 
+    // Automatski računa iznos kada se promijeni stroj
+    function handleStrojChange(e) {
+        const novaSifraStroja = parseInt(e.target.value)
+        const odabraniStroj = strojevi.find(s => s.sifra === novaSifraStroja)
+        
+        let noviIznos = stavka.iznos
+        if (odabraniStroj && odabraniStroj.cijena) {
+            noviIznos = (parseFloat(stavka.sati) || 0) * odabraniStroj.cijena
+        }
+
+        setStavka({
+            ...stavka,
+            sifraStroja: novaSifraStroja,
+            iznos: noviIznos
+        })
+    }
+
+    // Automatski računa iznos kada korisnik ručno upiše broj sati
+    function handleSatiChange(e) {
+        const noviSati = e.target.value
+        const odabraniStroj = strojevi.find(s => s.sifra === stavka.sifraStroja)
+
+        let noviIznos = stavka.iznos
+        if (odabraniStroj && odabraniStroj.cijena) {
+            noviIznos = (parseFloat(noviSati) || 0) * odabraniStroj.cijena
+        }
+
+        setStavka({
+            ...stavka,
+            sati: noviSati,
+            iznos: noviIznos
+        })
+    }
+
+    // Omogućuje ručnu promjenu iznosa u polju
+    function handleIznosChange(e) {
+        setStavka({
+            ...stavka,
+            iznos: e.target.value
+        })
+    }
+
     async function obradiPodatke(e) {
         e.preventDefault()
         setGreska('')
@@ -58,10 +101,7 @@ export default function StavkaPromjena() {
         }
 
         try {
-            // Šaljemo izmjene
             await StavkaService.promjeni(sifraStavka, urediStavku)
-            
-            // Bez obzira što API vrati (čak i ako vrati undefined), prisilno vas vraćamo nazad
             navigate(`/nalog/${sifraNalog}/stavke`)
         } catch (err) {
             setGreska('Došlo je do greške na serveru prilikom spremanja.')
@@ -69,7 +109,7 @@ export default function StavkaPromjena() {
         }
     }
 
-    if (!stavka) return <p>Učitavanje...</p>
+    if (!stavka) return <p className="container mt-3">Učitavanje...</p>
 
     return (
         <div className="container mt-3">
@@ -83,7 +123,12 @@ export default function StavkaPromjena() {
                     <Col md={6}>
                         <Form.Group className="mb-3">
                             <Form.Label>Radnik</Form.Label>
-                            <Form.Select name="sifraRadnika" defaultValue={stavka.sifraRadnika} required>
+                            <Form.Select 
+                                name="sifraRadnika" 
+                                value={stavka.sifraRadnika || ''} 
+                                onChange={(e) => setStavka({ ...stavka, sifraRadnika: parseInt(e.target.value) })}
+                                required
+                            >
                                 <option value="">-- Odaberi radnika --</option>
                                 {radnici && radnici.map(r => (
                                     <option key={r.sifra} value={r.sifra}>
@@ -96,7 +141,12 @@ export default function StavkaPromjena() {
                     <Col md={6}>
                         <Form.Group className="mb-3">
                             <Form.Label>Stroj</Form.Label>
-                            <Form.Select name="sifraStroja" defaultValue={stavka.sifraStroja} required>
+                            <Form.Select 
+                                name="sifraStroja" 
+                                value={stavka.sifraStroja || ''} 
+                                onChange={handleStrojChange} 
+                                required
+                            >
                                 <option value="">-- Odaberi stroj --</option>
                                 {strojevi && strojevi.map(s => (
                                     <option key={s.sifra} value={s.sifra}>
@@ -111,13 +161,25 @@ export default function StavkaPromjena() {
                     <Col md={6}>
                         <Form.Group className="mb-3">
                             <Form.Label>Vrijeme početka</Form.Label>
-                            <Form.Control type="datetime-local" name="vrijemePocetka" defaultValue={formatirajDatumZaInput(stavka.vrijemePocetka)} required />
+                            <Form.Control 
+                                type="datetime-local" 
+                                name="vrijemePocetka" 
+                                value={formatirajDatumZaInput(stavka.vrijemePocetka)} 
+                                onChange={(e) => setStavka({ ...stavka, vrijemePocetka: e.target.value })}
+                                required 
+                            />
                         </Form.Group>
                     </Col>
                     <Col md={6}>
                         <Form.Group className="mb-3">
                             <Form.Label>Vrijeme završetka</Form.Label>
-                            <Form.Control type="datetime-local" name="vrijemeZavrsetka" defaultValue={formatirajDatumZaInput(stavka.vrijemeZavrsetka)} required />
+                            <Form.Control 
+                                type="datetime-local" 
+                                name="vrijemeZavrsetka" 
+                                value={formatirajDatumZaInput(stavka.vrijemeZavrsetka)} 
+                                onChange={(e) => setStavka({ ...stavka, vrijemeZavrsetka: e.target.value })}
+                                required 
+                            />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -125,13 +187,27 @@ export default function StavkaPromjena() {
                     <Col md={6}>
                         <Form.Group className="mb-3">
                             <Form.Label>Broj sati</Form.Label>
-                            <Form.Control type="number" step="0.01" name="sati" defaultValue={stavka.sati} required />
+                            <Form.Control 
+                                type="number" 
+                                step="0.01" 
+                                name="sati" 
+                                value={stavka.sati || ''} 
+                                onChange={handleSatiChange}
+                                required 
+                            />
                         </Form.Group>
                     </Col>
                     <Col md={6}>
                         <Form.Group className="mb-3">
                             <Form.Label>Iznos (€)</Form.Label>
-                            <Form.Control type="number" step="0.01" name="iznos" defaultValue={stavka.iznos} required />
+                            <Form.Control 
+                                type="number" 
+                                step="0.01" 
+                                name="iznos" 
+                                value={stavka.iznos ?? ''} 
+                                onChange={handleIznosChange}
+                                required 
+                            />
                         </Form.Group>
                     </Col>
                 </Row>

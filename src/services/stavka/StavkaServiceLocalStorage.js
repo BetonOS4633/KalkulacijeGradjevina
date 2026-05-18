@@ -1,3 +1,67 @@
+// const STORAGE_KEY = 'stavka';
+
+// function dohvatiSveIzStorage() {
+//     const podaci = localStorage.getItem(STORAGE_KEY);
+//     return podaci ? JSON.parse(podaci) : [];
+// }
+
+// function spremiUStorage(podaci) {
+//     localStorage.setItem(STORAGE_KEY, JSON.stringify(podaci));
+// }
+
+// async function get(nalog) {
+//     const stavke = dohvatiSveIzStorage();
+//     return {success: true,  data: [...stavke.filter(s=>s.nalog===parseInt(nalog))] };
+// }
+
+// async function getBySifra(sifra) {
+//     const stavke = dohvatiSveIzStorage();
+//     const stavka = stavke.find(s => s.sifra === parseInt(sifra));
+//     return {success: true,  data: stavka ? stavka : null };
+// }
+
+// async function dodaj(stavka) {
+//     const stavke = dohvatiSveIzStorage();
+    
+//     if (stavke.length === 0) {
+//         stavka.sifra = 1;
+//     } else {
+//         const maxSifra = Math.max(...stavke.map(s => s.sifra));
+//         stavka.sifra = maxSifra + 1;
+//     }
+    
+//     stavke.push(stavka);
+//     spremiUStorage(stavke);
+//     return { data: stavka};
+// }
+
+// async function promjeni(sifra, stavka) {
+//     const stavke = dohvatiSveIzStorage();
+//     const index = stavke.findIndex(s => s.sifra === parseInt(sifra));
+    
+//     if (index !== -1) {
+//         strojevi[index] = { ...stavke[index], ...stavka};
+//         spremiUStorage(stavke);
+//     }
+//     return { data: stavke[index] };
+// }
+
+// async function obrisi(sifra) {
+//     let stavke = dohvatiSveIzStorage();
+//     stavke = ststavke.filter(s => s.sifra !== parseInt(sifra));
+//     spremiUStorage(stavke);
+//     return { message: 'Obrisano' };
+// }
+
+// export default {
+//     get,
+//     dodaj,
+//     getBySifra,
+//     promjeni,
+//     obrisi
+// };
+
+
 const STORAGE_KEY = 'stavka';
 
 function dohvatiSveIzStorage() {
@@ -11,13 +75,13 @@ function spremiUStorage(podaci) {
 
 async function get(nalog) {
     const stavke = dohvatiSveIzStorage();
-    return {success: true,  data: [...stavke.filter(s=>s.nalog===parseInt(nalog))] };
+    return { success: true, data: [...stavke.filter(s => s.nalog === parseInt(nalog))] };
 }
 
 async function getBySifra(sifra) {
     const stavke = dohvatiSveIzStorage();
     const stavka = stavke.find(s => s.sifra === parseInt(sifra));
-    return {success: true,  data: stavka ? stavka : null };
+    return { success: true, data: stavka ? stavka : null };
 }
 
 async function dodaj(stavka) {
@@ -32,7 +96,7 @@ async function dodaj(stavka) {
     
     stavke.push(stavka);
     spremiUStorage(stavke);
-    return { data: stavka};
+    return { data: stavka };
 }
 
 async function promjeni(sifra, stavka) {
@@ -40,7 +104,8 @@ async function promjeni(sifra, stavka) {
     const index = stavke.findIndex(s => s.sifra === parseInt(sifra));
     
     if (index !== -1) {
-        strojevi[index] = { ...stavke[index], ...stavka};
+        // ISPRAVLJENO: stavke[index] umjesto strojevi[index]
+        stavke[index] = { ...stavke[index], ...stavka };
         spremiUStorage(stavke);
     }
     return { data: stavke[index] };
@@ -48,7 +113,8 @@ async function promjeni(sifra, stavka) {
 
 async function obrisi(sifra) {
     let stavke = dohvatiSveIzStorage();
-    stavke = ststavke.filter(s => s.sifra !== parseInt(sifra));
+    // ISPRAVLJENO: maknut tipfeler ststavke -> stavke
+    stavke = stavke.filter(s => s.sifra !== parseInt(sifra));
     spremiUStorage(stavke);
     return { message: 'Obrisano' };
 }
