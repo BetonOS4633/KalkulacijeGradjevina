@@ -9,9 +9,7 @@ npm install react-icons
 
 npm install jspdf jspdf-autotable
 
-
 npm install react-bootstrap bootstrap
-
 
 npm install zod
 
